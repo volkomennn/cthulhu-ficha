@@ -790,6 +790,7 @@ body.modal-open {
     <button onclick="salvarLocal()" style="background: #002200; border-color: #004400; color: #00ff00;">SALVAR INVESTIGADOR</button>
     <button onclick="resetarFicha()" style="background: #332200; border-color: #664400; color: #ffaa00;">RESETAR FICHA</button>
     <button onclick="fazerLogout()" style="background: #330000; border-color: #550000; color: #ff0000;">LOGOUT</button>
+    <button onclick="gerarTokenSincronizacao()" style="background: #004400; color: #00ff00; border: 1px solid #00ff00;">GERAR CÓDIGO</button>
 </div>
 
 <div class="music-player-container" id="playerMusica">
@@ -800,7 +801,7 @@ body.modal-open {
         <div style="font-size: 0.9em; color: #fff; margin-bottom: 15px; font-family: monospace; letter-spacing: 1px;">HIP SHOP</div>
         
         <audio id="bgMusic" loop>
-            <source src="musicaficha.mp3">
+            <source src="DELTARUNE OST   Rouxls Kaard Shop Hip Shop EXTENDED - František D (youtube).mp3">
         </audio>
 
         <div class="bar-controls">
@@ -2019,6 +2020,82 @@ function calcularPontosOcupacao() {
 }
 
 
+// ====================================
+// MOTOR DE SINCRONIZAÇÃO VIA TOKEN
+// ====================================
+
+function gerarTokenSincronizacao() {
+    // 1. Coletar TODOS os dados que estão na tela agora
+    const dadosFicha = {
+        info: {
+            nome: document.querySelector('[data-key="nome"]')?.value || "",
+            ocupacao: document.getElementById('input-ocupacao')?.value || "",
+            idade: document.getElementById('idade')?.value || ""
+        },
+        atributos: {
+            FOR: document.getElementById('input-FOR')?.value || 0,
+            DES: document.getElementById('input-DES')?.value || 0,
+            TAM: document.getElementById('input-TAM')?.value || 0,
+            CON: document.getElementById('input-CON')?.value || 0,
+            APA: document.getElementById('input-APA')?.value || 0,
+            INT: document.getElementById('input-INT')?.value || 0,
+            POD: document.getElementById('input-POD')?.value || 0,
+            EDU: document.getElementById('input-EDU')?.value || 0
+        },
+        // Aqui você pode adicionar um loop para pegar todas as perícias se desejar
+        timestamp: Date.now()
+    };
+
+    // 2. Transformar em String e Codificar (Base64)
+    const jsonStr = JSON.stringify(dadosFicha);
+    const token = "COC-" + btoa(unescape(encodeURIComponent(jsonStr)));
+
+    // 3. Exibir para o usuário
+    const aviso = prompt("COPIE O CÓDIGO ABAIXO E COLE NO CELULAR:", token);
+    
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(token);
+        alert("Código copiado automaticamente! Agora é só colar no outro dispositivo.");
+    }
+}
+
+function importarTokenNoCelular() {
+    const token = prompt("COLE O CÓDIGO GERADO NO PC:");
+    if (!token || !token.startsWith("COC-")) {
+        alert("Código inválido!");
+        return;
+    }
+
+    try {
+        // 1. Decodificar
+        const base64 = token.substring(4);
+        const jsonStr = decodeURIComponent(escape(atob(base64)));
+        const dados = JSON.parse(jsonStr);
+
+        // 2. Distribuir os dados nos campos da tela
+        if(dados.info.nome) document.querySelector('[data-key="nome"]').value = dados.info.nome;
+        if(dados.info.ocupacao) document.getElementById('input-ocupacao').value = dados.info.ocupacao;
+        
+        // Atributos
+        for (let attr in dados.atributos) {
+            const input = document.getElementById(`input-${attr}`);
+            if (input) input.value = dados.atributos[attr];
+        }
+
+        // 3. Rodar suas funções de cálculo para atualizar a interface
+        atualizarTudo();
+        calcularPontosOcupacao();
+        
+        alert("✅ Investigador importado com sucesso!");
+
+    } catch (e) {
+        console.error(e);
+        alert("Erro ao ler o código. Verifique se copiou tudo corretamente.");
+    }
+}
+
+
+
 let scrollPosicaoOriginal = 0;
 
 function abrirModalOcupacoes() {
@@ -2087,6 +2164,7 @@ function selecionarOcupacao(nome) {
 renderPericias();
 if (typeof addWeaponRow === "function") addWeaponRow(); 
 atualizarTudo();
+
 
 
 renderPericias();
