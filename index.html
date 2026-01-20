@@ -17,11 +17,11 @@
         }
 
         .val-auto {
-    background: rgba(255, 255, 255, 0.05) !important;
-    color: #777 !important;
-    font-style: italic;
-    cursor: not-allowed;
-}
+            background: rgba(255, 255, 255, 0.05) !important;
+            color: #777 !important;
+            font-style: italic;
+            cursor: not-allowed;
+        }
 
         /* ESTÉTICA NOIR EXUBERANTE */
         body { 
@@ -180,7 +180,6 @@
         .weapon-table input, .pericias-table input { width: 90%; border: none; background: transparent; padding: 5px; color: #eee; text-align: center; }
         .val-auto { color: #555 !important; }
 
-        /* BOTÃO REMOVER ARMA */
         .btn-remove-weapon { background: #300; color: #fff; border: none; padding: 2px 8px; cursor: pointer; transition: 0.3s; }
         .btn-remove-weapon:hover { background: #f00; }
 
@@ -210,7 +209,6 @@
         .status-box { background: linear-gradient(145deg, #111, #050505); padding: 15px; border: 1px solid #2a2a2a; min-width: 110px; text-align: center; }
         .result-box { color: #fff; font-size: 1.5em; font-weight: 300; display: block; margin-top: 5px; }
 
-        /* OVERLAY CORRIGIDO PARA ACOMPANHAR O SCROLL (FIXED NO VIEWPORT) */
         #result-overlay {
             position: fixed; 
             top: 50%; 
@@ -225,6 +223,20 @@
         #result-overlay.active { transform: translate(-50%, -50%) scale(1.8); }
         .res-title { font-size: 3rem; background: #fff; color: #000; padding: 5px 30px; border: 4px double #000; display: inline-block; }
         .res-detail { font-size: 1rem; color: #fff; background: #000; padding: 5px 15px; border: 1px solid #fff; margin-top: 10px; display: block; margin-left: auto; margin-right: auto; max-width: fit-content; }
+
+        /* RODAPÉ DE CRÉDITOS */
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #222;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8em;
+            color: #444;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        footer b { color: #666; font-weight: normal; }
     </style>
 </head>
 <body>
@@ -375,6 +387,10 @@
         </table>
         <button onclick="addWeaponRow()" style="margin-top: 15px; font-size: 0.6em;">+ Adicionar Arma</button>
     </div>
+
+    <footer>
+        Direitos reservados: <b>Anderson - Volkomenn</b> — © 2026
+    </footer>
 </div>
 
 <script>
@@ -447,15 +463,9 @@
     }
 
     function calcWeapon(input) {
-    // Encontra a linha (tr) onde o input está
     const row = input.closest('tr');
-    // Pega o valor digitado (Regular)
     const val = parseInt(input.value) || 0;
-    
-    // Seleciona os campos de leitura daquela linha específica
     const cells = row.querySelectorAll('.val-auto');
-    
-    // cells[0] é o Sólido (Metade), cells[1] é o Extremo (Um quinto)
     cells[0].value = Math.floor(val / 2);
     cells[1].value = Math.floor(val / 5);
 }
@@ -492,11 +502,6 @@
                 <button style="width:100%; margin-top:8px; font-size:9px;" onclick="testarHabilidade('${attr}', document.getElementById('input-${attr}').value)">TESTAR</button>
                 <div class="sub-vals">½: <span id="half-${attr}">0</span> | ⅕: <span id="fifth-${attr}">0</span></div>
             </div>
-            <footer style="margin-top: 50px; padding: 20px; text-align: center; border-top: 1px solid #222; font-size: 0.7em; color: #444; letter-spacing: 2px; text-transform: uppercase;">
-    <p>© 2026 - PROTOCOLO DE INVESTIGAÇÃO ARKHAM</p>
-    <p>Sistema baseado em Call of Cthulhu 7ª Edição (Chaosium Inc.)</p>
-    <p style="margin-top: 10px; font-style: italic; color: #222;">"A emoção mais antiga e forte da humanidade é o medo." - H.P.L.</p>
-</footer>
         `;
     });
 
@@ -626,13 +631,10 @@
         document.getElementById('valSORTE').innerText = sorte;
     }
 
-    // Inicialização
     renderPericias();
-    addWeaponRow(); // Inicia com uma linha de arma
+    addWeaponRow(); 
     atualizarTudo();
 </script>
 
 </body>
-
 </html>
-
