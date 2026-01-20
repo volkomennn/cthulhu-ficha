@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Call of Cthulhu</title>
+    <title>Investigador Call of Cthulhu</title>
     <style>
 
 
@@ -2083,67 +2083,59 @@ function calcularPontosOcupacao() {
 // ====================================
 
 function gerarCodigoDeConta() {
-    const usuario = agenteLogado; // Pega o usuário que está logado no momento
+    const usuario = agenteLogado; 
     const dadosLocais = localStorage.getItem('CoC_User_' + usuario);
     
-    if (!dadosLocais) {
-        alert("Erro: Dados de conta não encontrados.");
-        return;
-    }
+    if (!dadosLocais) return alert("Erro: Conta não encontrada.");
 
     const pacoteConta = {
-        u: usuario,                 // Nome de usuário
-        p: JSON.parse(dadosLocais).password, // Senha
-        d: JSON.parse(dadosLocais), // Todos os dados (fichas, etc)
-        v: "1.0"                    // Versão do sistema
+        u: usuario,
+        p: JSON.parse(dadosLocais).password,
+        d: JSON.parse(dadosLocais),
+        v: "1.0"
     };
 
-    // Transforma em código COC-
+    // Converte para String e depois para Base64 (UTF-8 safe)
     const jsonStr = JSON.stringify(pacoteConta);
     const token = "COC-" + btoa(unescape(encodeURIComponent(jsonStr)));
 
-    // Exibe o código
-    const areaCodigo = document.getElementById('user-sync-code');
-    if (areaCodigo) {
-        areaCodigo.innerText = token;
-    } else {
-        prompt("COPIE SEU CÓDIGO DE CONTA:", token);
-    }
+    // Tenta copiar automaticamente para não ter erro de "dedo"
+    navigator.clipboard.writeText(token).then(() => {
+        alert("✅ CÓDIGO COPIADO!\nO código da conta '" + usuario + "' já está na sua área de transferência. É só colar no celular.");
+    }).catch(err => {
+        // Se a cópia automática falhar, mostra no prompt
+        prompt("Copie o código abaixo (CUIDADO PARA COPIAR TUDO):", token);
+    });
 }
 
 function importarConta() {
-    const codigo = document.getElementById('syncCodeInput').value.trim();
+    // Remove espaços, quebras de linha e o "..." caso tenha vindo junto
+    let codigo = document.getElementById('syncCodeInput').value.trim().replace(/\s/g, '');
     
     if(!codigo.startsWith('COC-')) {
-        alert("⚠️ Código inválido! O código deve começar com 'COC-'");
+        alert("⚠️ Código inválido! Comece com 'COC-'");
         return;
     }
 
     try {
-        // 1. Decodifica o código
         const base64 = codigo.substring(4);
+        // Decodifica lidando com caracteres especiais
         const jsonStr = decodeURIComponent(escape(atob(base64)));
         const conta = JSON.parse(jsonStr);
 
-        // 2. Valida se o código tem as informações de conta (Usuário e Senha)
         if (!conta.u || !conta.p) {
-            alert("❌ Este código contém apenas dados de uma ficha, não da conta completa.");
-            return;
+            throw new Error("Formato de conta inválido");
         }
 
-        // 3. Salva a conta no banco de dados local (LocalStorage) do celular
         const chave = 'CoC_User_' + conta.u.toLowerCase();
         localStorage.setItem(chave, JSON.stringify(conta.d));
         
-        alert(`✅ CONTA IMPORTADA!\nUsuário: ${conta.u}\n\nAgora você já pode fazer login com sua senha.`);
-        
-        // 4. Limpa e volta para a aba de login
-        document.getElementById('syncCodeInput').value = "";
+        alert(`✅ SUCESSO!\nConta: ${conta.u}\n\nFaça login agora na aba ENTRAR.`);
         switchTab('login');
 
     } catch(e) {
         console.error(e);
-        alert("❌ Falha crítica: O código está incompleto ou corrompido.");
+        alert("❌ O código está incompleto. Certifique-se de que copiou o código INTEIRO. Se houver '...' no meio, o código foi cortado!");
     }
 }
 
