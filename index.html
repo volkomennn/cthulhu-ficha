@@ -720,6 +720,7 @@ body.modal-open {
         <div class="login-tabs">
             <button class="tab-btn active" id="btn-login-tab" onclick="switchTab('login')">ENTRAR</button>
             <button class="tab-btn" id="btn-signup-tab" onclick="switchTab('signup')">CRIAR CONTA</button>
+            <button class="tab-btn" id="btn-sync-tab" onclick="switchTab('sync')">SINCRONIZAR</button>
         </div>
 
         <div id="login-form">
@@ -742,15 +743,31 @@ body.modal-open {
             <div class="input-group">
                 <label>CRIAR SENHA</label>
                 <input type="password" id="signupPass" style="width: 100%;">
-
+                
                 <div id="password-requirements" class="req-container">
-    <div id="req-length" class="req-item">• Mínimo 6 caracteres</div>
-    <div id="req-upper" class="req-item">• 1 Letra maiúscula</div>
-    <div id="req-lower" class="req-item">• 1 Letra minúscula</div>
-    <div id="req-number" class="req-item">• 1 Número</div>
-    <div id="req-special" class="req-item">• 1 Caractere especial</div>
-</div>
+                    <div id="req-length" class="req-item">Mínimo 6 caracteres</div>
+                    <div id="req-upper" class="req-item">1 Letra maiúscula</div>
+                    <div id="req-lower" class="req-item">1 Letra minúscula</div>
+                    <div id="req-number" class="req-item">1 Número</div>
+                    <div id="req-special" class="req-item">1 Caractere especial</div>
+                </div>
+            </div>
+            <button onclick="realizarCadastro()" style="width: 100%; margin-top: 10px;">REGISTRAR INVESTIGADOR</button>
+        </div>
 
+        <div id="sync-form" style="display: none; padding: 10px;">
+            <p style="font-size: 11px; color: #888; margin-bottom: 15px;">Cole o código gerado no seu PC para importar o investigador:</p>
+            <div class="input-group">
+                <label>CÓDIGO COC-</label>
+                <input type="text" id="syncCodeInput" placeholder="Cole aqui...">
+            </div>
+            <button onclick="importarConta()" style="width: 100%;">IMPORTAR INVESTIGADOR</button>
+            <p style="font-size: 9px; color: #555; margin-top: 15px;">*Isso salvará a conta neste navegador.</p>
+        </div>
+        
+        <p id="login-msg" style="font-size: 10px; color: #913a3a; margin-top: 15px;"></p>
+    </div>
+</div>
 
             </div>
             <button onclick="realizarCadastro()" style="width: 100%; margin-top: 10px;">REGISTRAR INVESTIGADOR</button>
@@ -1709,6 +1726,47 @@ function rollCustomDice() {
         document.getElementById('diceDisplay').innerText = res.formula;
     }
 }
+
+
+// Função para mudar de aba (atualize a sua existente)
+function switchTab(tab) {
+    document.getElementById('login-form').style.display = (tab === 'login') ? 'block' : 'none';
+    document.getElementById('signup-form').style.display = (tab === 'signup') ? 'block' : 'none';
+    document.getElementById('sync-form').style.display = (tab === 'sync') ? 'block' : 'none';
+    
+    // Remove 'active' de todos e coloca no clicado
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+// Função que lê o código e preenche a ficha
+function importarConta() {
+    const codigo = document.getElementById('syncCodeInput').value.trim();
+    
+    if(!codigo.startsWith('COC-')) {
+        alert("Código inválido! Certifique-se de copiar o código inteiro começando com COC-");
+        return;
+    }
+
+    try {
+        // Decodifica o código (Base64 para JSON)
+        const base64 = codigo.substring(4);
+        const dadosPuros = decodeURIComponent(escape(atob(base64)));
+        const dadosObjeto = JSON.parse(dadosPuros);
+
+        // Salva no LocalStorage do celular como se você tivesse criado a conta ali
+        const chave = 'CoC_User_' + dadosObjeto.u.toLowerCase();
+        localStorage.setItem(chave, JSON.stringify(dadosObjeto.d));
+        
+        alert("✅ Investigador " + dadosObjeto.u + " importado! Agora é só fazer login normalmente nesta aba.");
+        switchTab('login');
+        
+    } catch(e) {
+        alert("Erro ao processar o código. Ele pode estar incompleto.");
+    }
+}
+
+
 
 function atualizarTudo() {
     let v = {};
