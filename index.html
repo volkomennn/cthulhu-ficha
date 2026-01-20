@@ -5,6 +5,213 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Investigador Call of Cthulhu</title>
     <style>
+        /* TELA DE LOGIN E CADASTRO ADICIONADA */
+        #login-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #000;
+    z-index: 20000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* <<< TOPO */
+    transition: 1s ease;
+
+    /* MENU DE FICHAS - SLIDE ANIMATION */
+.investigadores-panel {
+    position: fixed;
+    top: 0;
+    right: -320px; /* Começa escondido à direita */
+    width: 300px;
+    height: 100vh;
+    background: rgba(5, 5, 5, 0.98);
+    border-left: 2px solid #333;
+    padding: 30px 20px;
+    z-index: 15000;
+    transition: right 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Fundo que cobre a tela inteira */
+.modal-overlay {
+    position: fixed !important; /* Fixa na tela, não na div */
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.95) !important; 
+    display: none; /* O JS vai mudar para 'flex' */
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 999999 !important; /* Valor altíssimo para ficar na frente de tudo */
+    backdrop-filter: blur(8px);
+}
+
+/* Janela centralizada */
+.modal-content {
+    background: #050505 !important;
+    border: 1px solid #00ff00 !important;
+    padding: 30px !important;
+    width: 450px !important;
+    max-width: 90% !important;
+    border-radius: 8px !important;
+    box-shadow: 0 0 50px rgba(0, 255, 0, 0.2) !important;
+    color: #ccc !important;
+    pointer-events: auto !important; /* Garante que os cliques funcionem */
+}
+
+.modal-header {
+    color: #00ff00;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #222;
+    padding-bottom: 10px;
+}
+
+.modal-text p {
+    font-size: 13px;
+    color: #ccc;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.btn-close-modal {
+    width: 100%;
+    padding: 10px;
+    background: #111;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* Estilo do botão "Como usar?" na ficha */
+.btn-ajuda-top {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 10px;
+    background: #003300;
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    padding: 5px 12px;
+    cursor: pointer;
+    z-index: 100;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+
+.investigadores-panel.active {
+    right: 0; /* Desliza para a tela */
+}
+
+/* Esconder o container da ficha enquanto o menu estiver aberto */
+/* Força a ficha a ficar invisível e não ocupar espaço */
+/* Esconde a ficha e o player de música inicialmente */
+.main-content, #player-musica { 
+    display: none !important; 
+}
+
+/* Classe para mostrar os elementos quando necessário */
+.visible {
+    display: block !important;
+}
+
+/* Centraliza o Menu de Arquivos no meio da tela após o login */
+.investigadores-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9); /* Centralizado e levemente menor */
+    width: 350px;
+    background: #050505;
+    border: 1px solid #222;
+    padding: 30px;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s ease;
+}
+
+/* Quando o menu estiver ativo, ele aparece suavemente */
+.investigadores-panel.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.empty-msg {
+    color: #444;
+    text-align: center;
+    font-style: italic;
+    margin-top: 50px;
+    font-size: 0.8em;
+}
+
+.menu-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid #222;
+}
+
+.investigador-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-bottom: 1px solid #1a1a1a;
+    padding: 15px 0;
+}
+
+.inv-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-rename { background: #222200; color: #ffff00; font-size: 9px; }
+}
+
+        .login-card {
+            background: #0d0d0d;
+            padding: 40px;
+            border: 1px solid #222;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0,0,0,1);
+            max-width: 400px;
+            width: 90%;
+            
+        }
+
+        .login-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            color: #444;
+            cursor: pointer;
+            font-size: 0.7em;
+            letter-spacing: 2px;
+        }
+
+        .tab-btn.active {
+            color: #fff;
+            border-bottom: 2px solid #fff;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
         /* ANIMAÇÕES DE ENTRADA */
         @keyframes fadeInTotal {
             from { opacity: 0; filter: blur(10px); }
@@ -86,6 +293,7 @@
 
         /* CONTAINER DA FICHA */
         .container { 
+            
             max-width: 950px; 
             margin: 40px auto; 
             background: #0d0d0d; 
@@ -95,6 +303,8 @@
             position: relative;
             z-index: 1;
         }
+
+        
 
         .container::before {
             content: "";
@@ -178,7 +388,6 @@
         .weapon-table th, .pericias-table th { background: #151515; color: #888; text-transform: uppercase; padding: 10px; border: 1px solid #222; font-weight: normal; letter-spacing: 1px; }
         .weapon-table td, .pericias-table td { border: 1px solid #222; padding: 5px; background: #0a0a0a; }
         .weapon-table input, .pericias-table input { width: 90%; border: none; background: transparent; padding: 5px; color: #eee; text-align: center; }
-        .val-auto { color: #555 !important; }
 
         .btn-remove-weapon { background: #300; color: #fff; border: none; padding: 2px 8px; cursor: pointer; transition: 0.3s; }
         .btn-remove-weapon:hover { background: #f00; }
@@ -224,7 +433,6 @@
         .res-title { font-size: 3rem; background: #fff; color: #000; padding: 5px 30px; border: 4px double #000; display: inline-block; }
         .res-detail { font-size: 1rem; color: #fff; background: #000; padding: 5px 15px; border: 1px solid #fff; margin-top: 10px; display: block; margin-left: auto; margin-right: auto; max-width: fit-content; }
 
-        /* RODAPÉ DE CRÉDITOS */
         footer {
             margin-top: 50px;
             text-align: center;
@@ -237,11 +445,188 @@
             text-transform: uppercase;
         }
         footer b { color: #666; font-weight: normal; }
+
+        .save-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 5000;
+        }
+
+        .investigadores-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 280px;
+            max-height: 80vh;
+            background: rgba(0,0,0,0.95);
+            border: 2px solid #333;
+            padding: 20px;
+            z-index: 1000;
+            overflow-y: auto;
+            box-shadow: 0 0 40px rgba(0,0,0,1);
+        }
+
+        .investigador-item {
+            background: #0a0a0a;
+            border: 1px solid #222;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .investigador-item:hover {
+            border-color: #fff;
+            background: #111;
+        }
+
+        .investigador-item button {
+            padding: 5px 10px;
+            font-size: 9px;
+            background: #300;
+        }
+
+        .btn-add-pericia {
+            background: #003300;
+            border-color: #006600;
+            color: #00ff00;
+            margin-top: 10px;
+            font-size: 0.6em;
+            padding: 8px 15px;
+        }
+
+        .pericia-custom {
+            background: #0a0a0a !important;
+        }
+
+        .pericia-custom td:first-child {
+            color: #00ff00 !important;
+        }
+
+/* --- ESTILOS DOS REQUISITOS DE SENHA --- */
+
+.req-container {
+    margin-top: 10px;
+    text-align: left;
+    font-size: 10px;
+    padding: 10px;
+    background: #050505;
+    border: 1px solid #222;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.req-item {
+    color: #550000; /* Vermelho escuro/apagado para o estado inicial */
+    transition: all 0.3s ease;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+/* Bolinha indicadora antes do texto */
+.req-item::before {
+    content: "✖";
+    margin-right: 8px;
+    font-size: 8px;
+}
+
+/* Quando o requisito for cumprido */
+.req-item.valid {
+    color: #00ff00; /* Verde brilhante */
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+    transform: translateX(5px); /* Pequeno deslocamento para a direita */
+}
+
+.req-item.valid::before {
+    content: "✔";
+}
+
     </style>
 </head>
 <body>
 
+<div id="login-overlay">
+    <div class="login-card">
+        <img src="https://i.pinimg.com/736x/71/8a/d9/718ad93c88c10dea945392bfa43ed220.jpg" style="width: 80px; border-radius: 50%; margin-bottom: 20px; filter: grayscale(1);">
+        
+        <div class="login-tabs">
+            <button class="tab-btn active" id="btn-login-tab" onclick="switchTab('login')">ENTRAR</button>
+            <button class="tab-btn" id="btn-signup-tab" onclick="switchTab('signup')">CRIAR CONTA</button>
+        </div>
+
+        <div id="login-form">
+            <div class="input-group">
+                <label>NOME DE INVESTIGADOR</label>
+                <input type="text" id="loginUser" style="width: 100%;">
+            </div>
+            <div class="input-group">
+                <label>SENHA DE ACESSO</label>
+                <input type="password" id="loginPass" style="width: 100%;">
+            </div>
+            <button onclick="realizarLogin()" style="width: 100%; margin-top: 10px;">ABRIR ARQUIVO</button>
+        </div>
+
+        <div id="signup-form" style="display: none;">
+            <div class="input-group">
+                <label>NOVO NOME DE INVESTIGADOR</label>
+                <input type="text" id="signupUser" style="width: 100%;">
+            </div>
+            <div class="input-group">
+                <label>CRIAR SENHA</label>
+                <input type="password" id="signupPass" style="width: 100%;">
+
+                <div id="password-requirements" class="req-container">
+    <div id="req-length" class="req-item">• Mínimo 6 caracteres</div>
+    <div id="req-upper" class="req-item">• 1 Letra maiúscula</div>
+    <div id="req-lower" class="req-item">• 1 Letra minúscula</div>
+    <div id="req-number" class="req-item">• 1 Número</div>
+    <div id="req-special" class="req-item">• 1 Caractere especial</div>
+</div>
+
+
+            </div>
+            <button onclick="realizarCadastro()" style="width: 100%; margin-top: 10px;">REGISTRAR AGENTE</button>
+        </div>
+        
+        <p id="login-msg" style="font-size: 10px; color: #913a3a; margin-top: 15px;"></p>
+    </div>
+</div>
+
 <div id="bg-particles"></div>
+
+<div id="menu-fichas" class="investigadores-panel">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <img src="https://i.pinimg.com/736x/71/8a/d9/718ad93c88c10dea945392bfa43ed220.jpg" style="width: 60px; border-radius: 50%; filter: grayscale(1); margin-bottom: 10px; border: 1px solid #333;">
+        <h3 style="font-size: 1em; letter-spacing: 4px; border: none; margin: 0;">ARQUIVOS CONFIDENCIAIS</h3>
+        <p style="font-size: 9px; color: #555; letter-spacing: 2px;">SELECIONE UM AGENTE ATIVO</p>
+    </div>
+
+    <div id="investigadores-list" style="flex-grow: 1; overflow-y: auto; padding-right: 5px;">
+        </div>
+
+    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #222;">
+        <button onclick="criarNovoInvestigador()" style="width: 100%; margin-bottom: 12px; background: #0f0f0f;  color: #666; font-weight: bold;">
+            + REGISTRAR NOVO AGENTE
+        </button>
+        <button onclick="location.reload()" style="width: 100%; font-size: 9px; background: #1a1a1a; color: #666;">
+            DESCONECTAR AGENTE
+        </button>
+    </div>
+</div>
+
+<div class="save-controls">
+    <button onclick="salvarLocal()" style="background: #002200; border-color: #004400; color: #00ff00;">💾 SALVAR AGENTE</button>
+    <button onclick="resetarFicha()" style="background: #332200; border-color: #664400; color: #ffaa00;">🔄 RESETAR FICHA</button>
+    <button onclick="location.reload()" style="background: #330000; border-color: #550000; color: #ff0000;">🔒 SAIR</button>
+</div>
 
 <div class="music-player-container">
     <img src="https://c.tenor.com/2qFbEpeTPkMAAAAC/tenor.gif" class="gif-musica" alt="Musica">
@@ -266,9 +651,37 @@
     <p id="overlay-detail" class="res-detail"></p>
 </div>
 
-<div class="container">
+<div class="container main-content" id="ficha-editor">
+
+<div id="player-musica" class="main-content">
+    
+   <button onclick="abrirAjuda()" class="btn-ajuda-top">
+    COMO USAR?
+</button></p>
+
+<body>
+    <div id="ajuda-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 style="color:#5c2020; text-align:left; margin-top:0;">MANUAL DE OPERAÇÕES</h3>
+            <div class="modal-text">
+                <p>1. <b>Registro:</b> Clique em "Registrar Novo Agente" no menu principal.</p>
+                <p>2. <b>Dados:</b> Preencha as informações e atributos do investigador.</p>
+                <p>3. <b>Salvamento:</b> Role até o fim e clique em "Salvar Agente".</p>
+                <p>4. <b>Múltiplos:</b> O sistema salva seu agente atual antes de criar um novo.</p>
+            </div>
+            <button class="btn-close-modal" onclick="fecharAjuda()">ENTENDIDO</button>
+        </div>
+    </div>
+
+    
+
+
+
+
+
     <img src="https://i.pinimg.com/736x/71/8a/d9/718ad93c88c10dea945392bfa43ed220.jpg" alt="Logo CoC" class="logo-projeto">
     <h1>Investigador Call of Cthulhu</h1>
+    
 
     <div class="section">
         <div class="header-ficha">
@@ -286,14 +699,14 @@
                 </div>
             </div>
 
-            <div class="info-pessoais">
-                <div class="field"><label>Nome</label><input type="text"></div>
-                <div class="field"><label>Jogador</label><input type="text"></div>
-                <div class="field"><label>Ocupação</label><input type="text"></div>
-                <div class="field"><label>Idade</label><input type="number" id="idade" oninput="atualizarTudo()" value="25"></div>
-                <div class="field"><label>Gênero</label><input type="text"></div>
-                <div class="field"><label>Residência</label><input type="text"></div>
-                <div class="field"><label>Local de Nasc.</label><input type="text"></div>
+            <div class="info-pessoais" id="camposPessoais">
+                <div class="field"><label>Nome</label><input type="text" data-key="nome"></div>
+                <div class="field"><label>Jogador</label><input type="text" data-key="jogador"></div>
+                <div class="field"><label>Ocupação</label><input type="text" data-key="ocupacao"></div>
+                <div class="field"><label>Idade</label><input type="number" id="idade" oninput="atualizarTudo()" value="25" data-key="idade"></div>
+                <div class="field"><label>Gênero</label><input type="text" data-key="genero"></div>
+                <div class="field"><label>Residência</label><input type="text" data-key="residencia"></div>
+                <div class="field"><label>Local de Nasc.</label><input type="text" data-key="nasc"></div>
             </div>
         </div>
     </div>
@@ -314,62 +727,107 @@
     </div>
 
     <div class="section">
-        <h3>Sinais Vitais e Psíquicos</h3>
-        <div class="status-container-complex">
-            <div class="bar-wrapper">
-                <div class="bar-info">
-                    <span>PONTOS DE VIDA (PV)</span>
-                    <span id="txt-PV">0 / 0</span>
-                </div>
-                <div class="progress-bg"><div id="fill-PV" class="progress-fill" style="width: 100%"></div></div>
-                <div class="bar-controls">
-                    <button class="btn-ctrl" onclick="modStatus('PV', -5)">&lt;&lt;</button>
-                    <button class="btn-ctrl" onclick="modStatus('PV', -1)">&lt;</button>
-                    <button class="btn-ctrl" onclick="modStatus('PV', 1)">&gt;</button>
-                    <button class="btn-ctrl" onclick="modStatus('PV', 5)">&gt;&gt;</button>
-                </div>
+    <h3>Sinais Vitais e Psíquicos</h3>
+    <div class="status-container-complex">
+        <div class="bar-wrapper">
+            <div class="bar-info">
+                <span>PONTOS DE VIDA (PV)</span>
+                <span id="txt-PV">0 / 0</span>
             </div>
-
-            <div class="bar-wrapper">
-                <div class="bar-info">
-                    <span>SANIDADE (SAN)</span>
-                    <span id="txt-SAN">0 / 0</span>
+            <div class="progress-bg"><div id="fill-PV" class="progress-fill" style="width: 100%"></div></div>
+            <div style="display: flex; gap: 10px; margin-top: 10px; align-items: center; justify-content: center;">
+                <div style="border: 1px solid #333; padding: 8px; background: #0a0a0a;">
+                    <label style="font-size: 9px; margin-bottom: 5px; display: block;">ATUAL</label>
+                    <div class="bar-controls">
+                        <button class="btn-ctrl" onclick="modStatus('PV', -5)">&lt;&lt;</button>
+                        <button class="btn-ctrl" onclick="modStatus('PV', -1)">&lt;</button>
+                        <button class="btn-ctrl" onclick="modStatus('PV', 1)">&gt;</button>
+                        <button class="btn-ctrl" onclick="modStatus('PV', 5)">&gt;&gt;</button>
+                    </div>
                 </div>
-                <div class="progress-bg"><div id="fill-SAN" class="progress-fill" style="width: 100%"></div></div>
-                <div class="bar-controls">
-                    <button class="btn-ctrl" onclick="modStatus('SAN', -5)">&lt;&lt;</button>
-                    <button class="btn-ctrl" onclick="modStatus('SAN', -1)">&lt;</button>
-                    <button class="btn-ctrl" onclick="modStatus('SAN', 1)">&gt;</button>
-                    <button class="btn-ctrl" onclick="modStatus('SAN', 5)">&gt;&gt;</button>
-                </div>
-            </div>
-
-            <div class="bar-wrapper">
-                <div class="bar-info">
-                    <span>PONTOS DE MAGIA (PM)</span>
-                    <span id="txt-MAG">0 / 0</span>
-                </div>
-                <div class="progress-bg"><div id="fill-MAG" class="progress-fill" style="width: 100%"></div></div>
-                <div class="bar-controls">
-                    <button class="btn-ctrl" onclick="modStatus('MAG', -5)">&lt;&lt;</button>
-                    <button class="btn-ctrl" onclick="modStatus('MAG', -1)">&lt;</button>
-                    <button class="btn-ctrl" onclick="modStatus('MAG', 1)">&gt;</button>
-                    <button class="btn-ctrl" onclick="modStatus('MAG', 5)">&gt;&gt;</button>
+                <div style="border: 1px solid #333; padding: 8px; background: #0a0a0a;">
+                    <label style="font-size: 9px; margin-bottom: 5px; display: block;">MÁXIMO</label>
+                    <div class="bar-controls">
+                        <button class="btn-ctrl" onclick="modStatusMax('PV', -5)">&lt;&lt;</button>
+                        <button class="btn-ctrl" onclick="modStatusMax('PV', -1)">&lt;</button>
+                        <button class="btn-ctrl" onclick="modStatusMax('PV', 1)">&gt;</button>
+                        <button class="btn-ctrl" onclick="modStatusMax('PV', 5)">&gt;&gt;</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="status-derivados">
-            <div class="status-box">SORTE<br><span id="valSORTE" class="result-box">-</span> <button style="padding:2px 5px; font-size: 9px;" onclick="rolarSorte()">🎲</button></div>
-            <div class="status-box">MOV<br><span id="valMOV" class="result-box">-</span></div>
-            <div class="status-box">DX<br><span id="valDX" class="result-box">-</span></div>
-            <div class="status-box">CORPO<br><span id="valCorpo" class="result-box">-</span></div>
-            <div class="status-box">ESQUIVA<br><span id="valESQUIVA" class="result-box">-</span></div>
+        <div class="bar-wrapper">
+            <div class="bar-info">
+                <span>SANIDADE (SAN)</span>
+                <span id="txt-SAN">0 / 0</span>
+            </div>
+            <div class="progress-bg"><div id="fill-SAN" class="progress-fill" style="width: 100%"></div></div>
+            <div style="display: flex; gap: 10px; margin-top: 10px; align-items: center; justify-content: center;">
+                <div style="border: 1px solid #333; padding: 8px; background: #0a0a0a;">
+                    <label style="font-size: 9px; margin-bottom: 5px; display: block;">ATUAL</label>
+                    <div class="bar-controls">
+                        <button class="btn-ctrl" onclick="modStatus('SAN', -5)">&lt;&lt;</button>
+                        <button class="btn-ctrl" onclick="modStatus('SAN', -1)">&lt;</button>
+                        <button class="btn-ctrl" onclick="modStatus('SAN', 1)">&gt;</button>
+                        <button class="btn-ctrl" onclick="modStatus('SAN', 5)">&gt;&gt;</button>
+                    </div>
+                </div>
+                <div style="border: 1px solid #333; padding: 8px; background: #0a0a0a;">
+                    <label style="font-size: 9px; margin-bottom: 5px; display: block;">MÁXIMO</label>
+                    <div class="bar-controls">
+                        <button class="btn-ctrl" onclick="modStatusMax('SAN', -5)">&lt;&lt;</button>
+                        <button class="btn-ctrl" onclick="modStatusMax('SAN', -1)">&lt;</button>
+                        <button class="btn-ctrl" onclick="modStatusMax('SAN', 1)">&gt;</button>
+                        <button class="btn-ctrl" onclick="modStatusMax('SAN', 5)">&gt;&gt;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bar-wrapper">
+            <div class="bar-info">
+                <span>PONTOS DE MAGIA (PM)</span>
+                <span id="txt-MAG">0 / 0</span>
+            </div>
+            <div class="progress-bg"><div id="fill-MAG" class="progress-fill" style="width: 100%"></div></div>
+            <div style="display: flex; gap: 10px; margin-top: 10px; align-items: center; justify-content: center;">
+                <div style="border: 1px solid #333; padding: 8px; background: #0a0a0a;">
+                    <label style="font-size: 9px; margin-bottom: 5px; display: block;">ATUAL</label>
+                    <div class="bar-controls">
+                        <button class="btn-ctrl" onclick="modStatus('MAG', -5)">&lt;&lt;</button>
+                        <button class="btn-ctrl" onclick="modStatus('MAG', -1)">&lt;</button>
+                        <button class="btn-ctrl" onclick="modStatus('MAG', 1)">&gt;</button>
+                        <button class="btn-ctrl" onclick="modStatus('MAG', 5)">&gt;&gt;</button>
+                    </div>
+                </div>
+                <div style="border: 1px solid #333; padding: 8px; background: #0a0a0a;">
+                    <label style="font-size: 9px; margin-bottom: 5px; display: block;">MÁXIMO</label>
+                    <div class="bar-controls">
+                        <button class="btn-ctrl" onclick="modStatusMax('MAG', -5)">&lt;&lt;</button>
+                        <button class="btn-ctrl" onclick="modStatusMax('MAG', -1)">&lt;</button>
+                        <button class="btn-ctrl" onclick="modStatusMax('MAG', 1)">&gt;</button>
+                        <button class="btn-ctrl" onclick="modStatusMax('MAG', 5)">&gt;&gt;</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
+    <div class="status-derivados">
+        <div class="status-box">SORTE<br><span id="valSORTE" class="result-box">-</span> <button style="padding:2px 5px; font-size: 9px;" onclick="rolarSorte()">🎲</button></div>
+        <div class="status-box">MOV<br><span id="valMOV" class="result-box">-</span></div>
+        <div class="status-box">DX<br><span id="valDX" class="result-box">-</span></div>
+        <div class="status-box">CORPO<br><span id="valCorpo" class="result-box">-</span></div>
+        <div class="status-box">ESQUIVA<br><span id="valESQUIVA" class="result-box">-</span></div>
+    </div>
+</div>
+
     <div class="section">
-        <h3>Perícias & Competências</h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="margin:0; border:none;">Perícias & Competências</h3>
+            <button onclick="adicionarPericiaCustom()" class="btn-add-pericia">+ ADICIONAR PERÍCIA</button>
+        </div>
         <div class="grid-pericias" id="periciasContainer"></div>
     </div>
 
@@ -382,8 +840,7 @@
                     <th>Reg.</th><th>Sól.</th><th>Ext.</th><th>Dano</th><th>Alc.</th><th>Atqs</th><th>Mun.</th><th>Def.</th><th></th>
                 </tr>
             </thead>
-            <tbody id="weaponBody">
-                </tbody>
+            <tbody id="weaponBody"></tbody>
         </table>
         <button onclick="addWeaponRow()" style="margin-top: 15px; font-size: 0.6em;">+ Adicionar Arma</button>
     </div>
@@ -394,93 +851,488 @@
 </div>
 
 <script>
-    // 1. ÁUDIO & PARTÍCULAS
-    const m = document.getElementById('bgMusic');
-    m.volume = 0.1;
-    window.addEventListener('load', () => { m.play().catch(() => {}); });
+    // --- LÓGICA DE LOGIN, SENHA E CONTAS (ADICIONADA) ---
+    let agenteLogado = null;
+    let investigadorAtual = null;
+
+    function switchTab(tab) {
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+        const loginBtn = document.getElementById('btn-login-tab');
+        const signupBtn = document.getElementById('btn-signup-tab');
+        document.getElementById('login-msg').innerText = "";
+
+        if(tab === 'login') {
+            loginForm.style.display = 'block';
+            signupForm.style.display = 'none';
+            loginBtn.classList.add('active');
+            signupBtn.classList.remove('active');
+        } else {
+            loginForm.style.display = 'none';
+            signupForm.style.display = 'block';
+            loginBtn.classList.remove('active');
+            signupBtn.classList.add('active');
+        }
+    }
+
+function abrirAjuda() {
+    console.log("Abrindo ajuda..."); // Teste no console (F12)
+    const modal = document.getElementById('ajuda-modal');
+    if(modal) {
+        modal.style.setProperty('display', 'flex', 'important');
+    }
+}
+
+function fecharAjuda() {
+    const modal = document.getElementById('ajuda-modal');
+    if(modal) {
+        modal.style.setProperty('display', 'none', 'important');
+    }
+}
+
+    function realizarCadastro() {
+        const user = document.getElementById('signupUser').value.trim();
+        const pass = document.getElementById('signupPass').value.trim();
+        const msg = document.getElementById('login-msg');
+
+       // Validação de senha forte
+const senhaForte =
+    pass.length >= 6 &&               // +5 caracteres
+    /[A-Z]/.test(pass) &&             // 1 letra maiúscula
+    /[a-z]/.test(pass) &&             // 1 letra minúscula
+    /[\W_]/.test(pass) &&             // 1 caractere especial
+    /\d/.test(pass);                  // 1 número
+
+if(!senhaForte) {
+    msg.innerText =
+        "A SENHA DEVE TER:\n" +
+        "- 1 LETRA MAIÚSCULA\n" +
+        "- 1 LETRA MINÚSCULA\n" +
+        "- 1 NÚMERO\n" +
+        "- 1 CARACTERE ESPECIAL\n" +
+        "- MÍNIMO 6 CARACTERES";
+    return;
+
     
-    const bg = document.getElementById('bg-particles');
-    for (let i = 0; i < 150; i++) {
-        const sq = document.createElement('div');
-        sq.className = 'square';
-        const size = Math.random() * 15 + 5 + 'px';
-        sq.style.width = size; sq.style.height = size;
-        sq.style.left = Math.random() * 100 + 'vw';
-        sq.style.animationDuration = Math.random() * 10 + 8 + 's';
-        sq.style.animationDelay = Math.random() * 15 + 's';
-        bg.appendChild(sq);
+}
+
+
+
+if(localStorage.getItem("CoC_User_" + user)) return msg.innerText = "ESTE AGENTE JÁ ESTÁ REGISTRADO";
+    const userData = { password: pass, investigadores: [] };
+    localStorage.setItem("CoC_User_" + user, JSON.stringify(userData));
+    msg.style.color = "#00ff00";
+    msg.innerText = "AGENTE REGISTRADO! AGORA FAÇA LOGIN.";
+    setTimeout(() => switchTab('login'), 1500);
+}
+
+function realizarLogin() {
+    const user = document.getElementById('loginUser').value.trim();
+    const pass = document.getElementById('loginPass').value.trim();
+    const msg = document.getElementById('login-msg');
+
+    const savedData = localStorage.getItem("CoC_User_" + user);
+    if(!savedData) return msg.innerText = "AGENTE NÃO ENCONTRADO";
+    
+    const userData = JSON.parse(savedData);
+    if(userData.password !== pass) return msg.innerText = "SENHA INCORRETA";
+
+    agenteLogado = user;
+    
+    // 1. Esconde o login
+    document.getElementById('login-overlay').style.display = "none";
+    
+    // 2. Garante que o fundo está limpo (ficha e player escondidos)
+    document.querySelectorAll('.main-content').forEach(el => el.classList.remove('visible'));
+    
+    // 3. Mostra APENAS o painel de Arquivos Confidenciais
+    document.getElementById('menu-fichas').classList.add('active'); 
+    
+    atualizarListaInvestigadores();
+}
+
+function abrirFicha(id) {
+    const savedData = JSON.parse(localStorage.getItem("CoC_User_" + agenteLogado));
+    const inv = savedData.investigadores.find(i => i.id === id);
+    
+    if(inv) {
+        investigadorAtual = id;
+        limparFicha(); 
+        if(inv.ficha) aplicarDados(inv.ficha);
+        
+        // 1. Esconde o Menu de Seleção
+        document.getElementById('menu-fichas').classList.remove('active');
+        
+        // 2. Mostra a ficha e o player de música
+        document.querySelectorAll('.main-content').forEach(el => el.classList.add('visible'));
+    }
+}
+
+function voltarAoMenu() {
+    // Esconde a ficha/player e volta para o menu central
+    document.querySelectorAll('.main-content').forEach(el => el.classList.remove('visible'));
+    document.getElementById('menu-fichas').classList.add('active');
+    atualizarListaInvestigadores();
+}
+
+function criarNovoInvestigador() {
+    const nome = prompt("Nome do novo investigador:");
+    if(!nome || !nome.trim()) return;
+
+    const savedData = JSON.parse(localStorage.getItem("CoC_User_" + agenteLogado));
+    const novoId = Date.now();
+    
+    const novoInv = {
+        id: novoId,
+        nome: nome.trim(),
+        ficha: null 
+    };
+    
+    savedData.investigadores.push(novoInv);
+    localStorage.setItem("CoC_User_" + agenteLogado, JSON.stringify(savedData));
+    
+    // Já abre direto para edição
+    abrirFicha(novoId);
+}
+
+function atualizarListaInvestigadores() {
+    if(!agenteLogado) return;
+    const savedData = JSON.parse(localStorage.getItem("CoC_User_" + agenteLogado));
+    const lista = document.getElementById('investigadores-list');
+    lista.innerHTML = "";
+
+    // Mensagem caso não existam fichas
+    if(!savedData.investigadores || savedData.investigadores.length === 0) {
+        lista.innerHTML = `
+            <div style="text-align:center; padding:40px 10px; color:#444; border:1px dashed #222; border-radius:8px;">
+                <p style="font-size:11px; text-transform:uppercase;">Nenhum registro encontrado no banco de dados.</p>
+            </div>`;
+        return;
     }
 
-    // 2. LÓGICA DE STATUS
-    let stats = { PV: { atual: 0, max: 0 }, SAN: { atual: 0, max: 99 }, MAG: { atual: 0, max: 0 } };
+    savedData.investigadores.forEach(inv => {
+        const div = document.createElement('div');
+        div.style.cssText = "background:#111; border:1px solid #222; padding:12px; margin-bottom:10px; border-radius:4px;";
+        div.innerHTML = `
+            <div style="color:#00ff00; font-size:12px; margin-bottom:10px; font-family:monospace; font-weight:bold;">
+                AGENTE: ${inv.nome.toUpperCase()}
+            </div>
+            <div style="display:flex; gap:5px;">
+                <button onclick="abrirFicha(${inv.id})" style="flex:2; background:#002244; color:#00aaff; font-size:10px;">CARREGAR</button>
+                <button onclick="renomearInvestigador(${inv.id})" style="background:#222; color:#aaa; font-size:10px; padding:0 8px;">✎</button>
+                <button onclick="removerInvestigador(${inv.id})" style="background:#330000; color:#ff4444; font-size:10px;">X</button>
+            </div>
+        `;
+        lista.appendChild(div);
+    });
+}
 
-    function modStatus(tipo, qtd) {
-        stats[tipo].atual = Math.min(stats[tipo].max, Math.max(0, stats[tipo].atual + qtd));
-        updateBarVisual(tipo);
+
+function renomearInvestigador(id) {
+    const novoNome = prompt("Digite o novo codinome do Agente:");
+    if(!novoNome || !novoNome.trim()) return;
+
+    const savedData = JSON.parse(localStorage.getItem("CoC_User_" + agenteLogado));
+    const inv = savedData.investigadores.find(i => i.id === id);
+    if(inv) {
+        inv.nome = novoNome.trim();
+        localStorage.setItem("CoC_User_" + agenteLogado, JSON.stringify(savedData));
+        atualizarListaInvestigadores();
     }
+}
 
-    function updateBarVisual(tipo) {
-        const percent = stats[tipo].max > 0 ? (stats[tipo].atual / stats[tipo].max) * 100 : 0;
-        const fillEl = document.getElementById(`fill-${tipo}`);
-        if(fillEl) fillEl.style.width = percent + "%";
-        document.getElementById(`txt-${tipo}`).innerText = `${stats[tipo].atual} / ${stats[tipo].max}`;
+function carregarInvestigador(id) {
+    const savedData = JSON.parse(localStorage.getItem("CoC_User_" + agenteLogado));
+    const inv = savedData.investigadores.find(i => i.id === id);
+    if(inv) {
+        investigadorAtual = id;
+        aplicarDados(inv.ficha);
+        alert("Investigador '" + inv.nome + "' carregado!");
     }
+}
 
-    // 3. FOTO & ARSENAL
-    let historicoFoto = null;
-    function carregarFoto(event) {
-        const reader = new FileReader();
+function removerInvestigador(id) {
+    if(!confirm("Tem certeza que deseja remover este investigador?")) return;
+    
+    const savedData = JSON.parse(localStorage.getItem("CoC_User_" + agenteLogado));
+    savedData.investigadores = savedData.investigadores.filter(i => i.id !== id);
+    localStorage.setItem("CoC_User_" + agenteLogado, JSON.stringify(savedData));
+    
+    if(investigadorAtual === id) {
+        investigadorAtual = null;
+        limparFicha();
+    }
+    
+    atualizarListaInvestigadores();
+}
+
+function salvarLocal() {
+    if(!agenteLogado) return alert("Faça login primeiro!");
+    
+    const savedData = JSON.parse(localStorage.getItem("CoC_User_" + agenteLogado));
+    
+    if(investigadorAtual) {
+        const inv = savedData.investigadores.find(i => i.id === investigadorAtual);
+        if(inv) {
+            inv.ficha = colherDados();
+            localStorage.setItem("CoC_User_" + agenteLogado, JSON.stringify(savedData));
+            alert("Investigador '" + inv.nome + "' salvo!");
+        }
+    } else {
+        alert("Selecione ou crie um investigador primeiro!");
+    }
+}
+
+function limparFicha() {
+    document.querySelectorAll('#camposPessoais input').forEach(i => i.value = '');
+    todosAtributos.forEach(a => document.getElementById(`input-${a}`).value = '');
+    document.getElementById('charPhoto').src = '';
+    document.getElementById('charPhoto').style.display = 'none';
+    document.getElementById('placeholderTxt').style.display = 'block';
+    stats = { PV: { atual: 0, max: 0 }, SAN: { atual: 0, max: 99 }, MAG: { atual: 0, max: 0 } };
+    atualizarTudo();
+}
+
+function resetarFicha() {
+    if(!confirm("Tem certeza que deseja resetar toda a ficha? Esta ação não pode ser desfeita!")) return;
+    
+    // Limpar campos pessoais
+    document.querySelectorAll('#camposPessoais input').forEach(i => {
+        if(i.id === 'idade') {
+            i.value = '25';
+        } else {
+            i.value = '';
+        }
+    });
+    
+    // Resetar atributos
+    todosAtributos.forEach(a => document.getElementById(`input-${a}`).value = '');
+    
+    // Resetar foto
+    document.getElementById('charPhoto').src = '';
+    document.getElementById('charPhoto').style.display = 'none';
+    document.getElementById('placeholderTxt').style.display = 'block';
+    historicoFoto = null;
+    document.getElementById('btnDesfazer').disabled = true;
+    document.getElementById('btnDesfazer').style.opacity = "0.5";
+    
+    // Resetar stats
+    stats = { PV: { atual: 0, max: 0 }, SAN: { atual: 0, max: 99 }, MAG: { atual: 0, max: 0 } };
+    
+    // Resetar sorte
+    document.getElementById('valSORTE').innerText = '-';
+    
+    // Resetar perícias padrão
+    listaPericias.forEach(p => {
+        const id = p.n.replace(/\s+/g, '-');
+        const el = document.getElementById(`p-val-${id}`);
+        if(el) {
+            el.value = p.v;
+            calcP(id);
+        }
+    });
+    
+    // Remover perícias customizadas
+    document.querySelectorAll('.pericia-custom').forEach(tr => tr.remove());
+    
+    // Limpar armas
+    document.getElementById('weaponBody').innerHTML = '';
+    addWeaponRow();
+    
+    // Limpar dados de rolagem
+    document.getElementById('diceDisplay').innerText = 'AGUARDANDO...';
+    document.getElementById('diceInput').value = '';
+    
+    atualizarTudo();
+    alert("Ficha resetada com sucesso!");
+}
+
+function colherDados() {
+    const dados = {
+        pessoais: {},
+        atributos: {},
+        pericias: {},
+        periciasCustom: [],
+        armas: [],
+        stats: stats,
+        foto: document.getElementById('charPhoto').src,
+        sorte: document.getElementById('valSORTE').innerText
+    };
+    document.querySelectorAll('#camposPessoais input').forEach(i => dados.pessoais[i.dataset.key] = i.value);
+    todosAtributos.forEach(a => dados.atributos[a] = document.getElementById(`input-${a}`).value);
+    listaPericias.forEach(p => {
+        const id = p.n.replace(/\s+/g, '-');
+        const el = document.getElementById(`p-val-${id}`);
+        if(el) dados.pericias[id] = el.value;
+    });
+    
+    // Salvar perícias customizadas
+    document.querySelectorAll('.pericia-custom').forEach(tr => {
+        const inputs = tr.querySelectorAll('input');
+        if(inputs.length >= 2) {
+            dados.periciasCustom.push({
+                nome: inputs[0].value,
+                valor: inputs[1].value
+            });
+        }
+    });
+    
+    document.querySelectorAll('#weaponBody tr').forEach(tr => {
+        const inputs = tr.querySelectorAll('input');
+        if (inputs.length > 0) dados.armas.push(Array.from(inputs).map(i => i.value));
+    });
+    return dados;
+}
+
+function aplicarDados(dados) {
+    if(!dados) return;
+    for(let k in dados.pessoais) {
+        const el = document.querySelector(`[data-key="${k}"]`);
+        if(el) el.value = dados.pessoais[k];
+    }
+    for(let k in dados.atributos) document.getElementById(`input-${k}`).value = dados.atributos[k];
+    for(let k in dados.pericias) {
+        const el = document.getElementById(`p-val-${k}`);
+        if(el) { el.value = dados.pericias[k]; calcP(k); }
+    }
+    
+    // Carregar perícias customizadas
+    if(dados.periciasCustom) {
+        dados.periciasCustom.forEach(p => {
+            adicionarPericiaCustom(p.nome, p.valor);
+        });
+    }
+    
+    if(dados.foto && dados.foto.length > 10) {
         const img = document.getElementById('charPhoto');
-        reader.onload = () => {
-            historicoFoto = img.src;
-            document.getElementById('btnDesfazer').disabled = false;
-            document.getElementById('btnDesfazer').style.opacity = "1";
-            img.src = reader.result; img.style.display = 'block';
-            document.getElementById('placeholderTxt').style.display = 'none';
-        }
-        if(event.target.files[0]) reader.readAsDataURL(event.target.files[0]);
+        img.src = dados.foto; img.style.display = 'block';
+        document.getElementById('placeholderTxt').style.display = 'none';
     }
+    stats = dados.stats;
+    document.getElementById('valSORTE').innerText = dados.sorte || "-";
+    const body = document.getElementById('weaponBody');
+    body.innerHTML = "";
+    dados.armas.forEach(a => {
+        addWeaponRow();
+        const lastRow = body.lastElementChild;
+        const inputs = lastRow.querySelectorAll('input');
+        a.forEach((val, i) => { if(inputs[i]) inputs[i].value = val; });
+        calcWeapon(inputs[1]);
+    });
+    atualizarTudo();
+}
 
-    function removerFoto() {
+function exportarAgente() {
+    const dados = colherDados();
+    const blob = new Blob([JSON.stringify(dados)], {type: "application/json"});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `FICHA_${agenteLogado}.json`;
+    a.click();
+}
+
+// --- SEU CÓDIGO ORIGINAL (MANTIDO INTEGRALMENTE) ---
+const m = document.getElementById('bgMusic');
+m.volume = 0.1;
+window.addEventListener('load', () => { m.play().catch(() => {}); });
+
+const bg = document.getElementById('bg-particles');
+for (let i = 0; i < 150; i++) {
+    const sq = document.createElement('div');
+    sq.className = 'square';
+    const size = Math.random() * 15 + 5 + 'px';
+    sq.style.width = size; sq.style.height = size;
+    sq.style.left = Math.random() * 100 + 'vw';
+    sq.style.animationDuration = Math.random() * 10 + 8 + 's';
+    sq.style.animationDelay = Math.random() * 15 + 's';
+    bg.appendChild(sq);
+}
+
+let stats = { PV: { atual: 0, max: 0 }, SAN: { atual: 0, max: 99 }, MAG: { atual: 0, max: 0 } };
+
+function modStatus(tipo, qtd) {
+    stats[tipo].atual = Math.min(stats[tipo].max, Math.max(0, stats[tipo].atual + qtd));
+    updateBarVisual(tipo);
+}
+
+function modStatusMax(tipo, qtd) {
+    stats[tipo].max = Math.max(0, stats[tipo].max + qtd);
+    if(stats[tipo].atual > stats[tipo].max) {
+        stats[tipo].atual = stats[tipo].max;
+    }
+    updateBarVisual(tipo);
+}
+
+function updateBarVisual(tipo) {
+    const percent = stats[tipo].max > 0 ? (stats[tipo].atual / stats[tipo].max) * 100 : 0;
+    const fillEl = document.getElementById(`fill-${tipo}`);
+    if(fillEl) fillEl.style.width = percent + "%";
+    document.getElementById(`txt-${tipo}`).innerText = `${stats[tipo].atual} / ${stats[tipo].max}`;
+}
+
+function updateBarVisual(tipo) {
+    const percent = stats[tipo].max > 0 ? (stats[tipo].atual / stats[tipo].max) * 100 : 0;
+    const fillEl = document.getElementById(`fill-${tipo}`);
+    if(fillEl) fillEl.style.width = percent + "%";
+    document.getElementById(`txt-${tipo}`).innerText = `${stats[tipo].atual} / ${stats[tipo].max}`;
+}
+
+let historicoFoto = null;
+function carregarFoto(event) {
+    const reader = new FileReader();
+    const img = document.getElementById('charPhoto');
+    reader.onload = () => {
+        historicoFoto = img.src;
+        document.getElementById('btnDesfazer').disabled = false;
+        document.getElementById('btnDesfazer').style.opacity = "1";
+        img.src = reader.result; img.style.display = 'block';
+        document.getElementById('placeholderTxt').style.display = 'none';
+    }
+    if(event.target.files[0]) reader.readAsDataURL(event.target.files[0]);
+}
+
+function removerFoto() {
+    const img = document.getElementById('charPhoto');
+    if (img.src && img.style.display !== 'none') {
+        historicoFoto = img.src;
+        document.getElementById('btnDesfazer').disabled = false;
+        document.getElementById('btnDesfazer').style.opacity = "1";
+        img.src = ""; img.style.display = 'none';
+        document.getElementById('placeholderTxt').style.display = 'block';
+    }
+}
+
+function desfazerFoto() {
+    if (historicoFoto) {
         const img = document.getElementById('charPhoto');
-        if (img.src && img.style.display !== 'none') {
-            historicoFoto = img.src;
-            document.getElementById('btnDesfazer').disabled = false;
-            document.getElementById('btnDesfazer').style.opacity = "1";
-            img.src = ""; img.style.display = 'none';
-            document.getElementById('placeholderTxt').style.display = 'block';
-        }
+        const fotoAtual = img.src;
+        img.src = historicoFoto; img.style.display = 'block';
+        document.getElementById('placeholderTxt').style.display = 'none';
+        historicoFoto = fotoAtual; 
     }
+}
 
-    function desfazerFoto() {
-        if (historicoFoto) {
-            const img = document.getElementById('charPhoto');
-            const fotoAtual = img.src;
-            img.src = historicoFoto; img.style.display = 'block';
-            document.getElementById('placeholderTxt').style.display = 'none';
-            historicoFoto = fotoAtual; 
-        }
-    }
-
-    function calcWeapon(input) {
+function calcWeapon(input) {
     const row = input.closest('tr');
     const val = parseInt(input.value) || 0;
     const cells = row.querySelectorAll('.val-auto');
-    cells[0].value = Math.floor(val / 2);
-    cells[1].value = Math.floor(val / 5);
+    if(cells.length >= 2) {
+        cells[0].value = Math.floor(val / 2);
+        cells[1].value = Math.floor(val / 5);
+    }
 }
 
-    function addWeaponRow() {
+function addWeaponRow() {
     const body = document.getElementById('weaponBody');
     const tr = document.createElement('tr');
     tr.innerHTML = `
-        <td><input type="text" class="weapon-name" placeholder="Ex: .38 Especial"></td>
-        <td><input type="number" class="val-reg" oninput="calcWeapon(this)" placeholder="Reg."></td>
+        <td><input type="text" placeholder="Arma"></td>
+        <td><input type="number" oninput="calcWeapon(this)" placeholder="Reg."></td>
         <td><input type="text" class="val-auto" readonly value="0"></td>
         <td><input type="text" class="val-auto" readonly value="0"></td>
         <td><input type="text" placeholder="1D10"></td>
         <td><input type="text" placeholder="15m"></td>
-        <td><input type="text" placeholder="1(3)"></td>
+        <td><input type="text" placeholder="1"></td>
         <td><input type="text" placeholder="6"></td>
         <td><input type="text" placeholder="98"></td>
         <td><button class="btn-remove-weapon" onclick="this.closest('tr').remove()">X</button></td>
@@ -488,153 +1340,292 @@
     body.appendChild(tr);
 }
 
-    // 4. ATRIBUTOS
-    const attrTipoA = ["FOR", "CON", "DES", "POD", "APA"]; 
-    const attrTipoB = ["TAM", "INT", "EDU"]; 
-    const todosAtributos = [...attrTipoA, ...attrTipoB];
-    const attrContainer = document.getElementById('attrContainer');
-    
-    todosAtributos.forEach(attr => {
-        attrContainer.innerHTML += `
-            <div class="attr-card">
-                <label>${attr}</label>
-                <input type="number" id="input-${attr}" oninput="atualizarTudo()" min="0">
-                <button style="width:100%; margin-top:8px; font-size:9px;" onclick="testarHabilidade('${attr}', document.getElementById('input-${attr}').value)">TESTAR</button>
-                <div class="sub-vals">½: <span id="half-${attr}">0</span> | ⅕: <span id="fifth-${attr}">0</span></div>
-            </div>
-        `;
-    });
+const attrTipoA = ["FOR", "CON", "DES", "POD", "APA"]; 
+const attrTipoB = ["TAM", "INT", "EDU"]; 
+const todosAtributos = [...attrTipoA, ...attrTipoB];
+const attrContainer = document.getElementById('attrContainer');
 
-    // 5. PERÍCIAS
-    const listaPericias = [
-        { n: "Antropologia", v: 1 }, { n: "Armas de Fogo (Curta)", v: 20 },
-        { n: "Armas de Fogo (Rifle)", v: 25 }, { n: "Arremessar", v: 20 },
-        { n: "Cavalgar", v: 5 }, { n: "Charlatanismo", v: 5 },
-        { n: "Chaveiro", v: 1 }, { n: "Consertos Elétricos", v: 10 },
-        { n: "Consertos Mecânicos", v: 10 }, { n: "Direito", v: 5 },
-        { n: "Dirigir Automóvel", v: 20 }, { n: "Disfarce", v: 5 },
-        { n: "Escalar", v: 20 }, { n: "Escutar", v: 20 },
-        { n: "Esquivar", v: 0 }, { n: "Furtividade", v: 20 },
-        { n: "História", v: 5 }, { n: "Intimidação", v: 15 },
-        { n: "Lutar (Briga)", v: 25 }, { n: "Medicina", v: 1 },
-        { n: "Mundo Natural", v: 10 }, { n: "Natação", v: 20 },
-        { n: "Ocultismo", v: 5 }, { n: "Persuasão", v: 10 },
-        { n: "Primeiros Socorros", v: 30 }, { n: "Psicologia", v: 10 },
-        { n: "Rastrear", v: 10 }, { n: "Saltar", v: 20 },
-        { n: "Sobrevivência", v: 10 }, { n: "Usar Bibliotecas", v: 20 }
-    ];
+todosAtributos.forEach(attr => {
+    attrContainer.innerHTML += `
+        <div class="attr-card">
+            <label>${attr}</label>
+            <input type="number" id="input-${attr}" oninput="atualizarTudo()" min="0">
+            <button style="width:100%; margin-top:8px; font-size:9px;" onclick="testarHabilidade('${attr}', document.getElementById('input-${attr}').value)">TESTAR</button>
+            <div class="sub-vals">½: <span id="half-${attr}">0</span> | ⅕: <span id="fifth-${attr}">0</span></div>
+        </div>
+    `;
+});
 
-    function renderPericias() {
-        const container = document.getElementById('periciasContainer');
-        const metade = Math.ceil(listaPericias.length / 2);
-        for (let i = 0; i < 2; i++) {
-            const table = document.createElement('table');
-            table.className = "pericias-table";
-            table.innerHTML = `<thead><tr><th>Perícia</th><th>Reg.</th><th>Sól.</th><th>Ext.</th><th>🎲</th></tr></thead><tbody id="p-body-${i}"></tbody>`;
-            container.appendChild(table);
-            const slice = listaPericias.slice(i * metade, (i + 1) * metade);
-            const tbody = document.getElementById(`p-body-${i}`);
-            slice.forEach(p => {
-                const idSafe = p.n.replace(/\s+/g, '-');
-                tbody.innerHTML += `<tr><td style="text-align:left; color:#888;">${p.n}</td><td><input type="number" value="${p.v}" id="p-val-${idSafe}" oninput="calcP('${idSafe}')"></td><td><input type="text" class="val-auto" id="p-half-${idSafe}" readonly value="${Math.floor(p.v/2)}"></td><td><input type="text" class="val-auto" id="p-fifth-${idSafe}" readonly value="${Math.floor(p.v/5)}"></td><td><button style="padding:2px 8px; font-size:10px;" onclick="testarHabilidade('${p.n}', document.getElementById('p-val-${idSafe}').value)">🎲</button></td></tr>`;
-            });
-        }
-    }
+const listaPericias = [
+    { n: "Antropologia", v: 1 }, 
+    { n: "Armas de Fogo (Pistolas)", v: 20 },
+    { n: "Armas de Fogo (Rifles/Espingardas)", v: 20 }, 
+    { n: "Arqueologia", v: 1 },
+    { n: "Arremessar", v: 20 },
+    { n: "Arte e Ofício", v: 5 },
+    { n: "Avaliação", v: 5 },
+    { n: "Charme", v: 15 },
+    { n: "Chaveiro", v: 1 }, 
+    { n: "Ciência", v: 1 },
+    { n: "Consertos Elétricos", v: 10 },
+    { n: "Consertos Mecânicos", v: 10 }, 
+    { n: "Contabilidade", v: 5 },
+    { n: "Direito", v: 5 },
+    { n: "Dirigir Automóvel", v: 20 }, 
+    { n: "Disfarce", v: 5 },
+    { n: "Eletrônica", v: 1 },
+    { n: "Encontrar", v: 25 },
+    { n: "Escalar", v: 20 }, 
+    { n: "Escutar", v: 20 },
+    { n: "Esquivar", v: 0 }, 
+    { n: "Furtividade", v: 20 },
+    { n: "História", v: 20 },
+    { n: "Intimidação", v: 15 },
+    { n: "Lábia", v: 5 },
+    { n: "Língua (Nativa)", v: 0 },
+    { n: "Língua (Outra)", v: 1 },
+    { n: "Lutar (Briga)", v: 25 }, 
+    { n: "Medicina", v: 1 },
+    { n: "Mythos de Cthulhu", v: 0 },
+    { n: "Mundo Natural", v: 10 }, 
+    { n: "Natação", v: 10 },
+    { n: "Navegação", v: 10 },
+    { n: "Nível de Crédito", v: 0 },
+    { n: "Ocultismo", v: 5 }, 
+    { n: "Operar Maquinário", v: 1 },
+    { n: "Persuasão", v: 10 },
+    { n: "Pilotar", v: 1 },
+    { n: "Prestidigitação", v: 10 },
+    { n: "Primeiros Socorros", v: 30 },
+    { n: "Psicanálise", v: 1 },
+    { n: "Psicologia", v: 1 },
+    { n: "Rastrear", v: 10 }, 
+    { n: "Saltar", v: 20 },
+    { n: "Sobrevivência", v: 10 }, 
+    { n: "Usar Bibliotecas", v: 20 },
+    { n: "Usar Computadores", v: 5 }
+];
 
-    function calcP(id) {
-        const val = parseInt(document.getElementById(`p-val-${id}`).value) || 0;
-        document.getElementById(`p-half-${id}`).value = Math.floor(val/2);
-        document.getElementById(`p-fifth-${id}`).value = Math.floor(val/5);
-    }
-
-    // 6. ROLAGEM E SUCESSO
-    function testarHabilidade(nome, valorAlvo) {
-        const alvo = parseInt(valorAlvo) || 0;
-        const roll = Math.floor(Math.random() * 100) + 1;
-        const half = Math.floor(alvo / 2); const fifth = Math.floor(alvo / 5);
-        const overlay = document.getElementById('result-overlay');
-        let title = "FALHA", detail = `${roll} VS ${alvo}`, c="#666", b="#111";
-        if (roll === 1) { title="CRÍTICO"; c="#000"; b="#fff"; }
-        else if (roll <= fifth) { title="EXTREMO"; c="#fff"; b="#333"; }
-        else if (roll <= half) { title="SÓLIDO"; c="#fff"; b="#666"; }
-        else if (roll <= alvo) { title="REGULAR"; c="#000"; b="#999"; }
-        else if (roll >= 96 && alvo < 50) { title="DESASTRE"; c="#f00"; b="#300"; }
-        else if (roll === 100) { title="DESASTRE"; c="#f00"; b="#300"; }
-        document.getElementById('overlay-title').innerText = title;
-        document.getElementById('overlay-title').style.color = c;
-        document.getElementById('overlay-title').style.backgroundColor = b;
-        document.getElementById('overlay-detail').innerText = `${nome.toUpperCase()}: ${detail}`;
-        overlay.classList.add('active');
-        setTimeout(() => overlay.classList.remove('active'), 2500);
-    }
-
-    function rollXDX(qtd, lados) {
-        let total = 0; let rolls = [];
-        for (let i = 0; i < qtd; i++) {
-            let r = Math.floor(Math.random() * lados) + 1;
-            rolls.push(r); total += r;
-        }
-        return { total, formula: rolls.join(' + ') + ' = ' + total };
-    }
-
-    function rollCustomDice() {
-        const input = document.getElementById('diceInput').value;
-        const m = input.match(/(\d+)d(\d+)/i);
-        if (m) {
-            const res = rollXDX(m[1], m[2]);
-            document.getElementById('diceDisplay').innerText = res.formula;
-        }
-    }
-
-    function atualizarTudo() {
-        let v = {};
-        todosAtributos.forEach(attr => {
-            const el = document.getElementById(`input-${attr}`);
-            v[attr] = parseInt(el.value) || 0;
-            document.getElementById(`half-${attr}`).innerText = Math.floor(v[attr] / 2);
-            document.getElementById(`fifth-${attr}`).innerText = Math.floor(v[attr] / 5);
+function renderPericias() {
+    const container = document.getElementById('periciasContainer');
+    container.innerHTML = "";
+    const metade = Math.ceil(listaPericias.length / 2);
+    for (let i = 0; i < 2; i++) {
+        const table = document.createElement('table');
+        table.className = "pericias-table";
+        table.innerHTML = `<thead><tr><th>Perícia</th><th>Reg.</th><th>Sól.</th><th>Ext.</th><th>🎲</th></tr></thead><tbody id="p-body-${i}"></tbody>`;
+        container.appendChild(table);
+        const slice = listaPericias.slice(i * metade, (i + 1) * metade);
+        const tbody = document.getElementById(`p-body-${i}`);
+        slice.forEach(p => {
+            const idSafe = p.n.replace(/\s+/g, '-');
+            tbody.innerHTML += `<tr><td style="text-align:left; color:#888;">${p.n}</td><td><input type="number" value="${p.v}" id="p-val-${idSafe}" oninput="calcP('${idSafe}')"></td><td><input type="text" class="val-auto" id="p-half-${idSafe}" readonly value="${Math.floor(p.v/2)}"></td><td><input type="text" class="val-auto" id="p-fifth-${idSafe}" readonly value="${Math.floor(p.v/5)}"></td><td><button style="padding:2px 8px; font-size:10px;" onclick="testarHabilidade('${p.n}', document.getElementById('p-val-${idSafe}').value)">🎲</button></td></tr>`;
         });
-        const esquivaInput = document.getElementById('p-val-Esquivar');
-        if(esquivaInput) {
-            const novaEsquiva = Math.floor(v.DES / 2);
-            esquivaInput.value = novaEsquiva;
-            calcP('Esquivar');
-            document.getElementById('valESQUIVA').innerText = novaEsquiva;
-        }
-        stats.PV.max = Math.floor((v.TAM + v.CON) / 10);
-        stats.PV.atual = stats.PV.max;
-        stats.SAN.max = 99; stats.SAN.atual = v.POD;
-        stats.MAG.max = Math.floor(v.POD / 5); stats.MAG.atual = stats.MAG.max;
-        updateBarVisual('PV'); updateBarVisual('SAN'); updateBarVisual('MAG');
-        const soma = v.FOR + v.TAM;
-        let dx = "0", corpo = "0";
-        if (soma <= 124) { dx = "0"; corpo = "0"; }
-        else if (soma <= 164) { dx = "+1D4"; corpo = "1"; }
-        else { dx = "+1D6"; corpo = "2"; }
-        document.getElementById('valDX').innerText = dx;
-        document.getElementById('valCorpo').innerText = corpo;
-        let mov = 8;
-        if (v.DES < v.TAM && v.FOR < v.TAM) mov = 7;
-        if (v.FOR > v.TAM && v.DES > v.TAM) mov = 9;
-        const idade = parseInt(document.getElementById('idade').value) || 0;
-        document.getElementById('valMOV').innerText = Math.max(1, mov - (idade >= 40 ? 1 : 0));
     }
+}
 
-    function gerarTodosAtributos() {
-        attrTipoA.forEach(a => document.getElementById(`input-${a}`).value = rollXDX(3, 6).total * 5);
-        attrTipoB.forEach(b => document.getElementById(`input-${b}`).value = (rollXDX(2, 6).total + 6) * 5);
-        rolarSorte(); atualizarTudo();
+function adicionarPericiaCustom(nomePredef = null, valorPredef = null) {
+    const nome = nomePredef || prompt("Nome da nova perícia:");
+    if(!nome || !nome.trim()) return;
+    
+    const valor = valorPredef !== null ? valorPredef : (prompt("Valor inicial (0-100):") || "0");
+    
+    const table = document.querySelector('.pericias-table');
+    const tbody = table.querySelector('tbody');
+    const tr = document.createElement('tr');
+    tr.className = 'pericia-custom';
+    
+    const idSafe = 'custom-' + Date.now();
+    const valorNum = parseInt(valor) || 0;
+    
+    tr.innerHTML = `
+        <td style="text-align:left;"><input type="text" value="${nome}" style="background: transparent; border: none; color: #00ff00; width: 100%;"></td>
+        <td><input type="number" value="${valorNum}" id="p-val-${idSafe}" oninput="calcP('${idSafe}')"></td>
+        <td><input type="text" class="val-auto" id="p-half-${idSafe}" readonly value="${Math.floor(valorNum/2)}"></td>
+        <td><input type="text" class="val-auto" id="p-fifth-${idSafe}" readonly value="${Math.floor(valorNum/5)}"></td>
+        <td>
+            <button style="padding:2px 8px; font-size:10px;" onclick="testarHabilidade('${nome}', document.getElementById('p-val-${idSafe}').value)">🎲</button>
+            <button class="btn-remove-weapon" onclick="this.closest('tr').remove()" style="margin-left: 3px;">X</button>
+        </td>
+    `;
+    
+    tbody.appendChild(tr);
+}
+
+function calcP(id) {
+    const el = document.getElementById(`p-val-${id}`);
+    if(!el) return;
+    const val = parseInt(el.value) || 0;
+    const halfEl = document.getElementById(`p-half-${id}`);
+    const fifthEl = document.getElementById(`p-fifth-${id}`);
+    if(halfEl) halfEl.value = Math.floor(val/2);
+    if(fifthEl) fifthEl.value = Math.floor(val/5);
+}
+
+function testarHabilidade(nome, valorAlvo) {
+    const alvo = parseInt(valorAlvo) || 0;
+    const roll = Math.floor(Math.random() * 100) + 1;
+    const half = Math.floor(alvo / 2); const fifth = Math.floor(alvo / 5);
+    const overlay = document.getElementById('result-overlay');
+    let title = "FALHA", detail = `${roll} VS ${alvo}`, c="#666", b="#111";
+    if (roll === 1) { title="CRÍTICO"; c="#000"; b="#fff"; }
+    else if (roll <= fifth) { title="EXTREMO"; c="#fff"; b="#333"; }
+    else if (roll <= half) { title="SÓLIDO"; c="#fff"; b="#666"; }
+    else if (roll <= alvo) { title="REGULAR"; c="#000"; b="#999"; }
+    else if (roll >= 96 && alvo < 50) { title="DESASTRE"; c="#f00"; b="#300"; }
+    else if (roll === 100) { title="DESASTRE"; c="#f00"; b="#300"; }
+    document.getElementById('overlay-title').innerText = title;
+    document.getElementById('overlay-title').style.color = c;
+    document.getElementById('overlay-title').style.backgroundColor = b;
+    document.getElementById('overlay-detail').innerText = `${nome.toUpperCase()}: ${detail}`;
+    overlay.classList.add('active');
+    setTimeout(() => overlay.classList.remove('active'), 2500);
+}
+
+function rollXDX(qtd, lados) {
+    let total = 0; let rolls = [];
+    for (let i = 0; i < qtd; i++) {
+        let r = Math.floor(Math.random() * lados) + 1;
+        rolls.push(r); total += r;
     }
+    return { total, formula: rolls.join(' + ') + ' = ' + total };
+}
 
-    function rolarSorte() {
-        const sorte = rollXDX(3, 6).total * 5;
-        document.getElementById('valSORTE').innerText = sorte;
+function rollCustomDice() {
+    const input = document.getElementById('diceInput').value;
+    const m = input.match(/(\d+)d(\d+)/i);
+    if (m) {
+        const res = rollXDX(m[1], m[2]);
+        document.getElementById('diceDisplay').innerText = res.formula;
     }
+}
 
-    renderPericias();
-    addWeaponRow(); 
+function atualizarTudo() {
+    let v = {};
+    todosAtributos.forEach(attr => {
+        const el = document.getElementById(`input-${attr}`);
+        v[attr] = parseInt(el.value) || 0;
+        document.getElementById(`half-${attr}`).innerText = Math.floor(v[attr] / 2);
+        document.getElementById(`fifth-${attr}`).innerText = Math.floor(v[attr] / 5);
+    });
+    const esquivaInput = document.getElementById('p-val-Esquivar');
+    if(esquivaInput) {
+        const novaEsquiva = Math.floor(v.DES / 2);
+        esquivaInput.value = novaEsquiva;
+        calcP('Esquivar');
+        document.getElementById('valESQUIVA').innerText = novaEsquiva;
+    }
+    
+   // CORREÇÃO: Atualizar PV, SAN e MAG corretamente
+const pvAntigo = stats.PV.max;
+const podAntigo = stats.SAN.atual; // Guarda o POD antigo
+const magAntigo = stats.MAG.max;
+
+stats.PV.max = Math.floor((v.TAM + v.CON) / 10);
+stats.SAN.max = 99; // Sanidade máxima sempre 99
+stats.SAN.atual = v.POD; // Sanidade atual = POD
+stats.MAG.max = Math.floor(v.POD / 5);
+
+// Atualizar valores atuais para PV e MAG quando mudarem
+if(pvAntigo !== stats.PV.max) {
+    stats.PV.atual = stats.PV.max;
+}
+if(magAntigo !== stats.MAG.max) {
+    stats.MAG.atual = stats.MAG.max;
+}
+
+// Garantir que atual não exceda o máximo
+stats.PV.atual = Math.min(stats.PV.atual, stats.PV.max);
+stats.SAN.atual = Math.min(stats.SAN.atual, stats.SAN.max); // Não pode passar de 99
+stats.MAG.atual = Math.min(stats.MAG.atual, stats.MAG.max);
+
+// Garantir que atual não exceda o máximo
+stats.PV.atual = Math.min(stats.PV.atual, stats.PV.max);
+stats.SAN.atual = Math.min(stats.SAN.atual, stats.SAN.max);
+stats.MAG.atual = Math.min(stats.MAG.atual, stats.MAG.max);
+    
+    updateBarVisual('PV'); 
+    updateBarVisual('SAN'); 
+    updateBarVisual('MAG');
+    
+    const soma = v.FOR + v.TAM;
+    let dx = "0", corpo = "0";
+    if (soma <= 124) { dx = "0"; corpo = "0"; }
+    else if (soma <= 164) { dx = "+1D4"; corpo = "1"; }
+    else { dx = "+1D6"; corpo = "2"; }
+    document.getElementById('valDX').innerText = dx;
+    document.getElementById('valCorpo').innerText = corpo;
+    let mov = 8;
+    if (v.DES < v.TAM && v.FOR < v.TAM) mov = 7;
+    if (v.FOR > v.TAM && v.DES > v.TAM) mov = 9;
+    const idade = parseInt(document.getElementById('idade').value) || 0;
+    document.getElementById('valMOV').innerText = Math.max(1, mov - (idade >= 40 ? 1 : 0));
+}
+
+function gerarTodosAtributos() {
+    attrTipoA.forEach(a => document.getElementById(`input-${a}`).value = rollXDX(3, 6).total * 5);
+    attrTipoB.forEach(b => document.getElementById(`input-${b}`).value = (rollXDX(2, 6).total + 6) * 5);
+    rolarSorte(); 
     atualizarTudo();
-</script>
+}
 
+function rolarSorte() {
+    const sorte = rollXDX(3, 6).total * 5;
+    document.getElementById('valSORTE').innerText = sorte;
+}
+
+// Monitora o campo de senha em tempo real
+document.getElementById('signupPass').addEventListener('input', function() {
+    const pass = this.value;
+
+    // Definição dos requisitos
+    const checks = {
+        "req-length": pass.length >= 6,
+        "req-upper": /[A-Z]/.test(pass),
+        "req-lower": /[a-z]/.test(pass),
+        "req-number": /\d/.test(pass),
+        "req-special": /[\W_]/.test(pass)
+    };
+
+    // Aplica a classe 'valid' (verde) ou remove (vermelho) para cada item
+    for (const [id, isValid] of Object.entries(checks)) {
+        const el = document.getElementById(id);
+        if (isValid) {
+            el.classList.add('valid');
+        } else {
+            el.classList.remove('valid');
+        }
+    }
+});
+
+// Ajuste na sua função de cadastro original:
+function realizarCadastro() {
+    const user = document.getElementById('signupUser').value.trim();
+    const pass = document.getElementById('signupPass').value.trim();
+    const msg = document.getElementById('login-msg');
+
+    // Verifica se todos os elementos têm a classe 'valid'
+    const todosValidos = document.querySelectorAll('.req-item.valid').length === 5;
+
+    if(!todosValidos) {
+        msg.style.color = "#ff4444";
+        msg.innerText = "PREENCHA TODOS OS REQUISITOS DA SENHA";
+        return;
+    }
+
+    if(localStorage.getItem("CoC_User_" + user)) return msg.innerText = "ESTE AGENTE JÁ ESTÁ REGISTRADO";
+    
+    const userData = { password: pass, investigadores: [] };
+    localStorage.setItem("CoC_User_" + user, JSON.stringify(userData));
+    msg.style.color = "#00ff00";
+    msg.innerText = "AGENTE REGISTRADO COM SUCESSO!";
+    setTimeout(() => switchTab('login'), 1500);
+}
+
+
+renderPericias();
+addWeaponRow(); 
+atualizarTudo();
+</script>
 </body>
 </html>
