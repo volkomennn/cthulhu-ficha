@@ -1,10 +1,78 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+<title>Call of Cthulhu</title>
+
+    <link rel="icon" type="image/png" href="https://i.pinimg.com/736x/fb/5c/86/fb5c86a810c4c761a4f041a30c5d967c.jpg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Call of Cthulhu</title>
+    <title>Investigador Call of Cthulhu</title>
     <style>
+
+
+.main-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-top: 1px solid #444;
+    margin-top: 30px;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Recorte circular da foto */
+.footer-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #666;
+}
+
+.footer-info {
+    font-size: 0.9em;
+    color: #ccc;
+}
+
+/* Links empilhados à direita */
+.footer-right {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #aaa;
+    text-decoration: none;
+    font-size: 0.85em;
+    transition: color 0.3s;
+}
+
+.social-link:hover {
+    color: #d5b6bb;
+}
+
+/* Tamanho das mini logos sociais */
+.social-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    filter: grayscale(100%); /* Ficam cinzas até passar o mouse */
+}
+
+.social-link:hover .social-icon {
+    filter: none;
+}
 
 
 /* Esta classe só trava o scroll se o modal estiver aberto */
@@ -742,21 +810,42 @@ body.modal-open {
             <div class="input-group">
                 <label>CRIAR SENHA</label>
                 <input type="password" id="signupPass" style="width: 100%;">
-
                 <div id="password-requirements" class="req-container">
-    <div id="req-length" class="req-item">• Mínimo 6 caracteres</div>
-    <div id="req-upper" class="req-item">• 1 Letra maiúscula</div>
-    <div id="req-lower" class="req-item">• 1 Letra minúscula</div>
-    <div id="req-number" class="req-item">• 1 Número</div>
-    <div id="req-special" class="req-item">• 1 Caractere especial</div>
-</div>
-
-
+                    <div id="req-length" class="req-item">• Mínimo 6 caracteres</div>
+                    <div id="req-upper" class="req-item">• 1 Letra maiúscula</div>
+                    <div id="req-lower" class="req-item">• 1 Letra minúscula</div>
+                    <div id="req-number" class="req-item">• 1 Número</div>
+                    <div id="req-special" class="req-item">• 1 Caractere especial</div>
+                </div>
             </div>
             <button onclick="realizarCadastro()" style="width: 100%; margin-top: 10px;">REGISTRAR INVESTIGADOR</button>
         </div>
         
         <p id="login-msg" style="font-size: 10px; color: #913a3a; margin-top: 15px;"></p>
+
+        <footer class="login-footer">
+            <div class="footer-left">
+                <img src="https://i.pinimg.com/736x/7e/f0/d3/7ef0d35a8fd17512ae318aace2dc52c9.jpg" class="footer-avatar">
+                <div class="footer-info">
+                    <b>Anderson - Volkomenn</b> — © 2026
+                </div>
+            </div>
+        </p>
+            <div class="footer-right">
+                <a href="https://www.tiktok.com/@volkomennnnn" target="_blank" class="social-link">
+                    <img src="https://cdn.discordapp.com/emojis/1380004958329376841.webp?size=40" class="social-icon"> TikTok
+                </a>
+                <a href="https://www.twitch.tv/voikomenn" target="_blank" class="social-link">
+                    <img src="https://cdn.discordapp.com/emojis/846873277778624522.webp?size=40" class="social-icon"> Twitch
+                </a>
+                <a href="https://x.com/l_andrssn" target="_blank" class="social-link">
+                    <img src="https://cdn.discordapp.com/emojis/1157693022801235978.webp?size=40" class="social-icon"> Twitter
+                </a>
+                <a href="https://discordapp.com/users/943254541346930768" target="_blank" class="social-link">
+                    <img src="https://cdn.discordapp.com/emojis/1107191783919718400.webp?size=40" class="social-icon"> Discord
+                </a>
+            </div>
+        </footer>
     </div>
 </div>
 
@@ -1060,10 +1149,29 @@ body.modal-open {
         <button onclick="addWeaponRow()" style="margin-top: 15px; font-size: 0.6em;">+ Adicionar Arma</button>
     </div>
 
-    <footer>
-        Direitos reservados: <b>Anderson - Volkomenn</b> — © 2026
-    </footer>
-</div>
+<footer class="main-footer">
+    <div class="footer-left">
+        <img src="https://i.pinimg.com/736x/7e/f0/d3/7ef0d35a8fd17512ae318aace2dc52c9.jpg" class="footer-avatar">
+        <div class="footer-info">
+            Direitos reservados: <b>Anderson - Volkomenn</b> — © 2026
+        </div>
+    </div>
+
+    <div class="footer-right">
+        <a href="https://www.tiktok.com/@volkomennnnn" target="_blank" class="social-link">
+            <img src="https://cdn.discordapp.com/emojis/1380004958329376841.webp?size=40" class="social-icon"> TikTok
+        </a>
+        <a href="https://www.twitch.tv/voikomenn" target="_blank" class="social-link">
+            <img src="https://cdn.discordapp.com/emojis/846873277778624522.webp?size=40" class="social-icon"> Twitch
+        </a>
+        <a href="https://x.com/l_andrssn" target="_blank" class="social-link">
+            <img src="https://cdn.discordapp.com/emojis/1157693022801235978.webp?size=40" class="social-icon"> Twitter
+        </a>
+        <a href="https://discordapp.com/users/943254541346930768" target="_blank" class="social-link">
+            <img src="https://cdn.discordapp.com/emojis/1107191783919718400.webp?size=40" class="social-icon"> Discord: haizenshh
+        </a>
+    </div>
+</footer>
 
 <script>
     // --- LÓGICA DE LOGIN, SENHA E CONTAS (ADICIONADA) ---
