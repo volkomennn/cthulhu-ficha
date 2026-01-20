@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investigador Call of Cthulhu</title>
+    <title>Call of Cthulhu</title>
     <style>
 
 
@@ -790,6 +790,10 @@ body.modal-open {
     <button onclick="salvarLocal()" style="background: #002200; border-color: #004400; color: #00ff00;">SALVAR INVESTIGADOR</button>
     <button onclick="resetarFicha()" style="background: #332200; border-color: #664400; color: #ffaa00;">RESETAR FICHA</button>
     <button onclick="fazerLogout()" style="background: #330000; border-color: #550000; color: #ff0000;">LOGOUT</button>
+    <div style="margin-top: 20px; display: flex; gap: 10px; padding: 10px; border-top: 1px solid #222;"><button onclick="exportarFichaJSON()" style="flex: 1; background: #051a05; color: #00ff00; border-color: #004400;">💾 EXPORTAR FICHA (.json)</button>
+    <button onclick="document.getElementById('fileInputFicha').click()" style="flex: 1; background: #1a1a1a; color: #888; border-color: #333;">📂 IMPORTAR FICHA (.json)</button><input type="file" id="fileInputFicha" style="display: none;" accept=".json" onchange="importarFichaJSON(event)">
+</div>
+</div>
 </div>
 
 <div class="music-player-container" id="playerMusica">
@@ -1367,22 +1371,31 @@ function colherDados() {
         foto: document.getElementById('charPhoto').src,
         sorte: document.getElementById('valSORTE').innerText
     };
-    document.querySelectorAll('#camposPessoais input').forEach(i => dados.pessoais[i.dataset.key] = i.value);
+
+    // Captura Nome, Ocupação, Idade, etc., via data-key
+    document.querySelectorAll('#camposPessoais input').forEach(i => {
+        if (i.dataset.key) {
+            dados.pessoais[i.dataset.key] = i.value;
+        }
+    });
+
+    // REFORÇO: Se a ocupação falhou no loop acima, pega pelo ID
+    if (!dados.pessoais['ocupacao']) {
+        dados.pessoais['ocupacao'] = document.getElementById('input-ocupacao')?.value || "";
+    }
+
     todosAtributos.forEach(a => dados.atributos[a] = document.getElementById(`input-${a}`).value);
+    
     listaPericias.forEach(p => {
         const id = p.n.replace(/\s+/g, '-');
         const el = document.getElementById(`p-val-${id}`);
         if(el) dados.pericias[id] = el.value;
     });
     
-    // Salvar perícias customizadas
     document.querySelectorAll('.pericia-custom').forEach(tr => {
         const inputs = tr.querySelectorAll('input');
         if(inputs.length >= 2) {
-            dados.periciasCustom.push({
-                nome: inputs[0].value,
-                valor: inputs[1].value
-            });
+            dados.periciasCustom.push({ nome: inputs[0].value, valor: inputs[1].value });
         }
     });
     
@@ -1390,44 +1403,70 @@ function colherDados() {
         const inputs = tr.querySelectorAll('input');
         if (inputs.length > 0) dados.armas.push(Array.from(inputs).map(i => i.value));
     });
+    
     return dados;
 }
 
 function aplicarDados(dados) {
     if(!dados) return;
+
+    // 1. Limpar perícias customizadas atuais antes de carregar novas para não duplicar
+    document.querySelectorAll('.pericia-custom').forEach(tr => tr.remove());
+
+    // 2. Preencher campos pessoais (inclui Ocupação)
     for(let k in dados.pessoais) {
+        // Tenta achar pelo data-key (ex: data-key="ocupacao")
         const el = document.querySelector(`[data-key="${k}"]`);
-        if(el) el.value = dados.pessoais[k];
+        if(el) {
+            el.value = dados.pessoais[k];
+        } else {
+            // Se não achar pelo data-key, tenta pelo ID direto
+            const elId = document.getElementById(`input-${k}`) || document.getElementById(k);
+            if(elId) elId.value = dados.pessoais[k];
+        }
     }
-    for(let k in dados.atributos) document.getElementById(`input-${k}`).value = dados.atributos[k];
+
+    // 3. Resto dos dados
+    for(let k in dados.atributos) {
+        const el = document.getElementById(`input-${k}`);
+        if(el) el.value = dados.atributos[k];
+    }
+
     for(let k in dados.pericias) {
         const el = document.getElementById(`p-val-${k}`);
         if(el) { el.value = dados.pericias[k]; calcP(k); }
     }
     
-    // Carregar perícias customizadas
     if(dados.periciasCustom) {
         dados.periciasCustom.forEach(p => {
-            adicionarPericiaCustom(p.nome, p.valor);
+            if(typeof adicionarPericiaCustom === "function") {
+                adicionarPericiaCustom(p.nome, p.valor);
+            }
         });
     }
     
     if(dados.foto && dados.foto.length > 10) {
         const img = document.getElementById('charPhoto');
-        img.src = dados.foto; img.style.display = 'block';
+        img.src = dados.foto; 
+        img.style.display = 'block';
         document.getElementById('placeholderTxt').style.display = 'none';
     }
+
     stats = dados.stats;
     document.getElementById('valSORTE').innerText = dados.sorte || "-";
+    
     const body = document.getElementById('weaponBody');
     body.innerHTML = "";
-    dados.armas.forEach(a => {
-        addWeaponRow();
-        const lastRow = body.lastElementChild;
-        const inputs = lastRow.querySelectorAll('input');
-        a.forEach((val, i) => { if(inputs[i]) inputs[i].value = val; });
-        calcWeapon(inputs[1]);
-    });
+    if(dados.armas) {
+        dados.armas.forEach(a => {
+            addWeaponRow();
+            const lastRow = body.lastElementChild;
+            const inputs = lastRow.querySelectorAll('input');
+            a.forEach((val, i) => { if(inputs[i]) inputs[i].value = val; });
+        });
+    }
+
+    // Atualiza o visual sem resetar os inputs
     atualizarTudo();
 }
 
@@ -1895,6 +1934,65 @@ function realizarCadastro() {
     msg.innerText = "INVESTIGADOR REGISTRADO COM SUCESSO!";
     setTimeout(() => switchTab('login'), 1500);
 }
+
+
+// FUNÇÃO PARA EXPORTAR APENAS A FICHA ATUAL
+function exportarFichaJSON() {
+    const dados = colherDados();
+    
+    // REFORÇO PARA SORTE: Pega o texto do elemento que você definiu
+    const elementoSorte = document.getElementById('valSORTE');
+    if (elementoSorte) {
+        dados.sorte = elementoSorte.innerText;
+    }
+
+    const blob = new Blob([JSON.stringify(dados, null, 2)], {type: "application/json"});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    
+    // Nome do arquivo baseado no nome do investigador ou no login
+    const nomeArquivo = dados.pessoais.nome || agenteLogado || "Investigador";
+    a.download = `FICHA_${nomeArquivo}.json`;
+    a.click();
+}
+
+// FUNÇÃO PARA IMPORTAR
+function importarFichaJSON(event) {
+    const arquivo = event.target.files[0];
+    if (!arquivo) return;
+
+    const leitor = new FileReader();
+    leitor.onload = function(e) {
+        try {
+            const dados = JSON.parse(e.target.result);
+            
+            // 1. Aplica os dados básicos (isso já usa sua função aplicarDados)
+            aplicarDados(dados);
+
+            // 2. REFORÇO PARA SORTE: Garante que o texto mude na tela
+            const elementoSorte = document.getElementById('valSORTE');
+            if (elementoSorte && dados.sorte) {
+                elementoSorte.innerText = dados.sorte;
+            }
+
+            // 3. REFORÇO PARA FOTO: Garante que o placeholder suma
+            if (dados.foto && dados.foto.length > 10) {
+                const img = document.getElementById('charPhoto');
+                const placeholder = document.getElementById('placeholderTxt');
+                img.src = dados.foto;
+                img.style.display = 'block';
+                if (placeholder) placeholder.style.display = 'none';
+            }
+
+            alert("✅ Ficha carregada com sucesso!");
+        } catch (err) {
+            alert("❌ Erro ao ler o arquivo JSON.");
+            console.error(err);
+        }
+    };
+    leitor.readAsText(arquivo);
+}
+
 
 function minimizarPlayer() {
     const player = document.getElementById('playerMusica');
