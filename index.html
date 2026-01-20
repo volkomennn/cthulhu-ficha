@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investigador Call of Cthulhu</title>
+    <title>Call of Cthulhu</title>
     <style>
 
 
@@ -807,7 +807,7 @@ body.modal-open {
     <button onclick="salvarLocal()" style="background: #002200; border-color: #004400; color: #00ff00;">SALVAR INVESTIGADOR</button>
     <button onclick="resetarFicha()" style="background: #332200; border-color: #664400; color: #ffaa00;">RESETAR FICHA</button>
     <button onclick="fazerLogout()" style="background: #330000; border-color: #550000; color: #ff0000;">LOGOUT</button>
-    <button onclick="gerarTokenSincronizacao()" style="background: #004400; color: #00ff00; border: 1px solid #00ff00;">GERAR CÓDIGO</button>
+    <button onclick="gerarCodigoDeConta()" style="background: #004400; color: #00ff00; border: 1px solid #00ff00;">GERAR CÓDIGO</button>
 </div>
 
 <div class="music-player-container" id="playerMusica">
@@ -2082,73 +2082,68 @@ function calcularPontosOcupacao() {
 // MOTOR DE SINCRONIZAÇÃO VIA TOKEN
 // ====================================
 
-function gerarTokenSincronizacao() {
-    // 1. Coletar TODOS os dados que estão na tela agora
-    const dadosFicha = {
-        info: {
-            nome: document.querySelector('[data-key="nome"]')?.value || "",
-            ocupacao: document.getElementById('input-ocupacao')?.value || "",
-            idade: document.getElementById('idade')?.value || ""
-        },
-        atributos: {
-            FOR: document.getElementById('input-FOR')?.value || 0,
-            DES: document.getElementById('input-DES')?.value || 0,
-            TAM: document.getElementById('input-TAM')?.value || 0,
-            CON: document.getElementById('input-CON')?.value || 0,
-            APA: document.getElementById('input-APA')?.value || 0,
-            INT: document.getElementById('input-INT')?.value || 0,
-            POD: document.getElementById('input-POD')?.value || 0,
-            EDU: document.getElementById('input-EDU')?.value || 0
-        },
-        // Aqui você pode adicionar um loop para pegar todas as perícias se desejar
-        timestamp: Date.now()
+function gerarCodigoDeConta() {
+    const usuario = agenteLogado; // Pega o usuário que está logado no momento
+    const dadosLocais = localStorage.getItem('CoC_User_' + usuario);
+    
+    if (!dadosLocais) {
+        alert("Erro: Dados de conta não encontrados.");
+        return;
+    }
+
+    const pacoteConta = {
+        u: usuario,                 // Nome de usuário
+        p: JSON.parse(dadosLocais).password, // Senha
+        d: JSON.parse(dadosLocais), // Todos os dados (fichas, etc)
+        v: "1.0"                    // Versão do sistema
     };
 
-    // 2. Transformar em String e Codificar (Base64)
-    const jsonStr = JSON.stringify(dadosFicha);
+    // Transforma em código COC-
+    const jsonStr = JSON.stringify(pacoteConta);
     const token = "COC-" + btoa(unescape(encodeURIComponent(jsonStr)));
 
-    // 3. Exibir para o usuário
-    const aviso = prompt("COPIE O CÓDIGO ABAIXO E COLE NO CELULAR:", token);
-    
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(token);
-        alert("Código copiado automaticamente! Agora é só colar no outro dispositivo.");
+    // Exibe o código
+    const areaCodigo = document.getElementById('user-sync-code');
+    if (areaCodigo) {
+        areaCodigo.innerText = token;
+    } else {
+        prompt("COPIE SEU CÓDIGO DE CONTA:", token);
     }
 }
 
-function importarTokenNoCelular() {
-    const token = prompt("COLE O CÓDIGO GERADO NO PC:");
-    if (!token || !token.startsWith("COC-")) {
-        alert("Código inválido!");
+function importarConta() {
+    const codigo = document.getElementById('syncCodeInput').value.trim();
+    
+    if(!codigo.startsWith('COC-')) {
+        alert("⚠️ Código inválido! O código deve começar com 'COC-'");
         return;
     }
 
     try {
-        // 1. Decodificar
-        const base64 = token.substring(4);
+        // 1. Decodifica o código
+        const base64 = codigo.substring(4);
         const jsonStr = decodeURIComponent(escape(atob(base64)));
-        const dados = JSON.parse(jsonStr);
+        const conta = JSON.parse(jsonStr);
 
-        // 2. Distribuir os dados nos campos da tela
-        if(dados.info.nome) document.querySelector('[data-key="nome"]').value = dados.info.nome;
-        if(dados.info.ocupacao) document.getElementById('input-ocupacao').value = dados.info.ocupacao;
-        
-        // Atributos
-        for (let attr in dados.atributos) {
-            const input = document.getElementById(`input-${attr}`);
-            if (input) input.value = dados.atributos[attr];
+        // 2. Valida se o código tem as informações de conta (Usuário e Senha)
+        if (!conta.u || !conta.p) {
+            alert("❌ Este código contém apenas dados de uma ficha, não da conta completa.");
+            return;
         }
 
-        // 3. Rodar suas funções de cálculo para atualizar a interface
-        atualizarTudo();
-        calcularPontosOcupacao();
+        // 3. Salva a conta no banco de dados local (LocalStorage) do celular
+        const chave = 'CoC_User_' + conta.u.toLowerCase();
+        localStorage.setItem(chave, JSON.stringify(conta.d));
         
-        alert("✅ Investigador importado com sucesso!");
+        alert(`✅ CONTA IMPORTADA!\nUsuário: ${conta.u}\n\nAgora você já pode fazer login com sua senha.`);
+        
+        // 4. Limpa e volta para a aba de login
+        document.getElementById('syncCodeInput').value = "";
+        switchTab('login');
 
-    } catch (e) {
+    } catch(e) {
         console.error(e);
-        alert("Erro ao ler o código. Verifique se copiou tudo corretamente.");
+        alert("❌ Falha crítica: O código está incompleto ou corrompido.");
     }
 }
 
@@ -2217,6 +2212,31 @@ function selecionarOcupacao(nome) {
         console.error("Erro: Não encontrei o campo 'input-ocupacao'!");
     }
 }
+
+function switchTab(tab) {
+    // Lista de IDs dos formulários
+    const forms = ['login-form', 'signup-form', 'sync-form'];
+    
+    // Esconder todos
+    forms.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
+
+    // Mostrar o selecionado
+    const targetForm = document.getElementById(tab + '-form');
+    if (targetForm) targetForm.style.display = 'block';
+
+    // Gerenciar classe ativa nos botões
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    
+    // Adiciona active no botão que foi clicado
+    event.currentTarget.classList.add('active');
+    
+    // Limpar mensagens de erro ao trocar
+    document.getElementById('login-msg').innerText = '';
+}
+
 
 // Inicialização (Certifique-se que estas linhas existam e estejam fora de outras funções)
 renderPericias();
