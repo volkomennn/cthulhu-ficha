@@ -5,6 +5,166 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Investigador Call of Cthulhu</title>
     <style>
+
+
+/* Esta classe só trava o scroll se o modal estiver aberto */
+body.modal-open {
+    overflow: hidden !important;
+    height: 100vh !important;
+}
+
+/* Garante que o container das perícias e arsenal não suma */
+#periciasContainer {
+    display: flex !important;
+    flex-direction: row !important; /* Lado a lado */
+    flex-wrap: wrap; /* Permite quebrar linha em telas pequenas */
+    gap: 20px;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Garante que cada tabela ocupe metade (ou quase metade) da largura */
+.pericias-table {
+    flex: 1;
+    min-width: 300px; /* Largura mínima para não esmagar no celular */
+    border-collapse: collapse;
+}
+
+
+.modal-overlay {
+    position: fixed !important; /* O !important garante que nada sobressaia */
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.95); /* Fundo bem escuro */
+    display: none; /* O JS vai mudar para 'flex' */
+    z-index: 100000; /* Um valor extremo para ficar na frente de tudo */
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.modal-box {
+    background: #080808;
+    border: 2px solid #00ff00;
+    width: 85%;
+    max-width: 500px;
+    max-height: 85vh;
+    box-shadow: 0 0 50px rgba(0, 255, 0, 0.3);
+    /* Garante que a caixa não herde margens que a empurrem para baixo */
+    margin: auto; 
+    display: flex !important; /* Garante que a caixa se comporte como flex */
+    flex-direction: column;
+    min-height: 200px; /* Garante um tamanho mínimo */
+}
+
+.modal-header {
+    background: #111; padding: 10px; display: flex; justify-content: space-between;
+    border-bottom: 1px solid #333; font-family: monospace; color: #00ff00;
+}
+
+.ocupacoes-grid {
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 10px;
+    padding: 20px; 
+    overflow-y: auto !important; /* Garante que a lista role dentro do modal */
+    flex-grow: 1; /* Faz o grid ocupar o espaço disponível */
+}
+
+.btn-ocupacao-item {
+    background: #0a0a0a; border: 1px solid #222; color: #888;
+    padding: 10px; text-align: left; cursor: pointer;
+    font-size: 11px; transition: 0.2s; text-transform: uppercase;
+}
+
+.btn-ocupacao-item:hover {
+    border-color: #00ff00; color: #00ff00; background: #001100;
+}
+
+
+/* Container principal precisa ser relativo */
+.investigadores-panel {
+    position: relative;
+    transition: all 0.4s ease-in-out;
+    overflow: hidden;
+    min-height: 40px; /* Altura mínima da barra quando minimizado */
+}
+
+/* Botão de janelinha para o painel de fichas */
+.btn-janelinha-fichas {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: transparent;
+    border: 1px solid #333;
+    color: #444;
+    font-size: 10px;
+    cursor: pointer;
+    z-index: 30;
+    padding: 2px 5px;
+}
+
+.btn-janelinha-fichas:hover {
+    color: #00ff00;
+    border-color: #00ff00;
+}
+
+/* Classe de minimização do painel */
+.panel-minimizado {
+    height: 40px !important;
+    width: 200px !important; /* Encolhe a largura também */
+    padding: 0 10px !important;
+    opacity: 0.8;
+}
+
+.panel-minimizado .panel-content {
+    display: none !important;
+}
+
+
+/* Container precisa de posição relativa para o botão se prender a ele */
+.music-player-container {
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+}
+
+/* O botão de janelinha */
+.btn-janelinha {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background: transparent;
+    border: 1px solid #444;
+    color: #666;
+    font-size: 10px;
+    cursor: pointer;
+    z-index: 20;
+    padding: 2px 5px;
+    transition: 0.2s;
+}
+
+.btn-janelinha:hover {
+    color: #00ff00;
+    border-color: #00ff00;
+}
+
+/* Classe de minimização */
+.player-minimizado {
+    width: 60px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    border-color: #222 !important;
+}
+
+.player-minimizado .player-content {
+    display: none; /* Esconde tudo quando minimizado */
+}
+
+
         /* TELA DE LOGIN E CADASTRO ADICIONADA */
         #login-overlay {
     position: fixed;
@@ -34,19 +194,19 @@
     flex-direction: column;
 }
 
-/* Fundo que cobre a tela inteira */
 .modal-overlay {
-    position: fixed !important; /* Fixa na tela, não na div */
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    background: rgba(0, 0, 0, 0.95) !important; 
-    display: none; /* O JS vai mudar para 'flex' */
-    justify-content: center !important;
-    align-items: center !important;
-    z-index: 999999 !important; /* Valor altíssimo para ficar na frente de tudo */
-    backdrop-filter: blur(8px);
+    /* Troque absolute por fixed */
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100vw;   /* Ocupa toda a largura da janela visual */
+    height: 100vh;  /* Ocupa toda a altura da janela visual */
+    background: rgba(0, 0, 0, 0.9); /* Fundo semi-transparente */
+    display: none;
+    z-index: 99999; /* Valor bem alto para ficar na frente de TUDO */
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Impede que a página atrás role enquanto o modal está aberto */
 }
 
 /* Janela centralizada */
@@ -593,7 +753,7 @@
 
 
             </div>
-            <button onclick="realizarCadastro()" style="width: 100%; margin-top: 10px;">REGISTRAR AGENTE</button>
+            <button onclick="realizarCadastro()" style="width: 100%; margin-top: 10px;">REGISTRAR INVESTIGADOR</button>
         </div>
         
         <p id="login-msg" style="font-size: 10px; color: #913a3a; margin-top: 15px;"></p>
@@ -603,46 +763,55 @@
 <div id="bg-particles"></div>
 
 <div id="menu-fichas" class="investigadores-panel">
-    <div style="text-align: center; margin-bottom: 30px;">
-        <img src="https://i.pinimg.com/736x/71/8a/d9/718ad93c88c10dea945392bfa43ed220.jpg" style="width: 60px; border-radius: 50%; filter: grayscale(1); margin-bottom: 10px; border: 1px solid #333;">
-        <h3 style="font-size: 1em; letter-spacing: 4px; border: none; margin: 0;">ARQUIVOS CONFIDENCIAIS</h3>
-        <p style="font-size: 9px; color: #555; letter-spacing: 2px;">SELECIONE UM AGENTE ATIVO</p>
-    </div>
+    <button class="btn-janelinha-fichas" onclick="minimizarFichas()">🗗</button>
 
-    <div id="investigadores-list" style="flex-grow: 1; overflow-y: auto; padding-right: 5px;">
+    <div class="panel-content" id="fichasContent">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <img src="https://i.pinimg.com/736x/71/8a/d9/718ad93c88c10dea945392bfa43ed220.jpg" style="width: 60px; border-radius: 50%; filter: grayscale(1); margin-bottom: 10px; border: 1px solid #333;">
+            <h3 style="font-size: 1em; letter-spacing: 4px; border: none; margin: 0;">ARQUIVOS CONFIDENCIAIS</h3>
+            <p style="font-size: 9px; color: #555; letter-spacing: 2px;">SELECIONE UM INVESTIGADOR ATIVO</p>
         </div>
 
-    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #222;">
-        <button onclick="criarNovoInvestigador()" style="width: 100%; margin-bottom: 12px; background: #0f0f0f;  color: #666; font-weight: bold;">
-            + REGISTRAR NOVO AGENTE
-        </button>
-        <button onclick="location.reload()" style="width: 100%; font-size: 9px; background: #1a1a1a; color: #666;">
-            DESCONECTAR AGENTE
-        </button>
+        <div id="investigadores-list" style="flex-grow: 1; overflow-y: auto; padding-right: 5px;">
+        </div>
+
+        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #222;">
+            <button onclick="criarNovoInvestigador()" style="width: 100%; margin-bottom: 12px; background: #0f0f0f; color: #666; font-weight: bold;">
+                + REGISTRAR NOVO INVESTIGADOR
+            </button>
+            <button onclick="location.reload()" style="width: 100%; font-size: 9px; background: #1a1a1a; color: #666;">
+                DESCONECTAR INVESTIGADOR
+            </button>
+        </div>
     </div>
 </div>
 
 <div class="save-controls">
-    <button onclick="salvarLocal()" style="background: #002200; border-color: #004400; color: #00ff00;">💾 SALVAR AGENTE</button>
-    <button onclick="resetarFicha()" style="background: #332200; border-color: #664400; color: #ffaa00;">🔄 RESETAR FICHA</button>
-    <button onclick="location.reload()" style="background: #330000; border-color: #550000; color: #ff0000;">🔒 SAIR</button>
+    <button onclick="salvarLocal()" style="background: #002200; border-color: #004400; color: #00ff00;">SALVAR INVESTIGADOR</button>
+    <button onclick="resetarFicha()" style="background: #332200; border-color: #664400; color: #ffaa00;">RESETAR FICHA</button>
+    <button onclick="fazerLogout()" style="background: #330000; border-color: #550000; color: #ff0000;">LOGOUT</button>
 </div>
 
-<div class="music-player-container">
-    <img src="https://c.tenor.com/2qFbEpeTPkMAAAAC/tenor.gif" class="gif-musica" alt="Musica">
-    <div style="font-size: 0.9em; color: #fff; margin-bottom: 15px; font-family: monospace; letter-spacing: 1px;">HIP SHOP</div>
-    
-    <audio id="bgMusic" loop>
-        <source src="musicaficha.mp3">
-    </audio>
+<div class="music-player-container" id="playerMusica">
+    <button class="btn-janelinha" onclick="minimizarPlayer()">🗗</button>
 
-    <div class="bar-controls">
-        <button class="btn-ctrl" style="padding: 12px 25px; font-size: 14px;" onclick="document.getElementById('bgMusic').play()">▶ PLAY</button>
-        <button class="btn-ctrl" style="padding: 12px 25px; font-size: 14px;" onclick="document.getElementById('bgMusic').pause()">Ⅱ PAUSE</button>
-    </div>
-    <div style="margin-top: 20px; padding: 0 10px;">
-        <input type="range" id="volSlider" min="0" max="1" step="0.01" value="0.1" oninput="document.getElementById('bgMusic').volume = this.value" style="width: 100%; cursor: pointer; filter: grayscale(1);">
-        <label style="font-size: 10px; color: #666; display: block; margin-top: 5px;">VOLUME MASTER</label>
+    <div class="player-content">
+        <img src="https://c.tenor.com/2qFbEpeTPkMAAAAC/tenor.gif" class="gif-musica" alt="Musica">
+        <div style="font-size: 0.9em; color: #fff; margin-bottom: 15px; font-family: monospace; letter-spacing: 1px;">HIP SHOP</div>
+        
+        <audio id="bgMusic" loop>
+            <source src="musicaficha.mp3">
+        </audio>
+
+        <div class="bar-controls">
+            <button class="btn-ctrl" style="padding: 12px 25px; font-size: 14px;" onclick="document.getElementById('bgMusic').play()">▶ PLAY</button>
+            <button class="btn-ctrl" style="padding: 12px 25px; font-size: 14px;" onclick="document.getElementById('bgMusic').pause()">Ⅱ PAUSE</button>
+        </div>
+        
+        <div style="margin-top: 20px; padding: 0 10px;">
+            <input type="range" id="volSlider" min="0" max="1" step="0.01" value="0.1" oninput="document.getElementById('bgMusic').volume = this.value" style="width: 100%; cursor: pointer; filter: grayscale(1);">
+            <label style="font-size: 10px; color: #666; display: block; margin-top: 5px;">VOLUME MASTER</label>
+        </div>
     </div>
 </div>
 
@@ -664,10 +833,10 @@
         <div class="modal-content">
             <h3 style="color:#5c2020; text-align:left; margin-top:0;">MANUAL DE OPERAÇÕES</h3>
             <div class="modal-text">
-                <p>1. <b>Registro:</b> Clique em "Registrar Novo Agente" no menu principal.</p>
+                <p>1. <b>Registro:</b> Clique em "Registrar Novo Investigador" no menu principal.</p>
                 <p>2. <b>Dados:</b> Preencha as informações e atributos do investigador.</p>
-                <p>3. <b>Salvamento:</b> Role até o fim e clique em "Salvar Agente".</p>
-                <p>4. <b>Múltiplos:</b> O sistema salva seu agente atual antes de criar um novo.</p>
+                <p>3. <b>Salvamento:</b> Role até o fim e clique em "Salvar Investigador".</p>
+                <p>4. <b>Múltiplos:</b> O sistema salva seu investigador atual antes de criar um novo.</p>
             </div>
             <button class="btn-close-modal" onclick="fecharAjuda()">ENTENDIDO</button>
         </div>
@@ -701,8 +870,46 @@
 
             <div class="info-pessoais" id="camposPessoais">
                 <div class="field"><label>Nome</label><input type="text" data-key="nome"></div>
-                <div class="field"><label>Jogador</label><input type="text" data-key="jogador"></div>
-                <div class="field"><label>Ocupação</label><input type="text" data-key="ocupacao"></div>
+                <div class="field"><label>Jogador(a)</label><input type="text" data-key="jogador"></div>
+
+               <div class="field">
+    <label>Ocupação</label>
+
+
+<div class="bloco-ocupacao" style="margin-bottom: 20px;">
+    <label style="color: #666; font-size: 11px; display: block; margin-bottom: 5px;">OCUPAÇÃO ATUAL</label>
+    
+    <div style="display: flex; gap: 10px; align-items: center;">
+        <input type="text" id="input-ocupacao" readonly placeholder="Selecione uma ocupação..." 
+               style="background: #0a0a0a; border: 1px solid #333; color: #00ff00; padding: 10px; flex-grow: 1; font-family: monospace;">
+        
+        <button type="button" onclick="abrirModalOcupacoes()" 
+                style="background: #111; border: 1px solid #00ff00; color: #00ff00; padding: 10px; cursor: pointer;">
+            ALTERAR
+        </button>
+    </div>
+
+    <div style="margin-top: 10px; background: #050505; border: 1px dashed #333; padding: 10px; text-align: center;">
+        <span style="color: #666; font-size: 10px;">PONTOS DE PERÍCIA OCUPACIONAIS:</span>
+        <div id="display-pontos-ocupacao" style="color: #00ff00; font-size: 24px; font-weight: bold; font-family: 'Courier New';">0</div>
+        <small id="formula-usada" style="color: #444; font-size: 9px;"></small>
+    </div>
+</div>
+
+
+</div>
+
+<div id="modal-ocupacoes" class="modal-overlay">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span>SELECIONAR OCUPAÇÃO</span>
+            <button onclick="fecharModalOcupacoes()">X</button>
+        </div>
+        <div id="lista-ocupacoes-grid" class="ocupacoes-grid">
+            </div>
+    </div>
+</div>
+
                 <div class="field"><label>Idade</label><input type="number" id="idade" oninput="atualizarTudo()" value="25" data-key="idade"></div>
                 <div class="field"><label>Gênero</label><input type="text" data-key="genero"></div>
                 <div class="field"><label>Residência</label><input type="text" data-key="residencia"></div>
@@ -831,6 +1038,10 @@
         <div class="grid-pericias" id="periciasContainer"></div>
     </div>
 
+
+    <small id="formula-usada" style="font-size: 9px; color: #444; text-transform: uppercase;"></small>
+</div>
+
     <div class="section">
         <h3>Arsenal</h3>
         <table class="weapon-table">
@@ -918,11 +1129,11 @@ if(!senhaForte) {
 
 
 
-if(localStorage.getItem("CoC_User_" + user)) return msg.innerText = "ESTE AGENTE JÁ ESTÁ REGISTRADO";
+if(localStorage.getItem("CoC_User_" + user)) return msg.innerText = "ESTE INVESTIGADOR JÁ ESTÁ REGISTRADO";
     const userData = { password: pass, investigadores: [] };
     localStorage.setItem("CoC_User_" + user, JSON.stringify(userData));
     msg.style.color = "#00ff00";
-    msg.innerText = "AGENTE REGISTRADO! AGORA FAÇA LOGIN.";
+    msg.innerText = "INVESTIGADOR REGISTRADO! AGORA FAÇA LOGIN.";
     setTimeout(() => switchTab('login'), 1500);
 }
 
@@ -937,15 +1148,13 @@ function realizarLogin() {
     const userData = JSON.parse(savedData);
     if(userData.password !== pass) return msg.innerText = "SENHA INCORRETA";
 
+    // --- AQUI ESTÁ A MUDANÇA ---
     agenteLogado = user;
+    localStorage.setItem("Agente_Sessao_Ativa", user); // Salva o login no dispositivo
     
-    // 1. Esconde o login
+    // Procedimento normal de abrir o painel
     document.getElementById('login-overlay').style.display = "none";
-    
-    // 2. Garante que o fundo está limpo (ficha e player escondidos)
     document.querySelectorAll('.main-content').forEach(el => el.classList.remove('visible'));
-    
-    // 3. Mostra APENAS o painel de Arquivos Confidenciais
     document.getElementById('menu-fichas').classList.add('active'); 
     
     atualizarListaInvestigadores();
@@ -1015,7 +1224,7 @@ function atualizarListaInvestigadores() {
         div.style.cssText = "background:#111; border:1px solid #222; padding:12px; margin-bottom:10px; border-radius:4px;";
         div.innerHTML = `
             <div style="color:#00ff00; font-size:12px; margin-bottom:10px; font-family:monospace; font-weight:bold;">
-                AGENTE: ${inv.nome.toUpperCase()}
+                INVESTIGADOR: ${inv.nome.toUpperCase()}
             </div>
             <div style="display:flex; gap:5px;">
                 <button onclick="abrirFicha(${inv.id})" style="flex:2; background:#002244; color:#00aaff; font-size:10px;">CARREGAR</button>
@@ -1029,7 +1238,7 @@ function atualizarListaInvestigadores() {
 
 
 function renomearInvestigador(id) {
-    const novoNome = prompt("Digite o novo codinome do Agente:");
+    const novoNome = prompt("Digite o novo codinome do Investigador:");
     if(!novoNome || !novoNome.trim()) return;
 
     const savedData = JSON.parse(localStorage.getItem("CoC_User_" + agenteLogado));
@@ -1507,6 +1716,10 @@ function atualizarTudo() {
         v[attr] = parseInt(el.value) || 0;
         document.getElementById(`half-${attr}`).innerText = Math.floor(v[attr] / 2);
         document.getElementById(`fifth-${attr}`).innerText = Math.floor(v[attr] / 5);
+
+        calcularPontosOcupacao();
+        
+        
     });
     const esquivaInput = document.getElementById('p-val-Esquivar');
     if(esquivaInput) {
@@ -1549,17 +1762,78 @@ stats.MAG.atual = Math.min(stats.MAG.atual, stats.MAG.max);
     updateBarVisual('MAG');
     
     const soma = v.FOR + v.TAM;
-    let dx = "0", corpo = "0";
-    if (soma <= 124) { dx = "0"; corpo = "0"; }
-    else if (soma <= 164) { dx = "+1D4"; corpo = "1"; }
-    else { dx = "+1D6"; corpo = "2"; }
+    let dx = "0";
+    let corpo = 0;
+
+    // Tabela Completa de Dano Extra (DX) e Corpo (Build)
+    if (soma <= 64) { 
+        dx = "-2"; corpo = -2; 
+    } else if (soma <= 84) { 
+        dx = "-1"; corpo = -1; 
+    } else if (soma <= 124) { 
+        dx = "0"; corpo = 0; 
+    } else if (soma <= 164) { 
+        dx = "+1D4"; corpo = 1; 
+    } else if (soma <= 204) { 
+        dx = "+1D6"; corpo = 2; 
+    } else if (soma <= 284) { 
+        dx = "+2D6"; corpo = 3; 
+    } else if (soma <= 364) { 
+        dx = "+3D6"; corpo = 4; 
+    } else if (soma <= 444) { 
+        dx = "+4D6"; corpo = 5; 
+    } else { 
+        // Acima de 445 pontos
+        dx = "+5D6"; corpo = 6; 
+    }
+
+    // Aplica os resultados nos elementos da ficha
     document.getElementById('valDX').innerText = dx;
     document.getElementById('valCorpo').innerText = corpo;
-    let mov = 8;
-    if (v.DES < v.TAM && v.FOR < v.TAM) mov = 7;
-    if (v.FOR > v.TAM && v.DES > v.TAM) mov = 9;
-    const idade = parseInt(document.getElementById('idade').value) || 0;
-    document.getElementById('valMOV').innerText = Math.max(1, mov - (idade >= 40 ? 1 : 0));
+
+// 2. Pegar a idade atual do input
+const idade = parseInt(document.getElementById('idade').value) || 0;
+
+// --- CÁLCULO DO MOV BASE (Regra Cthulhu 7ed) ---
+let movBase = 8; // Valor padrão
+
+// Precisamos dos valores de FOR, DES e TAM que estão dentro do objeto 'v'
+if (v.FOR < v.TAM && v.DES < v.TAM) {
+    movBase = 7;
+} else if (v.FOR > v.TAM || v.DES > v.TAM || v.TAM <= 0) { // TAM <= 0 evita bugs se o campo estiver vazio
+    movBase = 9;
+    // Se FOR e DES forem maiores que TAM, o MOV é 9. 
+    // Se FOR e DES forem iguais a TAM, o MOV é 8.
+} else {
+    movBase = 8;
+}
+
+// 2. Pegar a idade atual do input
+const idadeValor = parseInt(document.getElementById('idade').value) || 0;
+
+// 3. Calcular a penalidade baseada na faixa etária
+let penalidadeIdade = 0;
+if (idadeValor >= 80) {
+    penalidadeIdade = 5;
+} else if (idadeValor >= 70) {
+    penalidadeIdade = 4;
+} else if (idadeValor >= 60) {
+    penalidadeIdade = 3;
+} else if (idadeValor >= 50) {
+    penalidadeIdade = 2;
+} else if (idadeValor >= 40) {
+    penalidadeIdade = 1;
+}
+
+// 4. Aplicar a penalidade (garantindo que o MOV mínimo seja 1)
+const movFinal = Math.max(1, movBase - penalidadeIdade);
+
+// 5. Exibir o resultado final no campo correto
+const campoMOV = document.getElementById('valMOV');
+if (campoMOV) {
+    campoMOV.innerText = movFinal;
+}
+
 }
 
 function gerarTodosAtributos() {
@@ -1613,14 +1887,206 @@ function realizarCadastro() {
         return;
     }
 
-    if(localStorage.getItem("CoC_User_" + user)) return msg.innerText = "ESTE AGENTE JÁ ESTÁ REGISTRADO";
+    if(localStorage.getItem("CoC_User_" + user)) return msg.innerText = "ESTE INVESTIGADOR JÁ ESTÁ REGISTRADO";
     
     const userData = { password: pass, investigadores: [] };
     localStorage.setItem("CoC_User_" + user, JSON.stringify(userData));
     msg.style.color = "#00ff00";
-    msg.innerText = "AGENTE REGISTRADO COM SUCESSO!";
+    msg.innerText = "INVESTIGADOR REGISTRADO COM SUCESSO!";
     setTimeout(() => switchTab('login'), 1500);
 }
+
+function minimizarPlayer() {
+    const player = document.getElementById('playerMusica');
+    player.classList.toggle('player-minimizado');
+    
+    // Altera o símbolo do botão dependendo do estado
+    const btn = player.querySelector('.btn-janelinha');
+    if(player.classList.contains('player-minimizado')) {
+        btn.innerText = "🗖"; // Símbolo de expandir
+    } else {
+        btn.innerText = "🗗"; // Símbolo de janelinha/minimizar
+    }
+}
+
+function minimizarFichas() {
+    const painel = document.getElementById('menu-fichas');
+    painel.classList.toggle('panel-minimizado');
+    
+    const btn = painel.querySelector('.btn-janelinha-fichas');
+    if(painel.classList.contains('panel-minimizado')) {
+        btn.innerText = "🗖";
+    } else {
+        btn.innerText = "🗗";
+    }
+}
+
+function fazerLogout() {
+    if(confirm("Deseja realmente encerrar a sessão do Investigador?")) {
+        localStorage.removeItem("Agente_Sessao_Ativa"); // Remove a marcação do dispositivo
+        location.reload(); // Recarrega para voltar à tela de login
+    }
+}
+
+
+// Esta função roda automaticamente quando a página abre
+window.addEventListener('load', () => {
+    const usuarioSalvo = localStorage.getItem("Agente_Sessao_Ativa");
+
+    if (usuarioSalvo && localStorage.getItem("CoC_User_" + usuarioSalvo)) {
+        agenteLogado = usuarioSalvo;
+        document.getElementById('login-overlay').style.display = "none";
+        document.getElementById('menu-fichas').classList.add('active');
+        
+        atualizarListaInvestigadores();
+        
+        // --- ADICIONE ESTE BLOCO AQUI ---
+        // Espera um pouco para os dados preencherem a tela e calcula
+        setTimeout(() => {
+            atualizarTudo();
+            calcularPontosOcupacao();
+            console.log("Cálculos automáticos aplicados para: " + usuarioSalvo);
+        }, 500); 
+        // --------------------------------
+    }
+});
+
+
+const dadosOcupacoes = {
+    "Advogado": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
+    "Andarilho": { formula: (v) => (v.EDU * 2) + (Math.max(v.APA, v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE APA/DES/FOR] × 2" },
+    "Antiquário": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
+    "Artista": { formula: (v) => (v.EDU * 2) + (Math.max(v.POD, v.DES) * 2), texto: "EDU × 2 + [MAIOR ENTRE POD/DES] × 2" },
+    "Atleta": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/FOR] × 2" },
+    "Autor": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
+    "Bibliotecário": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
+    "Clero, Membro do": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
+    "Criminoso": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/FOR] × 2" },
+    "Detetive Particular": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/FOR] × 2" },
+    "Diletante": { formula: (v) => (v.EDU * 2) + (v.APA * 2), texto: "EDU × 2 + APA × 2" },
+    "Engenheiro": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
+    "Fanático": { formula: (v) => (v.EDU * 2) + (Math.max(v.APA, v.POD) * 2), texto: "EDU × 2 + [MAIOR ENTRE APA/POD] × 2" },
+    "Fazendeiro": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/FOR] × 2" },
+    "Hacker": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
+    "Investigador de Polícia": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/FOR] × 2" },
+    "Jornalista": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
+    "Médico": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
+    "Membro de Tribo": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/FOR] × 2" },
+    "Missionário": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
+    "Músico": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.POD) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/POD] × 2" },
+    "Oficial de Polícia": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/FOR] × 2" },
+    "Oficial Militar": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/FOR] × 2" },
+    "Parapsicólogo": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
+    "Piloto": { formula: (v) => (v.EDU * 2) + (v.DES * 2), texto: "EDU × 2 + DES × 2" },
+    "Professor": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
+    "Profissional de Entretenimento": { formula: (v) => (v.EDU * 2) + (v.APA * 2), texto: "EDU × 2 + APA × 2" },
+    "Soldado": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/FOR] × 2" }
+};
+
+// Função para calcular os pontos baseada na ocupação atual
+function calcularPontosOcupacao() {
+    const inputOcupa = document.getElementById('input-ocupacao');
+    const display = document.getElementById('display-pontos-ocupacao');
+    const formulaLabel = document.getElementById('formula-usada');
+
+    if (!inputOcupa || !display) return;
+
+    const nomeOcupacao = inputOcupa.value;
+    const ocupacao = dadosOcupacoes[nomeOcupacao];
+
+    if (ocupacao) {
+        // CORREÇÃO DOS IDS: Usando o padrão 'input-NOME' que você definiu no renderizador
+        const atributos = {
+            FOR: parseInt(document.getElementById('input-FOR')?.value) || 0,
+            DES: parseInt(document.getElementById('input-DES')?.value) || 0,
+            EDU: parseInt(document.getElementById('input-EDU')?.value) || 0,
+            APA: parseInt(document.getElementById('input-APA')?.value) || 0,
+            POD: parseInt(document.getElementById('input-POD')?.value) || 0,
+            TAM: parseInt(document.getElementById('input-TAM')?.value) || 0
+        };
+
+        console.log("Valores reais encontrados para cálculo:", atributos);
+
+        const pontos = ocupacao.formula(atributos);
+        display.innerText = pontos;
+        
+        if (formulaLabel) formulaLabel.innerText = ocupacao.texto;
+        console.log("Sucesso! Pontos calculados:", pontos);
+    } else {
+        display.innerText = "0";
+        if (formulaLabel) formulaLabel.innerText = "SELECIONE UMA OCUPAÇÃO";
+    }
+}
+
+
+let scrollPosicaoOriginal = 0;
+
+function abrirModalOcupacoes() {
+    // Salva a posição atual
+    scrollPosicaoOriginal = window.pageYOffset || document.documentElement.scrollTop;
+    
+    const modal = document.getElementById('modal-ocupacoes');
+    const grid = document.getElementById('lista-ocupacoes-grid');
+
+    // Preenche o grid (Garante que dadosOcupacoes existe)
+    if (typeof dadosOcupacoes !== 'undefined') {
+        grid.innerHTML = "";
+        Object.keys(dadosOcupacoes).forEach(ocupa => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-ocupacao-item';
+            btn.innerText = ocupa;
+            btn.onclick = () => selecionarOcupacao(ocupa);
+            grid.appendChild(btn);
+        });
+    }
+
+    modal.style.display = 'flex';
+
+    // Trava o scroll
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollPosicaoOriginal}px`;
+    document.body.style.width = '100%';
+}
+
+function fecharModalOcupacoes() {
+    const modal = document.getElementById('modal-ocupacoes');
+    if (modal) modal.style.display = 'none';
+
+    // DESTRAVA o scroll limpando todas as propriedades
+    document.body.style.removeProperty('overflow');
+    document.body.style.removeProperty('position');
+    document.body.style.removeProperty('top');
+    document.body.style.removeProperty('width');
+
+    // Volta para a posição onde o usuário estava
+    window.scrollTo(0, scrollPosicaoOriginal);
+}
+
+function selecionarOcupacao(nome) {
+    const input = document.getElementById('input-ocupacao');
+    
+    if (input) {
+        input.value = nome;
+        console.log("Ocupação selecionada:", nome);
+
+        // Fecha o modal e limpa o scroll
+        fecharModalOcupacoes();
+
+        // FORÇA O CÁLCULO IMEDIATO
+        calcularPontosOcupacao();
+
+        // Dispara evento para salvar no localStorage (se você usar)
+        input.dispatchEvent(new Event('input'));
+    } else {
+        console.error("Erro: Não encontrei o campo 'input-ocupacao'!");
+    }
+}
+
+// Inicialização (Certifique-se que estas linhas existam e estejam fora de outras funções)
+renderPericias();
+if (typeof addWeaponRow === "function") addWeaponRow(); 
+atualizarTudo();
 
 
 renderPericias();
