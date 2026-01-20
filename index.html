@@ -720,7 +720,6 @@ body.modal-open {
         <div class="login-tabs">
             <button class="tab-btn active" id="btn-login-tab" onclick="switchTab('login')">ENTRAR</button>
             <button class="tab-btn" id="btn-signup-tab" onclick="switchTab('signup')">CRIAR CONTA</button>
-            <button class="tab-btn" id="btn-sync-tab" onclick="switchTab('sync')">SINCRONIZAR</button>
         </div>
 
         <div id="login-form">
@@ -743,31 +742,15 @@ body.modal-open {
             <div class="input-group">
                 <label>CRIAR SENHA</label>
                 <input type="password" id="signupPass" style="width: 100%;">
-                
-                <div id="password-requirements" class="req-container">
-                    <div id="req-length" class="req-item">Mínimo 6 caracteres</div>
-                    <div id="req-upper" class="req-item">1 Letra maiúscula</div>
-                    <div id="req-lower" class="req-item">1 Letra minúscula</div>
-                    <div id="req-number" class="req-item">1 Número</div>
-                    <div id="req-special" class="req-item">1 Caractere especial</div>
-                </div>
-            </div>
-            <button onclick="realizarCadastro()" style="width: 100%; margin-top: 10px;">REGISTRAR INVESTIGADOR</button>
-        </div>
 
-        <div id="sync-form" style="display: none; padding: 10px;">
-            <p style="font-size: 11px; color: #888; margin-bottom: 15px;">Cole o código gerado no seu PC para importar o investigador:</p>
-            <div class="input-group">
-                <label>CÓDIGO COC-</label>
-                <input type="text" id="syncCodeInput" placeholder="Cole aqui...">
-            </div>
-            <button onclick="importarConta()" style="width: 100%;">IMPORTAR INVESTIGADOR</button>
-            <p style="font-size: 9px; color: #555; margin-top: 15px;">*Isso salvará a conta neste navegador.</p>
-        </div>
-        
-        <p id="login-msg" style="font-size: 10px; color: #913a3a; margin-top: 15px;"></p>
-    </div>
+                <div id="password-requirements" class="req-container">
+    <div id="req-length" class="req-item">• Mínimo 6 caracteres</div>
+    <div id="req-upper" class="req-item">• 1 Letra maiúscula</div>
+    <div id="req-lower" class="req-item">• 1 Letra minúscula</div>
+    <div id="req-number" class="req-item">• 1 Número</div>
+    <div id="req-special" class="req-item">• 1 Caractere especial</div>
 </div>
+
 
             </div>
             <button onclick="realizarCadastro()" style="width: 100%; margin-top: 10px;">REGISTRAR INVESTIGADOR</button>
@@ -807,7 +790,6 @@ body.modal-open {
     <button onclick="salvarLocal()" style="background: #002200; border-color: #004400; color: #00ff00;">SALVAR INVESTIGADOR</button>
     <button onclick="resetarFicha()" style="background: #332200; border-color: #664400; color: #ffaa00;">RESETAR FICHA</button>
     <button onclick="fazerLogout()" style="background: #330000; border-color: #550000; color: #ff0000;">LOGOUT</button>
-    <button onclick="gerarCodigoDeConta()" style="background: #004400; color: #00ff00; border: 1px solid #00ff00;">GERAR CÓDIGO</button>
 </div>
 
 <div class="music-player-container" id="playerMusica">
@@ -1727,47 +1709,6 @@ function rollCustomDice() {
     }
 }
 
-
-// Função para mudar de aba (atualize a sua existente)
-function switchTab(tab) {
-    document.getElementById('login-form').style.display = (tab === 'login') ? 'block' : 'none';
-    document.getElementById('signup-form').style.display = (tab === 'signup') ? 'block' : 'none';
-    document.getElementById('sync-form').style.display = (tab === 'sync') ? 'block' : 'none';
-    
-    // Remove 'active' de todos e coloca no clicado
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
-}
-
-// Função que lê o código e preenche a ficha
-function importarConta() {
-    const codigo = document.getElementById('syncCodeInput').value.trim();
-    
-    if(!codigo.startsWith('COC-')) {
-        alert("Código inválido! Certifique-se de copiar o código inteiro começando com COC-");
-        return;
-    }
-
-    try {
-        // Decodifica o código (Base64 para JSON)
-        const base64 = codigo.substring(4);
-        const dadosPuros = decodeURIComponent(escape(atob(base64)));
-        const dadosObjeto = JSON.parse(dadosPuros);
-
-        // Salva no LocalStorage do celular como se você tivesse criado a conta ali
-        const chave = 'CoC_User_' + dadosObjeto.u.toLowerCase();
-        localStorage.setItem(chave, JSON.stringify(dadosObjeto.d));
-        
-        alert("✅ Investigador " + dadosObjeto.u + " importado! Agora é só fazer login normalmente nesta aba.");
-        switchTab('login');
-        
-    } catch(e) {
-        alert("Erro ao processar o código. Ele pode estar incompleto.");
-    }
-}
-
-
-
 function atualizarTudo() {
     let v = {};
     todosAtributos.forEach(attr => {
@@ -2078,69 +2019,6 @@ function calcularPontosOcupacao() {
 }
 
 
-// ====================================
-// MOTOR DE SINCRONIZAÇÃO VIA TOKEN
-// ====================================
-
-function gerarCodigoDeConta() {
-    const usuario = agenteLogado; 
-    const dadosLocais = localStorage.getItem('CoC_User_' + usuario);
-    
-    if (!dadosLocais) return alert("Erro: Conta não encontrada.");
-
-    const pacoteConta = {
-        u: usuario,
-        p: JSON.parse(dadosLocais).password,
-        d: JSON.parse(dadosLocais),
-        v: "1.0"
-    };
-
-    // Converte para String e depois para Base64 (UTF-8 safe)
-    const jsonStr = JSON.stringify(pacoteConta);
-    const token = "COC-" + btoa(unescape(encodeURIComponent(jsonStr)));
-
-    // Tenta copiar automaticamente para não ter erro de "dedo"
-    navigator.clipboard.writeText(token).then(() => {
-        alert("✅ CÓDIGO COPIADO!\nO código da conta '" + usuario + "' já está na sua área de transferência. É só colar no celular.");
-    }).catch(err => {
-        // Se a cópia automática falhar, mostra no prompt
-        prompt("Copie o código abaixo (CUIDADO PARA COPIAR TUDO):", token);
-    });
-}
-
-function importarConta() {
-    // Remove espaços, quebras de linha e o "..." caso tenha vindo junto
-    let codigo = document.getElementById('syncCodeInput').value.trim().replace(/\s/g, '');
-    
-    if(!codigo.startsWith('COC-')) {
-        alert("⚠️ Código inválido! Comece com 'COC-'");
-        return;
-    }
-
-    try {
-        const base64 = codigo.substring(4);
-        // Decodifica lidando com caracteres especiais
-        const jsonStr = decodeURIComponent(escape(atob(base64)));
-        const conta = JSON.parse(jsonStr);
-
-        if (!conta.u || !conta.p) {
-            throw new Error("Formato de conta inválido");
-        }
-
-        const chave = 'CoC_User_' + conta.u.toLowerCase();
-        localStorage.setItem(chave, JSON.stringify(conta.d));
-        
-        alert(`✅ SUCESSO!\nConta: ${conta.u}\n\nFaça login agora na aba ENTRAR.`);
-        switchTab('login');
-
-    } catch(e) {
-        console.error(e);
-        alert("❌ O código está incompleto. Certifique-se de que copiou o código INTEIRO. Se houver '...' no meio, o código foi cortado!");
-    }
-}
-
-
-
 let scrollPosicaoOriginal = 0;
 
 function abrirModalOcupacoes() {
@@ -2204,31 +2082,6 @@ function selecionarOcupacao(nome) {
         console.error("Erro: Não encontrei o campo 'input-ocupacao'!");
     }
 }
-
-function switchTab(tab) {
-    // Lista de IDs dos formulários
-    const forms = ['login-form', 'signup-form', 'sync-form'];
-    
-    // Esconder todos
-    forms.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.style.display = 'none';
-    });
-
-    // Mostrar o selecionado
-    const targetForm = document.getElementById(tab + '-form');
-    if (targetForm) targetForm.style.display = 'block';
-
-    // Gerenciar classe ativa nos botões
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    
-    // Adiciona active no botão que foi clicado
-    event.currentTarget.classList.add('active');
-    
-    // Limpar mensagens de erro ao trocar
-    document.getElementById('login-msg').innerText = '';
-}
-
 
 // Inicialização (Certifique-se que estas linhas existam e estejam fora de outras funções)
 renderPericias();
