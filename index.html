@@ -116,11 +116,11 @@ body.modal-open {
 
 .modal-box {
     background: #080808;
-    border: 2px solid #00ff00;
+    border: 2px solid #721717;
     width: 85%;
     max-width: 500px;
     max-height: 85vh;
-    box-shadow: 0 0 50px rgba(0, 255, 0, 0.3);
+    box-shadow: 0 0 50px rgba(104, 7, 7, 0.3);
     /* Garante que a caixa não herde margens que a empurrem para baixo */
     margin: auto; 
     display: flex !important; /* Garante que a caixa se comporte como flex */
@@ -130,7 +130,7 @@ body.modal-open {
 
 .modal-header {
     background: #111; padding: 10px; display: flex; justify-content: space-between;
-    border-bottom: 1px solid #333; font-family: monospace; color: #00ff00;
+    border-bottom: 1px solid #333; font-family: monospace; color: #721717;
 }
 
 .ocupacoes-grid {
@@ -149,7 +149,7 @@ body.modal-open {
 }
 
 .btn-ocupacao-item:hover {
-    border-color: #00ff00; color: #00ff00; background: #001100;
+    border-color: #ffffff; color: #ffffff; background: #1f0101;
 }
 
 
@@ -176,8 +176,8 @@ body.modal-open {
 }
 
 .btn-janelinha-fichas:hover {
-    color: #00ff00;
-    border-color: #00ff00;
+    color: #ffffff;
+    border-color: #000000;
 }
 
 /* Classe de minimização do painel */
@@ -319,17 +319,18 @@ body.modal-open {
 /* Estilo do botão "Como usar?" na ficha */
 .btn-ajuda-top {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 30px; /* ← MUDEI DE 20px PARA 30px */
+    right: 30px; /* ← MUDEI DE 20px PARA 30px */
     font-size: 10px;
     background: #003300;
     border: 1px solid #00ff00;
     color: #00ff00;
-    padding: 5px 12px;
+    padding: 8px 16px; /* ← AUMENTEI O PADDING */
     cursor: pointer;
     z-index: 100;
     text-transform: uppercase;
     font-weight: bold;
+    letter-spacing: 1px; /* ← ADICIONEI */
 }
 
 
@@ -557,16 +558,16 @@ body.modal-open {
         }
 
         h1, h2, h3 { 
-            text-align: center; 
-            color: #ffffff; 
-            text-transform: uppercase; 
-            letter-spacing: 5px; 
-            font-weight: 300;
-            margin-bottom: 25px;
-            border-bottom: 1px solid #333;
-            display: block;
-            padding-bottom: 10px;
-        }
+    text-align: center; 
+    color: #ffffff; 
+    text-transform: uppercase; 
+    letter-spacing: 5px; 
+    font-weight: 300;
+    margin-bottom: 35px; /* ← MUDEI DE 25px PARA 35px */
+    border-bottom: 1px solid #333;
+    display: block;
+    padding-bottom: 15px; /* ← MUDEI DE 10px PARA 15px */
+}
 
         .section { 
             margin-bottom: 35px; 
@@ -576,7 +577,13 @@ body.modal-open {
             box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
         }
 
-        .header-ficha { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+        .header-ficha { 
+    display: flex; 
+    gap: 30px; 
+    flex-wrap: wrap; 
+    align-items: flex-start; 
+    justify-content: center; /* ← ADICIONE ESTA LINHA */
+}
         
         .foto-wrapper {
             position: sticky;
@@ -594,15 +601,26 @@ body.modal-open {
         .foto-container img { width: 100%; height: 100%; object-fit: cover; }
         .foto-placeholder { text-align: center; color: #444; font-size: 0.7em; letter-spacing: 2px; }
 
-        .info-pessoais { flex: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
+       .info-pessoais { 
+    flex: 1; 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* ← MUDEI DE 180px PARA 200px */
+    gap: 20px; 
+    max-width: 650px; /* ← ADICIONE ESTA LINHA PARA LIMITAR A LARGURA */
+}
         .field { display: flex; flex-direction: column; }
         label { font-size: 0.7em; margin-bottom: 6px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
         
         input { 
-            background: #000; color: #913a3a; border: 1px solid #222; 
-            padding: 10px; border-radius: 0; font-family: 'Courier New', monospace;
-            transition: 0.3s;
-        }
+    background: #000; 
+    color: #913a3a; 
+    border: 1px solid #222; 
+    padding: 10px; 
+    border-radius: 0; 
+    font-family: 'Courier New', monospace;
+    transition: 0.3s;
+    font-size: 13px; /* ← ADICIONE ESTA LINHA */
+}
         input:focus { border-color: #555; outline: none; background: #050505; }
 
         button { 
@@ -620,13 +638,43 @@ body.modal-open {
         .btn-remove-weapon { background: #300; color: #fff; border: none; padding: 2px 8px; cursor: pointer; transition: 0.3s; }
         .btn-remove-weapon:hover { background: #f00; }
 
-        .grid-pericias { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .grid-pericias { 
+    min-height: 200px;  
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 20px; 
+}
 
         .dice-roller { background: #0a0a0a; border: 1px solid #222; padding: 25px; margin-bottom: 30px; text-align: center; }
         .dice-display { margin-top: 15px; font-family: 'Courier New', monospace; font-size: 1.3em; color: #fff; background: #000; padding: 15px; border: 1px solid #1a1a1a; }
 
         .grid-atributos { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
         .attr-card { background: #0f0f0f; padding: 20px; border: 1px solid #222; text-align: center; position: relative; }
+
+/* Tooltip para atributos */
+.attr-tooltip {
+    display: none;
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 280px;
+    background: #050505;
+    border: 1px solid #721717;
+    padding: 12px;
+    z-index: 999;
+    font-size: 10px;
+    color: #ccc;
+    font-family: monospace;
+    line-height: 1.5;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.8);
+    pointer-events: none;
+}
+
+.attr-card:hover .attr-tooltip {
+    display: block;
+}
+
         .sub-vals { font-size: 0.7em; color: #555; margin-top: 12px; border-top: 1px solid #1a1a1a; padding-top: 8px; }
         
         .status-container-complex { display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px; }
@@ -777,6 +825,564 @@ body.modal-open {
     content: "✔";
 }
 
+
+/* Estilo do nome da perícia para indicar que tem informação */
+.pericia-nome {
+    color: #888;
+    cursor: help;
+    border-bottom: 1px dotted #444; /* Linha pontilhada sutil */
+    display: inline-block;
+    width: 100%;
+    transition: color 0.3s;
+    font-size: 15px;
+}
+
+.pericia-nome:hover {
+    color: #b00; /* Fica vermelho escuro ao passar o mouse */
+}
+
+/* Customização do Tooltip (opcional, dependendo do navegador) */
+[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    background: #111;
+    color: #ccc;
+    border: 1px solid #600;
+    padding: 8px;
+    font-size: 11px;
+    z-index: 999;
+    width: 200px;
+    white-space: normal;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.8);
+    pointer-events: none; /* Não atrapalha o clique */
+}
+
+
+/* Efeito especial apenas para quando for Nível de Crédito */
+span.pericia-nome[title*="padrão de vida"] {
+    color: #ff0 !important;
+    text-shadow: 0 0 5px rgba(255, 255, 0, 0.4);
+}
+
+
+/* Container que segura o texto e o balão */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+}
+
+/* O Balão de Mensagem */
+.tooltip-box {
+    visibility: hidden;
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220px;
+    background-color: #000;
+    color: #ff0;
+    text-align: center;
+    padding: 10px;
+    z-index: 1000;
+    font-size: 11px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    
+    /* A mágica da borda radiante */
+    border: 2px solid transparent;
+    border-image: linear-gradient(0deg, #330, #ff0, #330) 1;
+    animation: bordaGira 2s linear infinite;
+    box-shadow: 0 0 15px rgba(255, 255, 0, 0.2);
+}
+
+/* Mostrar ao passar o mouse */
+.tooltip-container:hover .tooltip-box {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Animação que faz a luz "correr" pela borda */
+@keyframes bordaGira {
+    0% {
+        border-image-source: linear-gradient(0deg, #330, #ff0, #330);
+    }
+    25% {
+        border-image-source: linear-gradient(90deg, #330, #ff0, #330);
+    }
+    50% {
+        border-image-source: linear-gradient(180deg, #330, #ff0, #330);
+    }
+    75% {
+        border-image-source: linear-gradient(270deg, #330, #ff0, #330);
+    }
+    100% {
+        border-image-source: linear-gradient(360deg, #330, #ff0, #330);
+    }
+}
+
+/* Estilo extra para o texto brilhar levemente */
+.tooltip-box {
+    text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Container que envolve o nome da perícia e o balão */
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+/* O Balão de Mensagem que aparece ao passar o mouse */
+.tooltip-box {
+    visibility: hidden;
+    position: absolute;
+    bottom: 125%; /* Aparece acima do nome */
+    left: 0;
+    width: 220px;
+    background-color: #000; /* Fundo preto total */
+    padding: 10px;
+    z-index: 1000;
+    font-size: 11px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+}
+
+/* Faz o balão aparecer no Hover */
+.tooltip-wrapper:hover .tooltip-box {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* A BORDA RADIANTE AMARELA (Exclusiva para Nível de Crédito) */
+.borda-amarela-animada {
+    color: #ff0 !important; /* Texto amarelo */
+    border: 2px solid transparent;
+    border-image: linear-gradient(0deg, #440, #ff0, #440) 1;
+    animation: bordaGira 1.2s linear infinite; /* Velocidade rápida */
+    box-shadow: 0 0 15px rgba(255, 255, 0, 0.3);
+    text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
+}
+
+/* Borda padrão vermelha para as outras perícias */
+.borda-padrao {
+    color: #ccc;
+    border: 1px solid #600; /* Vermelho escuro para combinar com o tema */
+}
+
+/* Animação que faz a luz correr (Cima -> Direita -> Baixo -> Esquerda) */
+@keyframes bordaGira {
+    0%   { border-image-source: linear-gradient(0deg, #330, #ff0, #330); }
+    25%  { border-image-source: linear-gradient(90deg, #330, #ff0, #330); }
+    50%  { border-image-source: linear-gradient(180deg, #330, #ff0, #330); }
+    75%  { border-image-source: linear-gradient(270deg, #330, #ff0, #330); }
+    100% { border-image-source: linear-gradient(360deg, #330, #ff0, #330); }
+}
+
+
+/* === SISTEMA DE ABAS === */
+.tabs-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #222;
+    padding-bottom: 0;
+}
+
+.tab-button {
+    background: #0a0a0a;
+    border: 1px solid #333;
+    border-bottom: none;
+    color: #666;
+    padding: 12px 30px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 11px;
+    letter-spacing: 2px;
+    position: relative;
+    top: 2px;
+}
+
+.tab-button:hover {
+    background: #111;
+    color: #aaa;
+}
+
+.tab-button.active {
+    background: #1a1a1a;
+    color: #fff;
+    border-color: #666;
+    border-bottom: 2px solid #1a1a1a;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.antecedentes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.antecedente-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.antecedente-field label {
+    font-size: 10px;
+    color: #666;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.antecedente-field textarea {
+    background: #000;
+    border: 1px solid #222;
+    color: #ccc;
+    padding: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    resize: vertical;
+    min-height: 80px;
+}
+
+.antecedente-field textarea:focus {
+    border-color: #555;
+    outline: none;
+}
+
+.inventario-lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.item-inventario {
+    background: #0a0a0a;
+    border: 1px solid #222;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.item-inventario input {
+    background: #000;
+    border: 1px solid #333;
+    color: #ccc;
+    padding: 8px;
+}
+
+/* === CORES PARA PERÍCIAS === */
+.pericia-color-marker {
+    display: none; /* Começa escondido */
+    gap: 5px;
+    margin-top: 5px;
+    padding: 5px;
+    background: #050505;
+    border: 1px solid #222;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.pericia-color-marker.visible {
+    display: flex; /* Mostra quando tiver a classe 'visible' */
+}
+
+.color-cube {
+    width: 14px;
+    height: 14px;
+    border: 1px solid #000;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.color-cube:hover {
+    transform: scale(1.3);
+    box-shadow: 0 0 8px currentColor;
+}
+
+.color-cube.selected {
+    box-shadow: 0 0 10px currentColor, inset 0 0 5px rgba(255,255,255,0.3);
+    border-width: 2px;
+    transform: scale(1.2);
+}
+
+.btn-toggle-cor {
+    background: #0a0a0a;
+    border: 1px solid #333;
+    color: #666;
+    padding: 3px 8px;
+    font-size: 9px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-toggle-cor:hover {
+    background: #1a1a1a;
+    color: #aaa;
+    border-color: #555;
+}
+
+.btn-toggle-cor.active {
+    background: #1a1a1a;
+    color: #00ff00;
+    border-color: #00ff00;
+}
+
+/* === CHECKBOXES DE STATUS === */
+.status-checks {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+    padding: 20px;
+    background: #0a0a0a;
+    border: 1px solid #222;
+}
+
+.status-check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: #050505;
+    border: 1px solid #1a1a1a;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.status-check-item:hover {
+    border-color: #444;
+}
+
+.status-check-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #8a0000;
+}
+
+.status-check-item label {
+    font-size: 11px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin: 0;
+}
+
+.status-check-item.checked {
+    border-color: #8a0000;
+    background: rgba(138, 0, 0, 0.1);
+}
+
+.status-check-item.checked label {
+    color: #ff4444;
+}
+
+
+.status-vida-container {
+    margin-top: 10px;
+}
+
+.box-vida {
+    background: #050505;
+    border: 1px solid #444;
+    padding: 10px;
+    text-align: center;
+    cursor: help;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* Quando o mouse passa, a borda brilha conforme a classe ativa via JS */
+.box-vida:hover {
+    background: #0a0a0a;
+}
+
+.valor-vida {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 5px;
+}
+
+/* Estilização dinâmica para cada nível (serão aplicadas via JS) */
+.vida-pobretao { border-color: #333; color: #666; }
+.vida-pobre { border-color: #840; color: #a50; }
+.vida-medio { border-color: #060; color: #0a0; }
+.vida-abastado { border-color: #ff0; color: #ff0; box-shadow: inset 0 0 10px rgba(255,255,0,0.1); }
+.vida-rico { border-color: #f0f; color: #f0f; box-shadow: inset 0 0 10px rgba(255,0,255,0.1); }
+
+.btn-reset-cor {
+    background: #222;
+    border: 1px solid #444;
+    color: #666;
+    font-size: 9px;
+    padding: 2px 6px;
+    cursor: pointer;
+    margin-left: 4px;
+    transition: all 0.2s;
+    font-family: monospace;
+}
+
+.btn-reset-cor:hover {
+    background: #400; /* Fica levemente vermelho ao passar o mouse */
+    color: #ff4444;
+    border-color: #800;
+}
+
+/* Ajuste opcional para manter os botões alinhados na mesma linha */
+.btn-toggle-cor {
+    /* Garanta que o botão COR tenha o display inline ou similar */
+    padding: 2px 8px;
+    font-size: 10px;
+}
+
+
+.user-account-bar {
+    position: fixed;
+    top: 365px; /* Ajuste para ficar logo abaixo do player */
+    left: 20px;
+    width: 230px; /* Alinhado com a largura do player */
+    background: #0a0a0a; /* Fundo preto sólido */
+    border: 1px solid #333; /* Borda cinza chumbo */
+    border-left: 3px solid #666; /* Detalhe lateral em cinza médio (Noir) */
+    padding: 8px 12px;
+    z-index: 9998;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
+    animation: flyInPlayer 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.user-account-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-status-light {
+    width: 6px;
+    height: 6px;
+    background: #00ff00; /* Mantém o verde para indicar 'sistema ativo' */
+    border-radius: 50%;
+    box-shadow: 0 0 4px #00ff00;
+}
+
+.user-label {
+    font-family: monospace;
+    font-size: 8px;
+    color: #444; /* Cinza escuro */
+    letter-spacing: 1px;
+}
+
+.user-value {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: #aaa; /* Cinza claro/metálico */
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+@keyframes flyInPlayer {
+    0% { transform: translateX(120%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+
+#login-overlay {
+    /* O quarto número (0.8) é a transparência: 
+       0.0 (totalmente invisível) até 1.0 (totalmente opaco) */
+    background-color: rgba(0, 0, 0, 1) !important; 
+    
+    /* Opcional: Adiciona um desfoque no que está atrás */
+    backdrop-filter: blur(5px); 
+}
+
+.tooltip-pericias {
+    position: relative;
+    cursor: help;
+    color: #00ff00; /* Cor de destaque */
+    border-bottom: 1px dashed #555;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    width: 250px;
+    background-color: #0a0a0a;
+    color: #ccc;
+    text-align: left;
+    border: 1px solid #721717;
+    padding: 10px;
+    position: absolute;
+    z-index: 100;
+    bottom: 125%; /* Aparece acima do texto */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 11px;
+    line-height: 1.4;
+    font-family: monospace;
+    pointer-events: none;
+    box-shadow: 0 0 15px #000;
+}
+
+.tooltip-pericias:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+.tooltip-pericias {
+    position: relative;
+    cursor: help;
+    color: #00ff00; /* Cor de destaque */
+    border-bottom: 1px dashed #555;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    width: 250px;
+    background-color: #0a0a0a;
+    color: #ccc;
+    text-align: left;
+    border: 1px solid #721717;
+    padding: 10px;
+    position: absolute;
+    z-index: 100;
+    bottom: 125%; /* Aparece acima do texto */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 11px;
+    line-height: 1.4;
+    font-family: monospace;
+    pointer-events: none;
+    box-shadow: 0 0 15px #000;
+}
+
+.tooltip-pericias:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+
     </style>
 </head>
 <body>
@@ -799,7 +1405,7 @@ body.modal-open {
                 <label>SENHA DE ACESSO</label>
                 <input type="password" id="loginPass" style="width: 100%;">
             </div>
-            <button onclick="realizarLogin()" style="width: 100%; margin-top: 10px;">ABRIR ARQUIVO</button>
+            <button onclick="realizarLogin()" class="btn-login">ABRIR ARQUIVO</button>
         </div>
 
         <div id="signup-form" style="display: none;">
@@ -831,7 +1437,7 @@ body.modal-open {
                 </div>
             </div>
         </p>
-            <div class="footer-right">
+            <div class="footer">
                 <a href="https://www.tiktok.com/@volkomennnnn" target="_blank" class="social-link">
                     <img src="https://cdn.discordapp.com/emojis/1380004958329376841.webp?size=40" class="social-icon"> TikTok
                 </a>
@@ -879,7 +1485,7 @@ body.modal-open {
     <button onclick="salvarLocal()" style="background: #002200; border-color: #004400; color: #00ff00;">SALVAR INVESTIGADOR</button>
     <button onclick="resetarFicha()" style="background: #332200; border-color: #664400; color: #ffaa00;">RESETAR FICHA</button>
     <button onclick="fazerLogout()" style="background: #330000; border-color: #550000; color: #ff0000;">LOGOUT</button>
-    <div style="margin-top: 20px; display: flex; gap: 10px; padding: 10px; border-top: 1px solid #222;"><button onclick="exportarFichaJSON()" style="flex: 1; background: #051a05; color: #00ff00; border-color: #004400;">💾 EXPORTAR FICHA (.json)</button>
+    <div style="margin-top: 20px; display: flex; gap: 10px; padding: 10px; border-top: 1px solid #222;"><button onclick="exportarFichaJSON()" style="flex: 1; background: #1a1a1a; color: #888; border-color: #333;">💾 EXPORTAR FICHA (.json)</button>
     <button onclick="document.getElementById('fileInputFicha').click()" style="flex: 1; background: #1a1a1a; color: #888; border-color: #333;">📂 IMPORTAR FICHA (.json)</button><input type="file" id="fileInputFicha" style="display: none;" accept=".json" onchange="importarFichaJSON(event)">
 </div>
 </div>
@@ -887,7 +1493,6 @@ body.modal-open {
 
 <div class="music-player-container" id="playerMusica">
     <button class="btn-janelinha" onclick="minimizarPlayer()">🗗</button>
-
     <div class="player-content">
         <img src="https://c.tenor.com/2qFbEpeTPkMAAAAC/tenor.gif" class="gif-musica" alt="Musica">
         <div style="font-size: 0.9em; color: #fff; margin-bottom: 15px; font-family: monospace; letter-spacing: 1px;">HIP SHOP</div>
@@ -897,14 +1502,22 @@ body.modal-open {
         </audio>
 
         <div class="bar-controls">
-            <button class="btn-ctrl" style="padding: 12px 25px; font-size: 14px;" onclick="document.getElementById('bgMusic').play()">▶ PLAY</button>
-            <button class="btn-ctrl" style="padding: 12px 25px; font-size: 14px;" onclick="document.getElementById('bgMusic').pause()">Ⅱ PAUSE</button>
+            <button class="btn-ctrl" onclick="document.getElementById('bgMusic').play()">▶ PLAY</button>
+            <button class="btn-ctrl" onclick="document.getElementById('bgMusic').pause()">Ⅱ PAUSE</button>
         </div>
         
         <div style="margin-top: 20px; padding: 0 10px;">
             <input type="range" id="volSlider" min="0" max="1" step="0.01" value="0.1" oninput="document.getElementById('bgMusic').volume = this.value" style="width: 100%; cursor: pointer; filter: grayscale(1);">
             <label style="font-size: 10px; color: #666; display: block; margin-top: 5px;">VOLUME MASTER</label>
         </div>
+    </div>
+</div>
+
+<div id="user-float-panel" class="user-account-bar">
+    <div class="user-account-content">
+        <div class="user-status-light"></div>
+        <span class="user-label">CONTA REGISTRADA:</span>
+        <span id="display-username" class="user-value">CARREGANDO...</span>
     </div>
 </div>
 
@@ -916,20 +1529,65 @@ body.modal-open {
 <div class="container main-content" id="ficha-editor">
 
 <div id="player-musica" class="main-content">
-    
-   <button onclick="abrirAjuda()" class="btn-ajuda-top">
-    COMO USAR?
-</button></p>
+
+<div style="margin-top: 15px; display: flex; flex-direction: column; gap: 8px;">
+    <button onclick="abrirAjuda()" style="width: 100%; padding: 10px; font-size: 16px; background: #1a1a1a; color: #fff; border: 1px solid #333; cursor: pointer; font-family: monospace;">
+        Como usar?
+    </button>
+
+<div style="margin-top: 15px;">
+    <button onclick="window.abrirPainelFundo()" style="width: 100%; padding: 12px; background: #0a0a0a; color: #888; border: 1px solid #721717; cursor: pointer; font-family: monospace; font-size: 11px; letter-spacing: 1px;">
+        Ajustar plano de fundo
+    </button>
+</div>
+
+<div id="painelFundo" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 9999999; backdrop-filter: blur(5px);">
+    <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #0d0d0d; border: 1px solid #721717; padding: 30px; width: 320px; box-shadow: 0 0 50px #000; text-align: center;">
+        
+        <h3 style="color: #721717; font-family: monospace; margin-bottom: 25px; border-bottom: 1px solid #222; padding-bottom: 10px;">AMBIENTE DO AGENTE</h3>
+        
+        <button onclick="document.getElementById('inputArquivoFundo').click()" style="width: 100%; padding: 12px; background: #111; color: #aaa; border: 1px dashed #444; cursor: pointer; font-family: monospace; margin-bottom: 20px;">
+            📁 CARREGAR MÍDIA LOCAL
+        </button>
+        <input type="file" id="inputArquivoFundo" accept="image/*,video/*" style="display: none;" onchange="window.processarArquivoFundo(this)">
+
+        <div style="margin-bottom: 20px; text-align: left;">
+            <label style="color: #666; font-size: 10px; font-family: monospace;">TRANSPARÊNCIA DA FICHA</label>
+            <input type="range" id="opacidadeFicha" min="0" max="1" step="0.05" value="0.9" oninput="window.ajustarOpacidadeFicha(this.value)" style="width: 100%; accent-color: #721717;">
+        </div>
+
+        <div style="margin-bottom: 30px; text-align: left;">
+            <label style="color: #666; font-size: 10px; font-family: monospace;">BRILHO DO AMBIENTE</label>
+            <input type="range" id="opacidadeFundoImg" min="0" max="1" step="0.05" value="1" oninput="window.ajustarOpacidadeFundo(this.value)" style="width: 100%; accent-color: #721717;">
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+    <button onclick="window.removerFundo()" style="flex: 1; padding: 10px; background: #0a0a0a; color: #666; border: 1px solid #333; cursor: pointer; font-family: monospace; font-size: 9px;">
+        REMOVER FUNDO
+    </button>
+
+    <button onclick="window.redefinirTudo()" style="flex: 1; padding: 10px; background: #0a0a0a; color: #721717; border: 1px solid #721717; cursor: pointer; font-family: monospace; font-size: 9px;">
+        REDEFINIR FUNDO
+    </button>
+</div>
+        
+        <button onclick="window.fecharPainelFundo()" style="width: 100%; padding: 12px; background: #1a1a1a; color: #721717; border: 1px solid #721717; cursor: pointer; font-family: monospace; font-weight: bold;">SALVAR E VOLTAR</button>
+    </div>
+</div>
+
+<div id="overlay-escurecedor" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: -5; pointer-events: none; opacity: 0;"></div>
+
 
 <body>
     <div id="ajuda-modal" class="modal-overlay">
         <div class="modal-content">
             <h3 style="color:#5c2020; text-align:left; margin-top:0;">MANUAL DE OPERAÇÕES</h3>
             <div class="modal-text">
-                <p>1. <b>Registro:</b> Clique em "Registrar Novo Investigador" no menu principal.</p>
-                <p>2. <b>Dados:</b> Preencha as informações e atributos do investigador.</p>
-                <p>3. <b>Salvamento:</b> Role até o fim e clique em "Salvar Investigador".</p>
-                <p>4. <b>Múltiplos:</b> O sistema salva seu investigador atual antes de criar um novo.</p>
+                <p>1. Clique em "Registrar Novo Investigador" no menu principal.</p>
+                <p>2. Preencha as informações e atributos do investigador manualmente ou clique no botão de "auto-gerar".</p>
+                <p>3. Role até o fim e clique em "Salvar Investigador".</p>
+                <p>4. O sistema salva seu investigador atual antes de criar um novo e ao carregar a página você pode carregar um personagem já feito.</p>
+                <p>5. JSON: Você pode exportar uma ficha e importá-la. Essa função permite que você consiga usar a mesma ficha em outro dispositivo sem ter que preenchê-la novamente.</p>
             </div>
             <button class="btn-close-modal" onclick="fecharAjuda()">ENTENDIDO</button>
         </div>
@@ -945,71 +1603,105 @@ body.modal-open {
     <h1>Investigador Call of Cthulhu</h1>
     
 
-    <div class="section">
-        <div class="header-ficha">
-            <div class="foto-wrapper">
-                <div class="field" style="align-items: center;">
-                    <div class="foto-container" onclick="document.getElementById('fileInput').click()">
-                        <div class="foto-placeholder" id="placeholderTxt">REGISTRO VISUAL<br>CLIQUE PARA INSERIR</div>
-                        <img id="charPhoto" src="" style="display:none;">
-                        <input type="file" id="fileInput" hidden accept="image/*" onchange="carregarFoto(event)">
-                    </div>
-                    <div style="margin-top: 10px; display: flex; gap: 10px;">
-                        <button onclick="removerFoto()" style="padding: 5px 10px; font-size: 9px; background: #300;">REMOVER</button>
-                        <button id="btnDesfazer" onclick="desfazerFoto()" style="padding: 5px 10px; font-size: 9px; opacity: 0.5;" disabled>↩ VOLTAR</button>
-                    </div>
+<div class="section" style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+    <div class="header-ficha-compacta" style="display: grid; grid-template-columns: 200px 1fr 320px; gap: 25px; align-items: start;">
+        
+        <div class="foto-wrapper" style="display: flex; flex-direction: column; align-items: center;">
+            <div class="foto-container" onclick="document.getElementById('fileInput').click()" 
+                 style="width: 180px; height: 230px; border: 2px solid #333; background: #050505; position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                <div id="placeholderTxt" style="font-size: 10px; color: #444; text-align: center; text-transform: uppercase; letter-spacing: 1px;">
+                    REGISTRO VISUAL<br>CLIQUE PARA INSERIR
+                </div>
+                <img id="charPhoto" src="" style="display:none; width: 100%; height: 100%; object-fit: cover;">
+                <input type="file" id="fileInput" hidden accept="image/*" onchange="carregarFoto(event)">
+            </div>
+            <div style="margin-top: 10px; display: flex; gap: 5px; width: 180px;">
+                <button onclick="removerFoto()" style="flex: 1; padding: 5px; font-size: 9px; background: #300; color: #fff; border: 1px solid #500; cursor: pointer;">REMOVER</button>
+                <button id="btnDesfazer" onclick="desfazerFoto()" style="flex: 1; padding: 5px; font-size: 9px; background: #222; color: #666; border: 1px solid #333; opacity: 0.5;" disabled>VOLTAR</button>
+            </div>
+        </div>
+
+        <div class="info-pessoais" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div class="field" style="grid-column: span 2;">
+                <label style="color: #666; font-size: 10px; text-transform: uppercase;">Nome do Investigador</label>
+                <input type="text" data-key="nome" style="width: 100%; background: #0a0a0a; border: 1px solid #333; color: #eee; padding: 8px;">
+            </div>
+            <div class="field">
+                <label style="color: #666; font-size: 10px; text-transform: uppercase;">Jogador(a)</label>
+                <input type="text" data-key="jogador" style="width: 100%; background: #0a0a0a; border: 1px solid #333; color: #eee; padding: 8px;">
+            </div>
+<div class="field" style="position: relative; overflow: visible;">
+    <label style="color: #666; font-size: 10px; text-transform: uppercase;">Idade</label>
+    <div class="idade-wrapper" style="position: relative;">
+        <input type="number" id="idade" 
+               onchange="aplicarRegrasIdade()" 
+               onmouseenter="mostrarTooltipIdade()" 
+               onmouseleave="esconderTooltipIdade()"
+               data-key="idade" 
+               style="width: 100%; background: #0a0a0a; border: 1px solid #333; color: #eee; padding: 8px;">
+        
+        <div id="tooltip-idade" style="display: none; position: absolute; top: 110%; left: 0; z-index: 999; width: 250px; background: #050505; border: 1px solid #721717; padding: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.8); pointer-events: none;">
+            <div id="tooltip-idade-conteudo" style="color: #ccc; font-size: 11px; font-family: monospace; line-height: 1.4;">
+                Aguardando idade...
+            </div>
+        </div>
+    </div>
+</div>
+            <div class="field">
+                <label style="color: #666; font-size: 10px; text-transform: uppercase;">Gênero</label>
+                <input type="text" data-key="genero" style="width: 100%; background: #0a0a0a; border: 1px solid #333; color: #eee; padding: 8px;">
+            </div>
+            <div class="field">
+                <label style="color: #666; font-size: 10px; text-transform: uppercase;">Local de Nasc.</label>
+                <input type="text" data-key="nasc" style="width: 100%; background: #0a0a0a; border: 1px solid #333; color: #eee; padding: 8px;">
+            </div>
+            <div class="field" style="grid-column: span 2;">
+                <label style="color: #666; font-size: 10px; text-transform: uppercase;">Residência</label>
+                <input type="text" data-key="residencia" style="width: 100%; background: #0a0a0a; border: 1px solid #333; color: #eee; padding: 8px;">
+            </div>
+        </div>
+
+        <div class="bloco-ocupacao" style="background: #080808; border: 1px solid #222; padding: 15px; border-radius: 4px;">
+            <label style="color: #721717; font-size: 11px; font-weight: bold; display: block; margin-bottom: 10px; letter-spacing: 1px;">SISTEMA DE OCUPAÇÃO</label>
+            
+            <div style="display: flex; gap: 5px; margin-bottom: 15px;">
+                <input type="text" id="input-ocupacao" readonly placeholder="Selecione!" data-key="ocupacao"
+                       style="background: #000; border: 1px solid #444; color: #721717; padding: 8px; flex: 1; font-family: monospace; font-size: 12px;">
+                <button type="button" onclick="abrirModalOcupacoes()" 
+                        style="background: #721717; color: #fff; border: none; padding: 0 10px; cursor: pointer; font-size: 10px; font-weight: bold;">
+                    ALTERAR
+                </button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                <div style="background: #000; padding: 8px; border: 1px solid #222; text-align: center;">
+                    <label style="color: #555; font-size: 8px; display: block; margin-bottom: 4px;">CRÉDITO</label>
+                    <div id="credito-permitido" style="color: #ffaa00; font-size: 13px; font-weight: bold;">-</div>
+                </div>
+                <div style="background: #000; padding: 8px; border: 1px solid #222; text-align: center;">
+                    <label style="color: #555; font-size: 8px; display: block; margin-bottom: 4px;">INTERP.</label>
+                    <div id="interpessoais-qtd" style="color: #00ff00; font-size: 13px; font-weight: bold;">-</div>
                 </div>
             </div>
 
-            <div class="info-pessoais" id="camposPessoais">
-                <div class="field"><label>Nome</label><input type="text" data-key="nome"></div>
-                <div class="field"><label>Jogador(a)</label><input type="text" data-key="jogador"></div>
-
-               <div class="field">
-    <label>Ocupação</label>
-
-
-<div class="bloco-ocupacao" style="margin-bottom: 20px;">
-    <label style="color: #666; font-size: 11px; display: block; margin-bottom: 5px;">OCUPAÇÃO ATUAL</label>
-    
-    <div style="display: flex; gap: 10px; align-items: center;">
-        <input type="text" id="input-ocupacao" readonly placeholder="Selecione uma ocupação..." 
-               style="background: #0a0a0a; border: 1px solid #333; color: #00ff00; padding: 10px; flex-grow: 1; font-family: monospace;">
-        
-        <button type="button" onclick="abrirModalOcupacoes()" 
-                style="background: #111; border: 1px solid #00ff00; color: #00ff00; padding: 10px; cursor: pointer;">
-            ALTERAR
-        </button>
-    </div>
-
-    <div style="margin-top: 10px; background: #050505; border: 1px dashed #333; padding: 10px; text-align: center;">
-        <span style="color: #666; font-size: 10px;">PONTOS DE PERÍCIA OCUPACIONAIS:</span>
-        <div id="display-pontos-ocupacao" style="color: #00ff00; font-size: 24px; font-weight: bold; font-family: 'Courier New';">0</div>
-        <small id="formula-usada" style="color: #444; font-size: 9px;"></small>
+            <div style="background: #000; border: 1px dashed #444; padding: 10px; text-align: center;">
+                <span style="color: #666; font-size: 9px; text-transform: uppercase;">Pontos Ocupacionais</span>
+                <div id="display-pontos-ocupacao" style="color: #721717; font-size: 24px; font-weight: bold; font-family: 'Courier New';">0</div>
+                <small id="formula-usada" style="color: #333; font-size: 8px; display: block; margin-top: 2px;"></small>
+            </div>
+        </div>
     </div>
 </div>
 
-
-</div>
-
-<div id="modal-ocupacoes" class="modal-overlay">
+<div id="modal-ocupacoes" class="modal-overlay" style="display:none;">
     <div class="modal-box">
         <div class="modal-header">
             <span>SELECIONAR OCUPAÇÃO</span>
             <button onclick="fecharModalOcupacoes()">X</button>
         </div>
-        <div id="lista-ocupacoes-grid" class="ocupacoes-grid">
-            </div>
+        <div id="lista-ocupacoes-grid" class="ocupacoes-grid"></div>
     </div>
 </div>
-
-                <div class="field"><label>Idade</label><input type="number" id="idade" oninput="atualizarTudo()" value="25" data-key="idade"></div>
-                <div class="field"><label>Gênero</label><input type="text" data-key="genero"></div>
-                <div class="field"><label>Residência</label><input type="text" data-key="residencia"></div>
-                <div class="field"><label>Local de Nasc.</label><input type="text" data-key="nasc"></div>
-            </div>
-        </div>
-    </div>
 
     <div class="dice-roller">
         <label style="color: #666; letter-spacing: 2px;">MECANISMO DE PROBABILIDADE</label><br><br>
@@ -1123,13 +1815,116 @@ body.modal-open {
     </div>
 </div>
 
-    <div class="section">
+<!-- SISTEMA DE ABAS -->
+<div class="section">
+    <div class="tabs-container">
+        <button class="tab-button active" onclick="trocarAba('pericias')">PERÍCIAS</button>
+        <button class="tab-button" onclick="trocarAba('antecedentes')">ANTECEDENTES</button>
+        <button class="tab-button" onclick="trocarAba('inventario')">INVENTÁRIO</button>
+    </div>
+
+    <!-- ABA PERÍCIAS (conteúdo atual) -->
+    <div id="tab-pericias" class="tab-content active">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h3 style="margin:0; border:none;">Perícias & Competências</h3>
             <button onclick="adicionarPericiaCustom()" class="btn-add-pericia">+ ADICIONAR PERÍCIA</button>
         </div>
         <div class="grid-pericias" id="periciasContainer"></div>
     </div>
+
+<div class="status-vida-container">
+    <div id="box-padrao-vida" class="box-vida" title="Seu padrão de vida atual baseado no seu Nível de Crédito.">
+        <label class="label-superior">PADRÃO DE VIDA</label>
+        <div id="txt-padrao-vida" class="valor-vida">NÃO DEFINIDO</div>
+    </div>
+</div>
+
+
+    <!-- ABA ANTECEDENTES -->
+    <div id="tab-antecedentes" class="tab-content">
+        <h3 style="margin:0 0 20px 0; border:none;">Histórico do Investigador</h3>
+        <div class="antecedentes-grid">
+            <div class="antecedente-field">
+                <label>Descrição Pessoal</label>
+                <textarea data-antecedente="descricao" placeholder="Aparência, personalidade, estilo..."></textarea>
+            </div>
+            <div class="antecedente-field">
+                <label>Ideologia/Crenças</label>
+                <textarea data-antecedente="ideologia" placeholder="Crenças centrais, valores morais..."></textarea>
+            </div>
+            <div class="antecedente-field">
+                <label>Pessoas Significativas</label>
+                <textarea data-antecedente="pessoas" placeholder="Familiares, amigos, mentores importantes..."></textarea>
+            </div>
+            <div class="antecedente-field">
+                <label>Locais Importantes</label>
+                <textarea data-antecedente="locais" placeholder="Lugares marcantes da sua história..."></textarea>
+            </div>
+            <div class="antecedente-field">
+                <label>Pertences Queridos</label>
+                <textarea data-antecedente="pertences" placeholder="Objetos com valor sentimental..."></textarea>
+            </div>
+            <div class="antecedente-field">
+                <label>Características</label>
+                <textarea data-antecedente="caracteristicas" placeholder="Traços marcantes de personalidade..."></textarea>
+            </div>
+            <div class="antecedente-field">
+                <label>Ferimentos & Cicatrizes</label>
+                <textarea data-antecedente="ferimentos" placeholder="Marcas físicas do passado..."></textarea>
+            </div>
+            <div class="antecedente-field">
+                <label>Fobias & Manias</label>
+                <textarea data-antecedente="fobias" placeholder="Medos, obsessões, comportamentos..."></textarea>
+            </div>
+            <div class="antecedente-field">
+                <label>Tomos Arcanos, Feitiços & Artefatos</label>
+                <textarea data-antecedente="tomos" placeholder="Conhecimentos e objetos místicos..."></textarea>
+            </div>
+            <div class="antecedente-field">
+                <label>Encontros com Entidades Estranhas</label>
+                <textarea data-antecedente="entidades" placeholder="Criaturas, horrores testemunhados..."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABA INVENTÁRIO -->
+    <div id="tab-inventario" class="tab-content">
+        <h3 style="margin:0 0 20px 0; border:none;">Equipamentos & Pertences</h3>
+        <div class="inventario-lista" id="inventarioContainer"></div>
+        <button onclick="adicionarItemInventario()" style="margin-top: 20px; font-size: 0.7em;">+ ADICIONAR ITEM</button>
+    </div>
+</div>
+
+<!-- CHECKBOXES DE STATUS FÍSICO/MENTAL -->
+<div class="section">
+    <h3>Condições Especiais</h3>
+    <div class="status-checks">
+        <div class="status-check-item" onclick="toggleStatusCheck(this, 'morrendo')">
+            <input type="checkbox" id="check-morrendo">
+            <label for="check-morrendo">Morrendo</label>
+        </div>
+        <div class="status-check-item" onclick="toggleStatusCheck(this, 'inconsciente')">
+            <input type="checkbox" id="check-inconsciente">
+            <label for="check-inconsciente">Inconsciente</label>
+        </div>
+        <div class="status-check-item" onclick="toggleStatusCheck(this, 'lesao-grave')">
+            <input type="checkbox" id="check-lesao-grave">
+            <label for="check-lesao-grave">Lesão Grave</label>
+        </div>
+        <div class="status-check-item" onclick="toggleStatusCheck(this, 'insano')">
+            <input type="checkbox" id="check-insano">
+            <label for="check-insano">Insano</label>
+        </div>
+        <div class="status-check-item" onclick="toggleStatusCheck(this, 'temporario')">
+            <input type="checkbox" id="check-temporario">
+            <label for="check-temporario">Insanidade Temporária</label>
+        </div>
+        <div class="status-check-item" onclick="toggleStatusCheck(this, 'indefinido')">
+            <input type="checkbox" id="check-indefinido">
+            <label for="check-indefinido">Insanidade Indefinida</label>
+        </div>
+    </div>
+</div>
 
 
     <small id="formula-usada" style="font-size: 9px; color: #444; text-transform: uppercase;"></small>
@@ -1177,6 +1972,7 @@ body.modal-open {
     // --- LÓGICA DE LOGIN, SENHA E CONTAS (ADICIONADA) ---
     let agenteLogado = null;
     let investigadorAtual = null;
+    let scrollPosicaoOriginal = 0;
 
     function switchTab(tab) {
         const loginForm = document.getElementById('login-form');
@@ -1199,10 +1995,21 @@ body.modal-open {
     }
 
 function abrirAjuda() {
-    console.log("Abrindo ajuda..."); // Teste no console (F12)
+    // **VAI PRO TOPO SUAVEMENTE:**
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Salva a posição antes de travar
+    scrollPosicaoOriginal = window.pageYOffset || document.documentElement.scrollTop;
+    
     const modal = document.getElementById('ajuda-modal');
     if(modal) {
         modal.style.setProperty('display', 'flex', 'important');
+        
+        // **TRAVA O SCROLL:**
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollPosicaoOriginal}px`;
+        document.body.style.width = '100%';
     }
 }
 
@@ -1210,6 +2017,15 @@ function fecharAjuda() {
     const modal = document.getElementById('ajuda-modal');
     if(modal) {
         modal.style.setProperty('display', 'none', 'important');
+        
+        // **DESTRAVA O SCROLL:**
+        document.body.style.removeProperty('overflow');
+        document.body.style.removeProperty('position');
+        document.body.style.removeProperty('top');
+        document.body.style.removeProperty('width');
+        
+        // **VOLTA PARA A POSIÇÃO ORIGINAL:**
+        window.scrollTo(0, scrollPosicaoOriginal);
     }
 }
 
@@ -1260,13 +2076,32 @@ function realizarLogin() {
     const userData = JSON.parse(savedData);
     if(userData.password !== pass) return msg.innerText = "SENHA INCORRETA";
 
-    // --- AQUI ESTÁ A MUDANÇA ---
+    // Define o agente logado
     agenteLogado = user;
-    localStorage.setItem("Agente_Sessao_Ativa", user); // Salva o login no dispositivo
+    localStorage.setItem("Agente_Sessao_Ativa", user); 
+    localStorage.setItem("usuarioLogado", user); 
+
+    const displayBar = document.getElementById('display-username');
+    if(displayBar) displayBar.innerText = user.toUpperCase();
     
-    // Procedimento normal de abrir o painel
+    // --- GATILHO DA MÚSICA ---
+    const musica = document.getElementById('bgMusic');
+    if (musica) {
+        musica.volume = 0.1; // Define o volume inicial baixo
+        musica.play().catch(error => {
+            console.log("Erro ao tocar música: ", error);
+        });
+    }
+
+    // --- PROCEDIMENTO PARA ABRIR O PAINEL ---
     document.getElementById('login-overlay').style.display = "none";
-    document.querySelectorAll('.main-content').forEach(el => el.classList.remove('visible'));
+    
+    // Mostrar os elementos que estavam escondidos
+    document.getElementById('ficha-editor').style.display = "block";
+    document.getElementById('playerMusica').style.display = "flex";
+    document.getElementById('user-float-panel').style.display = "block";
+    
+    // Abrir menu de fichas
     document.getElementById('menu-fichas').classList.add('active'); 
     
     atualizarListaInvestigadores();
@@ -1335,11 +2170,11 @@ function atualizarListaInvestigadores() {
         const div = document.createElement('div');
         div.style.cssText = "background:#111; border:1px solid #222; padding:12px; margin-bottom:10px; border-radius:4px;";
         div.innerHTML = `
-            <div style="color:#00ff00; font-size:12px; margin-bottom:10px; font-family:monospace; font-weight:bold;">
+            <div style="color:#721717; font-size:12px; margin-bottom:10px; font-family:monospace; font-weight:bold;">
                 INVESTIGADOR: ${inv.nome.toUpperCase()}
             </div>
             <div style="display:flex; gap:5px;">
-                <button onclick="abrirFicha(${inv.id})" style="flex:2; background:#002244; color:#00aaff; font-size:10px;">CARREGAR</button>
+                <button onclick="abrirFicha(${inv.id})" style="flex:2; background:#888; color:#333; font-size:10px;">CARREGAR</button>
                 <button onclick="renomearInvestigador(${inv.id})" style="background:#222; color:#aaa; font-size:10px; padding:0 8px;">✎</button>
                 <button onclick="removerInvestigador(${inv.id})" style="background:#330000; color:#ff4444; font-size:10px;">X</button>
             </div>
@@ -1405,18 +2240,6 @@ function salvarLocal() {
 }
 
 function limparFicha() {
-    document.querySelectorAll('#camposPessoais input').forEach(i => i.value = '');
-    todosAtributos.forEach(a => document.getElementById(`input-${a}`).value = '');
-    document.getElementById('charPhoto').src = '';
-    document.getElementById('charPhoto').style.display = 'none';
-    document.getElementById('placeholderTxt').style.display = 'block';
-    stats = { PV: { atual: 0, max: 0 }, SAN: { atual: 0, max: 99 }, MAG: { atual: 0, max: 0 } };
-    atualizarTudo();
-}
-
-function resetarFicha() {
-    if(!confirm("Tem certeza que deseja resetar toda a ficha? Esta ação não pode ser desfeita!")) return;
-    
     // Limpar campos pessoais
     document.querySelectorAll('#camposPessoais input').forEach(i => {
         if(i.id === 'idade') {
@@ -1445,7 +2268,7 @@ function resetarFicha() {
     
     // Resetar perícias padrão
     listaPericias.forEach(p => {
-        const id = p.n.replace(/\s+/g, '-');
+        const id = p.n.replace(/\s+/g, '-').replace(/[()]/g, '');
         const el = document.getElementById(`p-val-${id}`);
         if(el) {
             el.value = p.v;
@@ -1464,6 +2287,142 @@ function resetarFicha() {
     document.getElementById('diceDisplay').innerText = 'AGUARDANDO...';
     document.getElementById('diceInput').value = '';
     
+    // === ADICIONE ESTAS LINHAS ===
+    // Limpar checkboxes de condições
+    document.querySelectorAll('.status-check-item input[type="checkbox"]').forEach(cb => {
+        cb.checked = false;
+        cb.closest('.status-check-item')?.classList.remove('checked');
+    });
+    
+    // Limpar antecedentes
+    document.querySelectorAll('[data-antecedente]').forEach(el => el.value = '');
+    
+    // Limpar inventário
+    document.getElementById('inventarioContainer').innerHTML = '';
+    
+    // Limpar cores de perícias
+    corPericiasSelecionadas = {};
+    
+    atualizarTudo();
+}
+
+function resetarFicha() {
+    if(!confirm("Tem certeza que deseja resetar toda a ficha? Esta ação não pode ser desfeita!")) return;
+    
+    // 1. Limpar Campos Pessoais (Nome, Jogador, Gênero, etc.)
+    const campos = document.querySelectorAll('[data-key]');
+    campos.forEach(input => {
+        if(input.dataset.key === 'idade' || input.id === 'idade') {
+            input.value = '25';
+        } else {
+            input.value = '';
+        }
+    });
+
+    // Resetar ocupação visual
+    const inputOcupacao = document.getElementById('input-ocupacao');
+    if(inputOcupacao) inputOcupacao.value = '';
+
+    // 2. Resetar Atributos Base
+    todosAtributos.forEach(a => {
+        const el = document.getElementById(`input-${a}`);
+        if(el) el.value = '';
+    });
+    
+    // 3. Resetar Foto
+    const charPhoto = document.getElementById('charPhoto');
+    const placeholder = document.getElementById('placeholderTxt');
+    if(charPhoto) {
+        charPhoto.src = '';
+        charPhoto.style.display = 'none';
+    }
+    if(placeholder) placeholder.style.display = 'block';
+    
+    historicoFoto = null;
+    const btnDesfazer = document.getElementById('btnDesfazer');
+    if(btnDesfazer) {
+        btnDesfazer.disabled = true;
+        btnDesfazer.style.opacity = "0.5";
+    }
+    
+    // 4. Resetar Status (PV, SAN, MAG, SORTE)
+    stats = { PV: { atual: 0, max: 0 }, SAN: { atual: 0, max: 99 }, MAG: { atual: 0, max: 0 } };
+    const valSorte = document.getElementById('valSORTE');
+    if(valSorte) valSorte.innerText = '-';
+    
+    // 5. Resetar Antecedentes / Histórico
+    document.querySelectorAll('[data-antecedente]').forEach(textarea => {
+        textarea.value = '';
+    });
+
+    // 6. Resetar Equipamentos (Inventário)
+    const inventarioContainer = document.getElementById('inventarioContainer');
+    if(inventarioContainer) inventarioContainer.innerHTML = '';
+    
+    // 7. Resetar Condições Especiais (Checkboxes + Estilo Vermelho)
+    document.querySelectorAll('.status-check-item').forEach(item => {
+        // Remove a classe que deixa o fundo vermelho/ativo
+        item.classList.remove('active');
+        item.style.backgroundColor = ""; // Limpa estilo direto caso exista
+        item.style.color = "";           // Limpa cor do texto caso exista
+        
+        const cb = item.querySelector('input[type="checkbox"]');
+        if(cb) cb.checked = false;
+    });
+
+    // 8. Resetar Perícias (Valores + Cores de Destaque)
+    listaPericias.forEach(p => {
+        const id = p.n.replace(/\s+/g, '-');
+        const input = document.getElementById(`p-val-${id}`);
+        // Tenta encontrar o card ou a div que contém a perícia
+        const card = document.getElementById(`p-card-${id}`) || (input ? input.closest('.pericia-item') : null);
+        
+        if(input) {
+            input.value = p.v; 
+            input.style.color = ""; // Remove o vermelho/verde do texto
+            input.style.fontWeight = "normal";
+            calcP(id);
+        }
+        
+        if(card) {
+            card.classList.remove('ocupacional'); // Remove a classe de destaque se existir
+            card.style.backgroundColor = "";      // Remove fundo de destaque
+            card.style.borderColor = "";          // Remove borda colorida
+            card.style.boxShadow = "";            // Remove brilho se houver
+        }
+    });
+    
+    // Remover perícias customizadas
+    document.querySelectorAll('.pericia-custom').forEach(el => el.remove());
+    
+    // 9. Limpar Armas
+    const weaponBody = document.getElementById('weaponBody');
+    if(weaponBody) {
+        weaponBody.innerHTML = '';
+        if(typeof addWeaponRow === "function") addWeaponRow();
+    }
+    
+    // 10. Limpar Painel de Ocupação
+    const displayPontos = document.getElementById('display-pontos-ocupacao');
+    const displayCredito = document.getElementById('credito-permitido');
+    const displayInter = document.getElementById('interpessoais-qtd');
+    const formula = document.getElementById('formula-usada');
+    
+    if(displayPontos) displayPontos.innerText = '0';
+    if(displayCredito) displayCredito.innerText = 'Selecione Ocupação';
+    if(displayInter) displayInter.innerText = 'Selecione Ocupação';
+    if(formula) formula.innerText = '';
+    
+    // 11. Limpar Dados de Rolagem
+    const diceDisplay = document.getElementById('diceDisplay');
+    const diceInput = document.getElementById('diceInput');
+    if(diceDisplay) diceDisplay.innerText = 'AGUARDANDO...';
+    if(diceInput) diceInput.value = '';
+    
+    // 12. Resetar Padrão de Vida
+    const padraoVida = document.getElementById('txt-padrao-vida');
+    if(padraoVida) padraoVida.innerText = 'NÃO DEFINIDO';
+
     atualizarTudo();
     alert("Ficha resetada com sucesso!");
 }
@@ -1477,29 +2436,36 @@ function colherDados() {
         armas: [],
         stats: stats,
         foto: document.getElementById('charPhoto').src,
-        sorte: document.getElementById('valSORTE').innerText
+        sorte: document.getElementById('valSORTE').innerText,
+        antecedentes: {},
+        inventario: [],
+        statusChecks: {},
+        coresPericias: corPericiasSelecionadas
     };
 
-    // Captura Nome, Ocupação, Idade, etc., via data-key
+    // Captura campos pessoais
     document.querySelectorAll('#camposPessoais input').forEach(i => {
         if (i.dataset.key) {
             dados.pessoais[i.dataset.key] = i.value;
         }
     });
 
-    // REFORÇO: Se a ocupação falhou no loop acima, pega pelo ID
+    // Reforço para ocupação
     if (!dados.pessoais['ocupacao']) {
         dados.pessoais['ocupacao'] = document.getElementById('input-ocupacao')?.value || "";
     }
 
+    // Atributos
     todosAtributos.forEach(a => dados.atributos[a] = document.getElementById(`input-${a}`).value);
     
+    // Perícias padrão
     listaPericias.forEach(p => {
-        const id = p.n.replace(/\s+/g, '-');
+        const id = p.n.replace(/\s+/g, '-').replace(/[()]/g, '');
         const el = document.getElementById(`p-val-${id}`);
         if(el) dados.pericias[id] = el.value;
     });
     
+    // Perícias customizadas
     document.querySelectorAll('.pericia-custom').forEach(tr => {
         const inputs = tr.querySelectorAll('input');
         if(inputs.length >= 2) {
@@ -1507,10 +2473,36 @@ function colherDados() {
         }
     });
     
+    // Armas
     document.querySelectorAll('#weaponBody tr').forEach(tr => {
         const inputs = tr.querySelectorAll('input');
         if (inputs.length > 0) dados.armas.push(Array.from(inputs).map(i => i.value));
     });
+
+    // Antecedentes
+    document.querySelectorAll('[data-antecedente]').forEach(el => {
+        dados.antecedentes[el.dataset.antecedente] = el.value;
+    });
+
+    // Inventário
+    document.querySelectorAll('.item-inventario').forEach(item => {
+        const inputs = item.querySelectorAll('input, textarea');
+        dados.inventario.push({
+            nome: inputs[0]?.value || '',
+            qtd: inputs[1]?.value || '',
+            desc: inputs[2]?.value || ''
+        });
+    });
+
+    // Status checks
+    dados.statusChecks = {
+        morrendo: document.getElementById('check-morrendo')?.checked || false,
+        inconsciente: document.getElementById('check-inconsciente')?.checked || false,
+        lesaoGrave: document.getElementById('check-lesao-grave')?.checked || false,
+        insano: document.getElementById('check-insano')?.checked || false,
+        temporario: document.getElementById('check-temporario')?.checked || false,
+        indefinido: document.getElementById('check-indefinido')?.checked || false
+    };
     
     return dados;
 }
@@ -1518,33 +2510,35 @@ function colherDados() {
 function aplicarDados(dados) {
     if(!dados) return;
 
-    // 1. Limpar perícias customizadas atuais antes de carregar novas para não duplicar
+ // 1. Limpar tudo antes de aplicar
     document.querySelectorAll('.pericia-custom').forEach(tr => tr.remove());
+    corPericiasSelecionadas = {};
 
-    // 2. Preencher campos pessoais (inclui Ocupação)
+ // 2. Preencher campos pessoais
     for(let k in dados.pessoais) {
-        // Tenta achar pelo data-key (ex: data-key="ocupacao")
         const el = document.querySelector(`[data-key="${k}"]`);
         if(el) {
             el.value = dados.pessoais[k];
         } else {
-            // Se não achar pelo data-key, tenta pelo ID direto
             const elId = document.getElementById(`input-${k}`) || document.getElementById(k);
             if(elId) elId.value = dados.pessoais[k];
         }
     }
 
-    // 3. Resto dos dados
+    // 3. Atributos
     for(let k in dados.atributos) {
         const el = document.getElementById(`input-${k}`);
         if(el) el.value = dados.atributos[k];
     }
 
+// 4. Perícias
     for(let k in dados.pericias) {
         const el = document.getElementById(`p-val-${k}`);
         if(el) { el.value = dados.pericias[k]; calcP(k); }
     }
     
+    
+    // 5. Perícias customizadas
     if(dados.periciasCustom) {
         dados.periciasCustom.forEach(p => {
             if(typeof adicionarPericiaCustom === "function") {
@@ -1553,6 +2547,7 @@ function aplicarDados(dados) {
         });
     }
     
+    // 6. Foto
     if(dados.foto && dados.foto.length > 10) {
         const img = document.getElementById('charPhoto');
         img.src = dados.foto; 
@@ -1560,18 +2555,58 @@ function aplicarDados(dados) {
         document.getElementById('placeholderTxt').style.display = 'none';
     }
 
-    stats = dados.stats;
+    
+    // 7. Stats e sorte
+    stats = dados.stats || { PV: { atual: 0, max: 0 }, SAN: { atual: 0, max: 99 }, MAG: { atual: 0, max: 0 } };
     document.getElementById('valSORTE').innerText = dados.sorte || "-";
     
+    // 8. Armas
     const body = document.getElementById('weaponBody');
     body.innerHTML = "";
-    if(dados.armas) {
+    if(dados.armas && dados.armas.length > 0) {
         dados.armas.forEach(a => {
             addWeaponRow();
             const lastRow = body.lastElementChild;
             const inputs = lastRow.querySelectorAll('input');
             a.forEach((val, i) => { if(inputs[i]) inputs[i].value = val; });
         });
+    } else {
+        addWeaponRow();
+    }
+
+    // 9. Antecedentes
+    if (dados.antecedentes) {
+        for (let k in dados.antecedentes) {
+            const el = document.querySelector(`[data-antecedente="${k}"]`);
+            if (el) el.value = dados.antecedentes[k];
+        }
+    }
+
+    // 10. Inventário
+    if (dados.inventario) {
+        document.getElementById('inventarioContainer').innerHTML = '';
+        dados.inventario.forEach(item => {
+            adicionarItemInventario(item.nome, item.qtd, item.desc);
+        });
+    }
+
+    // 11. Status checks
+    if (dados.statusChecks) {
+        for (let k in dados.statusChecks) {
+            const checkbox = document.getElementById(`check-${k.replace(/([A-Z])/g, '-$1').toLowerCase()}`);
+            if (checkbox) {
+                checkbox.checked = dados.statusChecks[k];
+                const parent = checkbox.closest('.status-check-item');
+                if (parent) {
+                    parent.classList.toggle('checked', dados.statusChecks[k]);
+                }
+            }
+        }
+    }
+
+    // 12. Cores de perícias
+    if (dados.coresPericias) {
+        corPericiasSelecionadas = dados.coresPericias;
     }
 
     // Atualiza o visual sem resetar os inputs
@@ -1593,13 +2628,21 @@ m.volume = 0.1;
 window.addEventListener('load', () => { m.play().catch(() => {}); });
 
 const bg = document.getElementById('bg-particles');
-for (let i = 0; i < 150; i++) {
+
+// 1. Aumente o limite do loop para ter mais quadradinhos (ex: de 150 para 300)
+for (let i = 0; i < 600; i++) { 
     const sq = document.createElement('div');
     sq.className = 'square';
+    
     const size = Math.random() * 15 + 5 + 'px';
-    sq.style.width = size; sq.style.height = size;
+    sq.style.width = size; 
+    sq.style.height = size;
     sq.style.left = Math.random() * 100 + 'vw';
-    sq.style.animationDuration = Math.random() * 10 + 8 + 's';
+
+    // 2. Diminua os valores de animationDuration para aumentar a velocidade
+    // Ex: Math.random() * 4 + 3 faz com que durem entre 3 e 7 segundos (antes era entre 8 e 18s)
+    sq.style.animationDuration = Math.random() * 1 + 1 + 's'; 
+
     sq.style.animationDelay = Math.random() * 15 + 's';
     bg.appendChild(sq);
 }
@@ -1701,9 +2744,22 @@ const attrTipoB = ["TAM", "INT", "EDU"];
 const todosAtributos = [...attrTipoA, ...attrTipoB];
 const attrContainer = document.getElementById('attrContainer');
 
+// Dicionário com descrições dos atributos
+const descAtributos = {
+    FOR: "<b style='color:#721717'>FORÇA:</b><br>0: Incapaz de ficar de pé<br>15: Franzino, fraco<br>50: Força média<br>90: Uma das pessoas mais fortes<br>99: Máximo humano (atleta olímpico)<br>140+: Além da força humana<br>200+: Força monstruosa",
+    CON: "<b style='color:#721717'>CONSTITUIÇÃO:</b><br>0: Morto<br>15: Saúde fraca<br>50: Humano saudável<br>90: Vigoroso e durão<br>99: Constituição de ferro<br>140+: Além da constituição humana<br>200+: Constituição monstruosa, imune à maioria das doenças terrestres",
+    TAM: "<b style='color:#721717'>TAMANHO:</b><br>1: Bebê (0,5-6kg)<br>15: Criança/Anão (15kg)<br>60: Tamanho médio (75kg)<br>80: Muito alto, robusto ou obeso (110kg)<br>99: Fora do comum (150kg)<br>150: Cavalo ou vaca (436 kg)<br>180: Humano mais pesado ja registrado (634 kg)<br>200+: Gigantes (872 kg)<br>Nota: Humanos pode ultrapassar TAM 99",
+    DES: "<b style='color:#721717'>DESTREZA:</b><br>0: Incapaz de se mover sem assistência<br>15: Lento e desajeitado<br>50: Destreza média<br>90: Ágil (ex.: acrobata)<br>99: Atleta mundial (máximo humano)<br>120: Além da destreza humana (ex.: Tigre)<br>200+: Destreza de um relâmpago, capaz de se mover ou realizar proezas potencialmente mais rápidas do que um humano conseguiria compreender",
+    APA: "<b style='color:#721717'>APARÊNCIA:</b><br>0: Tão grotesco que sentem medo ou remorso<br>15: Feio/desfigurado<br>50: Aparência média<br>90: Muito bonito<br>99: Ápice da beleza (supermodelo)<br>Nota: Aparência normalmente é usado apenas para seres humanos e não excede 99.",
+    INT: "<b style='color:#721717'>INTELIGÊNCIA:</b><br>0: Sem intelecto<br>15: Aprendizado lento<br>50: Inteligência média<br>90: Muito inteligente<br>99: Gênio (Einstein)<br>140+: Além do intelecto humano",
+    POD: "<b style='color:#721717'>PODER:</b><br>0: Mente debilitada<br>15: Mente fraca<br>50: Média humana<br>90: Voluntarioso, determinado, um alto potencial de conexão com o invisível e o mágico<br>100: Vontade de ferro, forte conexão com o ''reino''' espiritual ou o mundo invisível.<br>140:  Além do humano, possivelmente alienígena<br>210+: Potencial mágico monstruoso e poder além da compreensão humana (ex.: O Grande Cthulhu)<br>Nota: O POD humano pode exceder 100, mas isso é excepcional",
+    EDU: "<b style='color:#721717'>EDUCAÇÃO:</b><br>0: Bebê<br>15: Não instruído<br>60: Ensino médio<br>70: Universitário<br>80: Graduado<br>90: Doutorado<br>96: Autoridade mundial<br>99: Máximo humano"
+};
+
 todosAtributos.forEach(attr => {
     attrContainer.innerHTML += `
-        <div class="attr-card">
+        <div class="attr-card" style="position: relative;">
+            <div class="attr-tooltip">${descAtributos[attr]}</div>
             <label>${attr}</label>
             <input type="number" id="input-${attr}" oninput="atualizarTudo()" min="0">
             <button style="width:100%; margin-top:8px; font-size:9px;" onclick="testarHabilidade('${attr}', document.getElementById('input-${attr}').value)">TESTAR</button>
@@ -1713,69 +2769,104 @@ todosAtributos.forEach(attr => {
 });
 
 const listaPericias = [
-    { n: "Antropologia", v: 1 }, 
-    { n: "Armas de Fogo (Pistolas)", v: 20 },
-    { n: "Armas de Fogo (Rifles/Espingardas)", v: 20 }, 
-    { n: "Arqueologia", v: 1 },
-    { n: "Arremessar", v: 20 },
-    { n: "Arte e Ofício", v: 5 },
-    { n: "Avaliação", v: 5 },
-    { n: "Charme", v: 15 },
-    { n: "Chaveiro", v: 1 }, 
-    { n: "Ciência", v: 1 },
-    { n: "Consertos Elétricos", v: 10 },
-    { n: "Consertos Mecânicos", v: 10 }, 
-    { n: "Contabilidade", v: 5 },
-    { n: "Direito", v: 5 },
-    { n: "Dirigir Automóvel", v: 20 }, 
-    { n: "Disfarce", v: 5 },
-    { n: "Eletrônica", v: 1 },
-    { n: "Encontrar", v: 25 },
-    { n: "Escalar", v: 20 }, 
-    { n: "Escutar", v: 20 },
-    { n: "Esquivar", v: 0 }, 
-    { n: "Furtividade", v: 20 },
-    { n: "História", v: 20 },
-    { n: "Intimidação", v: 15 },
-    { n: "Lábia", v: 5 },
-    { n: "Língua (Nativa)", v: 0 },
-    { n: "Língua (Outra)", v: 1 },
-    { n: "Lutar (Briga)", v: 25 }, 
-    { n: "Medicina", v: 1 },
-    { n: "Mythos de Cthulhu", v: 0 },
-    { n: "Mundo Natural", v: 10 }, 
-    { n: "Natação", v: 10 },
-    { n: "Navegação", v: 10 },
-    { n: "Nível de Crédito", v: 0 },
-    { n: "Ocultismo", v: 5 }, 
-    { n: "Operar Maquinário", v: 1 },
-    { n: "Persuasão", v: 10 },
-    { n: "Pilotar", v: 1 },
-    { n: "Prestidigitação", v: 10 },
-    { n: "Primeiros Socorros", v: 30 },
-    { n: "Psicanálise", v: 1 },
-    { n: "Psicologia", v: 1 },
-    { n: "Rastrear", v: 10 }, 
-    { n: "Saltar", v: 20 },
-    { n: "Sobrevivência", v: 10 }, 
-    { n: "Usar Bibliotecas", v: 20 },
-    { n: "Usar Computadores", v: 5 }
+    { n: "Antropologia", v: 1, d: "Identifica hábitos, costumes e a cultura de um grupo. Útil para prever comportamentos humanos baseados na tradição." }, 
+    { n: "Armas de Fogo (Pistolas)", v: 20, d: "Capacidade de disparar e manter armas de punho, como revólveres e pistolas semi-automáticas." },
+    { n: "Armas de Fogo (Rifles/Espingardas)", v: 20, d: "Uso de armas longas. Rifles possuem longo alcance, enquanto espingardas espalham o dano." }, 
+    { n: "Arqueologia", v: 1, d: "Estudo de ruínas e artefatos antigos. Permite datar objetos e identificar culturas extintas." },
+    { n: "Arremessar", v: 20, d: "Habilidade de lançar objetos com precisão, desde uma pedra até uma granada ou faca." },
+    { n: "Arte e Ofício", v: 5, d: "Capacidade de criar ou consertar itens artísticos ou técnicos (Carpintaria, Pintura, Culinária, etc.)." },
+    { n: "Avaliação", v: 5, d: "Estima o valor de mercado e a autenticidade de objetos, antiguidades e bens." },
+    { n: "Charme", v: 15, d: "Uso de sedução, bajulação ou aparência para conseguir o que quer de alguém." },
+    { n: "Chaveiro", v: 1, d: "Habilidade de abrir trancas, cofres e portas trancadas sem a chave original." }, 
+    { n: "Ciência", v: 1, d: "Conhecimento acadêmico em áreas como Biologia, Química ou Física (especifique a área)." },
+    { n: "Consertos Elétricos", v: 10, d: "Reparar ou sabotar dispositivos elétricos, fiações e painéis de controle." },
+    { n: "Consertos Mecânicos", v: 10, d: "Reparar ou entender o funcionamento de máquinas, motores e engrenagens." }, 
+    { n: "Contabilidade", v: 5, d: "Examinar registros financeiros para encontrar inconsistências, desvios ou origens de dinheiro." },
+    { n: "Direito", v: 5, d: "Conhecimento de leis, precedentes judiciais e procedimentos policiais/legais." },
+    { n: "Dirigir Automóvel", v: 20, d: "Conduzir veículos terrestres sob pressão, realizar perseguições ou manobras arriscadas." }, 
+    { n: "Disfarce", v: 5, d: "Mudar a aparência e o comportamento para se passar por outra pessoa ou ocultar a identidade." },
+    { n: "Eletrônica", v: 1, d: "Conserto e criação de aparelhos complexos, como rádios, microchips e sistemas de vigilância." },
+    { n: "Encontrar", v: 25, d: "Percepção visual para notar itens escondidos, pistas sutis ou detalhes em uma cena." },
+    { n: "Escalar", v: 20, d: "Subir superfícies verticais, como muros, árvores ou encostas rochosas." }, 
+    { n: "Escutar", v: 20, d: "Capacidade de ouvir sons baixos, conversas através de portas ou detectar alguém se aproximando." },
+    { n: "Esquivar", v: 0, d: "Capacidade de se desviar de ataques físicos. O valor inicial é sempre metade da sua DESTREZA." }, 
+    { n: "Furtividade", v: 20, d: "Mover-se em silêncio e esconder-se nas sombras para evitar ser detectado." },
+    { n: "História", v: 20, d: "Lembrar-se de fatos históricos, datas importantes e eventos que moldaram o passado." },
+    { n: "Intimidação", v: 15, d: "Forçar alguém a agir através de ameaças físicas, verbais ou força de personalidade." },
+    { n: "Lábia", v: 5, d: "Enganar as pessoas com mentiras rápidas, confusão ou papo furado." },
+    { n: "Língua (Nativa)", v: 0, d: "Domínio do seu idioma original. O valor inicial é igual ao seu atributo EDUCAÇÃO." },
+    { n: "Língua (Outra)", v: 1, d: "Conhecimento de idiomas estrangeiros ou línguas mortas (como Latim ou Grego)." },
+    { n: "Lutar (Briga)", v: 25, d: "Combate corpo a corpo desarmado ou com armas improvisadas (facas, porretes)." }, 
+    { n: "Medicina", v: 1, d: "Diagnosticar doenças, realizar cirurgias e tratar ferimentos graves a longo prazo." },
+    { n: "Mythos de Cthulhu", v: 0, d: "Conhecimento sobre os horrores cósmicos. Reduz sua Sanidade Máxima conforme aumenta." },
+    { n: "Mundo Natural", v: 10, d: "Conhecimento de botânica, zoologia e fenômenos meteorológicos." }, 
+    { n: "Natação", v: 10, d: "Capacidade de se manter à tona e nadar em águas calmas ou agitadas sob estresse." },
+    { n: "Navegação", v: 10, d: "Orientar-se em alto mar ou em locais desconhecidos usando mapas, bússolas ou estrelas." },
+    { n: "Nível de Crédito", v: 0, d: "Determina seu padrão de vida e sua influência financeira na sociedade." },
+    { n: "Ocultismo", v: 5, d: "Conhecimento sobre rituais, crenças esotéricas e folclore místico (não necessariamente real)." }, 
+    { n: "Operar Maquinário", v: 1, d: "Uso de máquinas pesadas, como guindastes, prensas industriais ou trens." },
+    { n: "Persuasão", v: 10, d: "Convencer alguém através de argumentos lógicos, debates ou oratória honesta." },
+    { n: "Pilotar", v: 1, d: "Conduzir barcos, aviões ou dirigíveis (especifique o tipo de veículo)." },
+    { n: "Prestidigitação", v: 10, d: "Truques de mãos, bater carteiras ou ocultar pequenos objetos no corpo sem ser visto." },
+    { n: "Primeiros Socorros", v: 30, d: "Tratamento emergencial para estabilizar feridos e recuperar 1 ponto de vida imediatamente." },
+    { n: "Psicanálise", v: 1, d: "Tratar traumas mentais e ajudar investigadores a recuperarem pontos de Sanidade." },
+    { n: "Psicologia", v: 1, d: "Observar alguém para detectar mentiras, intenções ocultas ou estado emocional." },
+    { n: "Rastrear", v: 10, d: "Seguir pegadas ou marcas deixadas por humanos ou criaturas em diversos terrenos." }, 
+    { n: "Saltar", v: 20, d: "Pular distâncias horizontais ou verticais e amortecer quedas de alturas baixas." },
+    { n: "Sobrevivência", v: 10, d: "Capacidade de encontrar comida, água e abrigo em ambientes hostis (Deserto, Floresta, etc.). Estão incluídos conhecimentos sobre caça, construção de abrigos, perigos (como evitar plantas venenosas), etc., de acordo com o ambiente em questão." }, 
+    { n: "Usar Bibliotecas", v: 20, d: "Habilidade de encontrar informações específicas em livros, jornais e registros públicos." },
+    { n: "Usar Computadores", v: 5, d: "Hackear sistemas, recuperar arquivos apagados ou navegar em bancos de dados complexos." }
 ];
 
 function renderPericias() {
     const container = document.getElementById('periciasContainer');
     container.innerHTML = "";
     const metade = Math.ceil(listaPericias.length / 2);
+
     for (let i = 0; i < 2; i++) {
         const table = document.createElement('table');
         table.className = "pericias-table";
-        table.innerHTML = `<thead><tr><th>Perícia</th><th>Reg.</th><th>Sól.</th><th>Ext.</th><th>🎲</th></tr></thead><tbody id="p-body-${i}"></tbody>`;
+        table.innerHTML = `<thead><tr><th>PERÍCIA</th><th>REG.</th><th>SÓL.</th><th>EXT.</th><th>🎲</th></tr></thead><tbody id="p-body-${i}"></tbody>`;
         container.appendChild(table);
+
         const slice = listaPericias.slice(i * metade, (i + 1) * metade);
         const tbody = document.getElementById(`p-body-${i}`);
+
         slice.forEach(p => {
-            const idSafe = p.n.replace(/\s+/g, '-');
-            tbody.innerHTML += `<tr><td style="text-align:left; color:#888;">${p.n}</td><td><input type="number" value="${p.v}" id="p-val-${idSafe}" oninput="calcP('${idSafe}')"></td><td><input type="text" class="val-auto" id="p-half-${idSafe}" readonly value="${Math.floor(p.v/2)}"></td><td><input type="text" class="val-auto" id="p-fifth-${idSafe}" readonly value="${Math.floor(p.v/5)}"></td><td><button style="padding:2px 8px; font-size:10px;" onclick="testarHabilidade('${p.n}', document.getElementById('p-val-${idSafe}').value)">🎲</button></td></tr>`;
+            const idSafe = p.n.replace(/\s+/g, '-').replace(/[()]/g, '');
+            const descricao = p.d || "Sem descrição disponível.";
+            const isCredito = (p.n === "Nível de Crédito");
+            const borderClass = isCredito ? "borda-amarela-animada" : "borda-padrao";
+            
+            const corAtual = corPericiasSelecionadas[idSafe];
+            const corTexto = corAtual !== undefined ? coresPericias[corAtual] : (isCredito ? '#ff0' : '#888');
+
+            const tr = document.createElement('tr');
+            tr.id = `row-${idSafe}`;
+            tr.innerHTML = `
+                <td style="text-align:left;">
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div class="tooltip-wrapper" style="flex: 1;">
+                                <span class="pericia-nome" style="color: ${corTexto}; ${corAtual !== undefined ? `text-shadow: 0 0 5px ${corTexto};` : ''}">
+                                    ${p.n}
+                                </span>
+                                <div class="tooltip-box ${borderClass}">${descricao}</div>
+                            </div>
+                            <button class="btn-toggle-cor" onclick="toggleSeletorCor('${idSafe}', this)">COR</button>
+                            <button class="btn-reset-cor" onclick="removerCorPericia('${idSafe}')" title="Remover Cor">X</button>
+                        </div>
+                        <div id="cores-${idSafe}" class="pericia-color-marker">
+                            ${renderizarSeletorCor(idSafe)}
+                        </div>
+                    </div>
+                </td>
+                <td><input type="number" value="${p.v}" id="p-val-${idSafe}" oninput="calcP('${idSafe}')"></td>
+                <td><input type="text" class="val-auto" id="p-half-${idSafe}" readonly value="${Math.floor(p.v/2)}"></td>
+                <td><input type="text" class="val-auto" id="p-fifth-${idSafe}" readonly value="${Math.floor(p.v/5)}"></td>
+                <td><button onclick="testarHabilidade('${p.n}', document.getElementById('p-val-${idSafe}').value)">🎲</button></td>
+            `;
+            tbody.appendChild(tr);
         });
     }
 }
@@ -1794,8 +2885,19 @@ function adicionarPericiaCustom(nomePredef = null, valorPredef = null) {
     const idSafe = 'custom-' + Date.now();
     const valorNum = parseInt(valor) || 0;
     
+    tr.id = `row-${idSafe}`;
     tr.innerHTML = `
-        <td style="text-align:left;"><input type="text" value="${nome}" style="background: transparent; border: none; color: #00ff00; width: 100%;"></td>
+        <td style="text-align:left;">
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 5px;">
+                    <input type="text" value="${nome}" style="background: transparent; border: none; color: #00ff00; flex: 1; min-width: 0;">
+                    <button class="btn-toggle-cor" onclick="toggleSeletorCor('${idSafe}', this)">COR</button>
+                </div>
+                <div id="cores-${idSafe}" class="pericia-color-marker">
+                    ${renderizarSeletorCor(idSafe)}
+                </div>
+            </div>
+        </td>
         <td><input type="number" value="${valorNum}" id="p-val-${idSafe}" oninput="calcP('${idSafe}')"></td>
         <td><input type="text" class="val-auto" id="p-half-${idSafe}" readonly value="${Math.floor(valorNum/2)}"></td>
         <td><input type="text" class="val-auto" id="p-fifth-${idSafe}" readonly value="${Math.floor(valorNum/5)}"></td>
@@ -1808,15 +2910,54 @@ function adicionarPericiaCustom(nomePredef = null, valorPredef = null) {
     tbody.appendChild(tr);
 }
 
-function calcP(id) {
-    const el = document.getElementById(`p-val-${id}`);
-    if(!el) return;
-    const val = parseInt(el.value) || 0;
-    const halfEl = document.getElementById(`p-half-${id}`);
-    const fifthEl = document.getElementById(`p-fifth-${id}`);
-    if(halfEl) halfEl.value = Math.floor(val/2);
-    if(fifthEl) fifthEl.value = Math.floor(val/5);
+// 1. COLOQUE ESTA FUNÇÃO PRIMEIRO
+function atualizarPadraoVida(valor) {
+    const box = document.getElementById('box-padrao-vida');
+    const txt = document.getElementById('txt-padrao-vida');
+    
+    // Se os elementos não existirem na tela ainda, sai da função sem dar erro
+    if (!box || !txt) return;
+
+    let v = parseInt(valor) || 0;
+    let info = { nome: "NÃO DEFINIDO", desc: "", classe: "" };
+
+    if (v === 0) {
+        info = { nome: "Pobretão", desc: "Uma pessoa que sequer pode pagar pelo nível de ''pobre'' é considerada um pobretão.", classe: "vida-pobretao" };
+    } else if (v <= 9) {
+        info = { nome: "Pobre", desc: "Capaz de pagar por um teto qualquer sobre a cabeça e pelo menos uma parca refeição por dia.", classe: "vida-pobre" };
+    } else if (v <= 49) {
+        info = { nome: "Médio", desc: "Um nível razoável de conforto, três refeições por dia e uma diversão ocasional.", classe: "vida-medio" };
+    } else if (v <= 89) {
+        info = { nome: "Abastado", desc: "Este nível de riqueza oferece luxo e conforto. ", classe: "vida-abastado" };
+    } else if (v <= 98) {
+        info = { nome: "Rico", desc: "Este nível de riqueza proporciona grande luxo e conforto.", classe: "vida-rico" };
+    } else {
+        info = { nome: "Ricaço", desc: "Como o Rico, mas dinheiro realmente não é problema. Os indivíduos desta categoria estão entre os mais ricos do mundo.", classe: "vida-rico" };
+    }
+
+    txt.innerText = info.nome;
+    box.title = info.desc;
+    box.className = "box-vida " + info.classe;
 }
+
+// 2. DEPOIS COLOQUE A CALCP
+function calcP(idSafe) {
+    const valInput = document.getElementById(`p-val-${idSafe}`);
+    const halfInput = document.getElementById(`p-half-${idSafe}`);
+    const fifthInput = document.getElementById(`p-fifth-${idSafe}`);
+
+    if (valInput) {
+        const v = parseInt(valInput.value) || 0;
+        if (halfInput) halfInput.value = Math.floor(v / 2);
+        if (fifthInput) fifthInput.value = Math.floor(v / 5);
+
+        // Verifica se a função existe antes de chamar para evitar o erro de 'not defined'
+        if (idSafe === "Nível-de-Crédito" && typeof atualizarPadraoVida === "function") {
+            atualizarPadraoVida(v);
+        }
+    }
+}
+
 
 function testarHabilidade(nome, valorAlvo) {
     const alvo = parseInt(valorAlvo) || 0;
@@ -1835,7 +2976,7 @@ function testarHabilidade(nome, valorAlvo) {
     document.getElementById('overlay-title').style.backgroundColor = b;
     document.getElementById('overlay-detail').innerText = `${nome.toUpperCase()}: ${detail}`;
     overlay.classList.add('active');
-    setTimeout(() => overlay.classList.remove('active'), 2500);
+    setTimeout(() => overlay.classList.remove('active'), 2700);
 }
 
 function rollXDX(qtd, lados) {
@@ -2128,10 +3269,16 @@ function minimizarFichas() {
 }
 
 function fazerLogout() {
-    if(confirm("Deseja realmente encerrar a sessão do Investigador?")) {
-        localStorage.removeItem("Agente_Sessao_Ativa"); // Remove a marcação do dispositivo
-        location.reload(); // Recarrega para voltar à tela de login
-    }
+    // 1. Limpa as sessões do navegador
+    localStorage.removeItem("Agente_Sessao_Ativa");
+    localStorage.removeItem("usuarioLogado");
+
+    // 2. Feedback visual (opcional)
+    console.log("Sessão encerrada.");
+
+    // 3. Força a página a recarregar do zero. 
+    // Como o seu 'login-overlay' é visível por padrão, ele voltará a aparecer.
+    location.reload(); 
 }
 
 
@@ -2159,34 +3306,202 @@ window.addEventListener('load', () => {
 
 
 const dadosOcupacoes = {
-    "Advogado": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
-    "Andarilho": { formula: (v) => (v.EDU * 2) + (Math.max(v.APA, v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE APA/DES/FOR] × 2" },
-    "Antiquário": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
-    "Artista": { formula: (v) => (v.EDU * 2) + (Math.max(v.POD, v.DES) * 2), texto: "EDU × 2 + [MAIOR ENTRE POD/DES] × 2" },
-    "Atleta": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/FOR] × 2" },
-    "Autor": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
-    "Bibliotecário": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
-    "Clero, Membro do": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
-    "Criminoso": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/FOR] × 2" },
-    "Detetive Particular": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/FOR] × 2" },
-    "Diletante": { formula: (v) => (v.EDU * 2) + (v.APA * 2), texto: "EDU × 2 + APA × 2" },
-    "Engenheiro": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
-    "Fanático": { formula: (v) => (v.EDU * 2) + (Math.max(v.APA, v.POD) * 2), texto: "EDU × 2 + [MAIOR ENTRE APA/POD] × 2" },
-    "Fazendeiro": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/FOR] × 2" },
-    "Hacker": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
-    "Investigador de Polícia": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/FOR] × 2" },
-    "Jornalista": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
-    "Médico": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
-    "Membro de Tribo": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/FOR] × 2" },
-    "Missionário": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
-    "Músico": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.POD) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/POD] × 2" },
-    "Oficial de Polícia": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/FOR] × 2" },
-    "Oficial Militar": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/FOR] × 2" },
-    "Parapsicólogo": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
-    "Piloto": { formula: (v) => (v.EDU * 2) + (v.DES * 2), texto: "EDU × 2 + DES × 2" },
-    "Professor": { formula: (v) => v.EDU * 4, texto: "EDU × 4" },
-    "Profissional de Entretenimento": { formula: (v) => (v.EDU * 2) + (v.APA * 2), texto: "EDU × 2 + APA × 2" },
-    "Soldado": { formula: (v) => (v.EDU * 2) + (Math.max(v.DES, v.FOR) * 2), texto: "EDU × 2 + [MAIOR ENTRE DES/FOR] × 2" }
+    "Advogado": {
+        credito: "30–80",
+        interpessoais: 2,
+        texto: "EDU × 4",
+        formula: (a) => a.EDU * 4,
+        lista: "Contabilidade, Direito, Usar Bibliotecas, duas perícias interpessoais, Psicologia, outras duas perícias."
+    },
+    "Andarilho": {
+        credito: "0–5",
+        interpessoais: 1,
+        texto: "EDU × 2 + (APA, DES ou FOR) × 2",
+        formula: (a) => (a.EDU * 2) + (Math.max(a.APA, a.DES, a.FOR) * 2),
+        lista: "Escalar, Saltar, Escutar, Navegação, uma perícia interpessoal, Furtividade, outras duas perícias."
+    },
+    "Antiquário": {
+        credito: "30–70",
+        interpessoais: 1,
+        texto: "EDU × 4",
+        formula: (a) => a.EDU * 4,
+        lista: "Avaliação, Arte/Ofício, História, Usar Bibliotecas, Outra Língua, uma perícia interpessoal, Encontrar, uma outra perícia."
+    },
+    "Artista": {
+        credito: "9–50",
+        interpessoais: 1,
+        texto: "EDU × 2 + (POD ou DES) × 2",
+        formula: (a) => (a.EDU * 2) + (Math.max(a.POD, a.DES) * 2),
+        lista: "Arte/Ofício, História ou Mundo Natural, uma perícia interpessoal, Outra Língua, Psicologia, Encontrar, outras duas perícias."
+    },
+    "Atleta": {
+        credito: "9–70",
+        interpessoais: 1,
+        texto: "EDU × 2 + (DES ou FOR) × 2",
+        formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.FOR) * 2),
+        lista: "Escalar, Saltar, Lutar (Briga), Cavalgar, uma perícia interpessoal, Natação, Arremessar, uma outra perícia."
+    },
+    "Autor": {
+        credito: "9–30",
+        interpessoais: 0,
+        texto: "EDU × 4",
+        formula: (a) => a.EDU * 4,
+        lista: "Arte (Literatura), História, Usar Bibliotecas, Mundo Natural ou Ocultismo, Outra Língua, Língua Nativa, Psicologia, uma outra perícia."
+    },
+    "Bibliotecário": {
+        credito: "9–35",
+        interpessoais: 0,
+        texto: "EDU × 4",
+        formula: (a) => a.EDU * 4,
+        lista: "Contabilidade, Usar Bibliotecas, Outra Língua, Língua Nativa, outras quatro perícias como especialidades."
+    },
+    "Clero, Membro do": {
+        credito: "9–60",
+        interpessoais: 1,
+        texto: "EDU × 4",
+        formula: (a) => a.EDU * 4,
+        lista: "Contabilidade, História, Usar Bibliotecas, Escutar, Outra Língua, uma perícia interpessoal, Psicologia, uma outra perícia."
+    },
+    "Criminoso": {
+        credito: "5–65",
+        interpessoais: 1,
+        texto: "EDU × 2 + (DES ou FOR) × 2",
+        formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.FOR) * 2),
+        lista: "Uma perícia interpessoal, Psicologia, Encontrar, Furtividade, mais quatro entre: Avaliação, Disfarce, Lutar, Armas de Fogo, Chaveiro, Consertos Mecânicos e Prestidigitação."
+    },
+    "Detetive Particular": {
+        credito: "9–30",
+        interpessoais: 1,
+        texto: "EDU × 2 + (DES ou FOR) × 2",
+        formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.FOR) * 2),
+        lista: "Arte/Ofício (Fotografia), Disfarce, Direito, Usar Bibliotecas, uma perícia interpessoal, Psicologia, Encontrar, uma outra perícia."
+    },
+    "Diletante": {
+        credito: "50–99",
+        interpessoais: 1,
+        texto: "EDU × 2 + APA × 2",
+        formula: (a) => (a.EDU * 2) + (a.APA * 2),
+        lista: "Arte/Ofício, Armas de Fogo, Outra Língua, Cavalgar, uma perícia interpessoal, outras três perícias."
+    },
+    "Engenheiro": {
+        credito: "30–60",
+        interpessoais: 0,
+        texto: "EDU × 4",
+        formula: (a) => a.EDU * 4,
+        lista: "Arte/Ofício (Desenho Técnico), Consertos Elétricos, Usar Bibliotecas, Consertos Mecânicos, Operar Maquinário Pesado, Ciências (Engenharia e Física), uma outra perícia."
+    },
+    "Fanático": {
+        credito: "0–30",
+        interpessoais: 2,
+        texto: "EDU × 2 + (APA ou POD) × 2",
+        formula: (a) => (a.EDU * 2) + (Math.max(a.APA, a.POD) * 2),
+        lista: "História, duas perícias interpessoais, Psicologia, Furtividade, três outras perícias."
+    },
+    "Fazendeiro": {
+        credito: "9–30",
+        interpessoais: 1,
+        texto: "EDU × 2 + (DES ou FOR) × 2",
+        formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.FOR) * 2),
+        lista: "Arte/Ofício (Trabalhos de Fazenda), Dirigir Automóveis (ou Carroça), uma perícia interpessoal, Consertos Mecânicos, Mundo Natural, Operar Maquinário Pesado, Rastrear, uma outra perícia."
+    },
+    "Hacker": {
+        credito: "10–70",
+        interpessoais: 1,
+        texto: "EDU × 4",
+        formula: (a) => a.EDU * 4,
+        lista: "Usar Computadores, Consertos Elétricos, Eletrônica, Usar Bibliotecas, Encontrar, uma perícia interpessoal, duas outras perícias."
+    },
+    "Investigador de Polícia": {
+        credito: "20–50",
+        interpessoais: 1,
+        texto: "EDU × 2 + (DES ou FOR) × 2",
+        formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.FOR) * 2),
+        lista: "Arte/Ofício (Atuar) ou Disfarce, Armas de Fogo, Direito, Escutar, uma perícia interpessoal, Psicologia, Encontrar, uma outra perícia."
+    },
+    "Jornalista": {
+        credito: "9–30",
+        interpessoais: 1,
+        texto: "EDU × 4",
+        formula: (a) => a.EDU * 4,
+        lista: "Artes/Ofício (Fotografia), História, Usar Bibliotecas, Língua Nativa, uma perícia interpessoal, Psicologia, duas outras perícias."
+    },
+    "Médico": {
+        credito: "30–80",
+        interpessoais: 0,
+        texto: "EDU × 4",
+        formula: (a) => a.EDU * 4,
+        lista: "Primeiros Socorros, Outra Língua (Latim), Medicina, Psicologia, Ciências (Biologia e Farmácia), duas outras perícias."
+    },
+    "Membro de Tribo": {
+        credito: "0–15",
+        interpessoais: 0,
+        texto: "EDU × 2 + (DES ou FOR) × 2",
+        formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.FOR) * 2),
+        lista: "Escalar, Lutar ou Arremessar, Mundo Natural, Escutar, Ocultismo, Encontrar, Natação, Sobrevivência."
+    },
+    "Missionário": {
+        credito: "0–30",
+        interpessoais: 1,
+        texto: "EDU × 4",
+        formula: (a) => a.EDU * 4,
+        lista: "Arte/Ofício, Primeiros Socorros, Consertos Mecânicos, Medicina, Mundo Natural, uma perícia interpessoal, duas outras perícias."
+    },
+    "Músico": {
+        credito: "9–30",
+        interpessoais: 1,
+        texto: "EDU × 2 + (DES ou POD) × 2",
+        formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.POD) * 2),
+        lista: "Arte/Ofício (instrumento), uma perícia interpessoal, Escutar, Psicologia, quatro outras perícias."
+    },
+    "Oficial de Polícia": {
+        credito: "9–30",
+        interpessoais: 1,
+        texto: "EDU × 2 + (DES ou FOR) × 2",
+        formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.FOR) * 2),
+        lista: "Lutar (Briga), Armas de Fogo, Primeiros Socorros, uma perícia interpessoal, Direito, Psicologia, Encontrar e (Dirigir ou Cavalgar)."
+    },
+    "Oficial Militar": {
+        credito: "20–70",
+        interpessoais: 2,
+        texto: "EDU × 2 + (DES ou FOR) × 2",
+        formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.FOR) * 2),
+        lista: "Contabilidade, Armas de Fogo, Navegação, duas perícias interpessoais, Psicologia, Sobrevivência, uma outra perícia."
+    },
+    "Parapsicólogo": {
+        credito: "9–30",
+        interpessoais: 0,
+        texto: "EDU × 4",
+        formula: (a) => a.EDU * 4,
+        lista: "Antropologia, Arte/Ofício (Fotografia), História, Usar Bibliotecas, Ocultismo, Outra Língua, Psicologia, uma outra perícia."
+    },
+    "Piloto": {
+        credito: "20–70",
+        interpessoais: 0,
+        texto: "EDU × 2 + DES × 2",
+        formula: (a) => (a.EDU * 2) + (a.DES * 2),
+        lista: "Consertos Elétricos, Consertos Mecânicos, Navegação, Operar Maquinário Pesado, Piloto (aeronave), Ciências (Astronomia), duas outras perícias."
+    },
+    "Professor": {
+        credito: "20–70",
+        interpessoais: 0,
+        texto: "EDU × 4",
+        formula: (a) => a.EDU * 4,
+        lista: "Usar Bibliotecas, Outra Língua, Língua Nativa, Psicologia, outras quatro perícias acadêmicas."
+    },
+    "Profissional de Entretenimento": {
+        credito: "9-70",
+        interpessoais: 2,
+        texto: "EDU × 2 + APA × 2",
+        formula: (a) => (a.EDU * 2) + (a.APA * 2),
+        lista: "Arte/Ofício (Atuar), Disfarce, duas perícias interpessoais, Escutar, Psicologia, duas outras perícias."
+    },
+    "Soldado": {
+        credito: "9–30",
+        interpessoais: 0,
+        texto: "EDU × 2 + (DES ou FOR) × 2",
+        formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.FOR) * 2),
+        lista: "Escalar ou Natação, Esquivar, Lutar, Armas de Fogo, Furtividade, Sobrevivência e duas entre: Primeiros Socorros, Consertos Mecânicos ou Outra Língua."
+    }
 };
 
 // Função para calcular os pontos baseada na ocupação atual
@@ -2194,6 +3509,8 @@ function calcularPontosOcupacao() {
     const inputOcupa = document.getElementById('input-ocupacao');
     const display = document.getElementById('display-pontos-ocupacao');
     const formulaLabel = document.getElementById('formula-usada');
+    const creditoEl = document.getElementById('credito-permitido');
+    const interpessoaisEl = document.getElementById('interpessoais-qtd');
 
     if (!inputOcupa || !display) return;
 
@@ -2201,7 +3518,6 @@ function calcularPontosOcupacao() {
     const ocupacao = dadosOcupacoes[nomeOcupacao];
 
     if (ocupacao) {
-        // CORREÇÃO DOS IDS: Usando o padrão 'input-NOME' que você definiu no renderizador
         const atributos = {
             FOR: parseInt(document.getElementById('input-FOR')?.value) || 0,
             DES: parseInt(document.getElementById('input-DES')?.value) || 0,
@@ -2211,23 +3527,41 @@ function calcularPontosOcupacao() {
             TAM: parseInt(document.getElementById('input-TAM')?.value) || 0
         };
 
-        console.log("Valores reais encontrados para cálculo:", atributos);
-
         const pontos = ocupacao.formula(atributos);
         display.innerText = pontos;
         
         if (formulaLabel) formulaLabel.innerText = ocupacao.texto;
-        console.log("Sucesso! Pontos calculados:", pontos);
+        if (creditoEl) creditoEl.innerText = ocupacao.credito;
+        
+        if (interpessoaisEl) {
+            // Criando o HTML do Tooltip
+            const plural = ocupacao.interpessoais > 1 ? 's' : '';
+            const countStr = ocupacao.interpessoais === 0 ? "Nenhuma" : ocupacao.interpessoais;
+            
+            interpessoaisEl.innerHTML = `
+                <span class="tooltip-pericias">
+                    ${countStr} obrigatória${plural}
+                    <span class="tooltip-text">
+                        <strong>PERÍCIAS DA OCUPAÇÃO:</strong><br><br>
+                        ${ocupacao.lista}
+                    </span>
+                </span>
+            `;
+        }
     } else {
         display.innerText = "0";
         if (formulaLabel) formulaLabel.innerText = "SELECIONE UMA OCUPAÇÃO";
+        if (creditoEl) creditoEl.innerText = "-";
+        if (interpessoaisEl) interpessoaisEl.innerHTML = "-";
     }
 }
 
 
-let scrollPosicaoOriginal = 0;
 
 function abrirModalOcupacoes() {
+    // **ADICIONE ESTA LINHA AQUI:**
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     // Salva a posição atual
     scrollPosicaoOriginal = window.pageYOffset || document.documentElement.scrollTop;
     
@@ -2276,18 +3610,451 @@ function selecionarOcupacao(nome) {
         input.value = nome;
         console.log("Ocupação selecionada:", nome);
 
-        // Fecha o modal e limpa o scroll
         fecharModalOcupacoes();
-
-        // FORÇA O CÁLCULO IMEDIATO
         calcularPontosOcupacao();
-
-        // Dispara evento para salvar no localStorage (se você usar)
+        
+        // === ADICIONE ESTA LINHA AQUI ===
+        marcarPericiasOcupacionais(nome);
+        
         input.dispatchEvent(new Event('input'));
     } else {
         console.error("Erro: Não encontrei o campo 'input-ocupacao'!");
     }
 }
+
+// === SISTEMA DE CORES PARA PERÍCIAS ===
+const coresPericias = [
+    '#ff0000', // Vermelho
+    '#00ff00', // Verde
+    '#0080ff', // Azul
+    '#ffff00', // Amarelo
+    '#ff00ff', // Magenta
+    '#00ffff', // Ciano
+    '#ff8000', // Laranja
+    '#8000ff', // Roxo
+    '#ffffff'  // Branco
+];
+
+let corPericiasSelecionadas = {}; // Armazena {idPericia: corIndex}
+
+function renderizarSeletorCor(idPericia) {
+    let html = '';
+    coresPericias.forEach((cor, index) => {
+        const selected = corPericiasSelecionadas[idPericia] === index ? 'selected' : '';
+        html += `<div class="color-cube ${selected}" 
+                     style="background: ${cor};" 
+                     onclick="selecionarCorPericia('${idPericia}', ${index}, '${cor}')"></div>`;
+    });
+    return html;
+}
+
+function selecionarCorPericia(idPericia, corIndex, corHex) {
+    corPericiasSelecionadas[idPericia] = corIndex;
+    
+    // Atualiza visual do nome da perícia
+    const nomeEl = document.querySelector(`#row-${idPericia} .pericia-nome`);
+    if (nomeEl) {
+        nomeEl.style.color = corHex;
+        nomeEl.style.textShadow = `0 0 5px ${corHex}`;
+    }
+    
+    // Re-renderiza os cubinhos
+    const coresDiv = document.getElementById(`cores-${idPericia}`);
+    if (coresDiv) {
+        coresDiv.innerHTML = renderizarSeletorCor(idPericia);
+    }
+}
+
+// === ADICIONE ESTA FUNÇÃO AQUI ===
+function toggleSeletorCor(idPericia, btnElement) {
+    const coresDiv = document.getElementById(`cores-${idPericia}`);
+    if (!coresDiv) return;
+    
+    // Toggle de visibilidade
+    coresDiv.classList.toggle('visible');
+    
+    // Atualiza visual do botão
+    btnElement.classList.toggle('active');
+    
+    // Fecha outros seletores abertos (opcional, para manter apenas 1 aberto por vez)
+    document.querySelectorAll('.pericia-color-marker.visible').forEach(el => {
+        if (el.id !== `cores-${idPericia}`) {
+            el.classList.remove('visible');
+        }
+    });
+    
+    document.querySelectorAll('.btn-toggle-cor.active').forEach(btn => {
+        if (btn !== btnElement) {
+            btn.classList.remove('active');
+        }
+    });
+}
+
+// === MARCAR PERÍCIAS OCUPACIONAIS ===
+const periciasOcupacionais = {
+    "Advogado": ["Contabilidade", "Direito", "Usar Bibliotecas", "Psicologia"],
+    "Andarilho": ["Escalar", "Saltar", "Escutar", "Navegação", "Furtividade"],
+    "Antiquário": ["Avaliação", "Arte e Ofício", "História", "Usar Bibliotecas", "Encontrar"],
+    "Artista": ["Arte e Ofício", "História", "Mundo Natural", "Psicologia", "Encontrar"],
+    "Atleta": ["Escalar", "Saltar", "Lutar (Briga)", "Natação", "Arremessar"],
+    "Autor": ["História", "Usar Bibliotecas", "Mundo Natural", "Ocultismo", "Psicologia"],
+    "Bibliotecário": ["Contabilidade", "Usar Bibliotecas"],
+    "Clero, Membro do": ["Contabilidade", "História", "Usar Bibliotecas", "Escutar", "Psicologia"],
+    "Criminoso": ["Psicologia", "Encontrar", "Furtividade", "Avaliação", "Disfarce", "Lutar (Briga)", "Armas de Fogo (Pistolas)", "Chaveiro", "Consertos Mecânicos", "Prestidigitação"],
+    "Detetive Particular": ["Arte e Ofício", "Disfarce", "Direito", "Usar Bibliotecas", "Psicologia", "Encontrar"],
+    "Diletante": ["Arte e Ofício", "Armas de Fogo (Pistolas)", "Armas de Fogo (Rifles/Espingardas)"],
+    "Engenheiro": ["Arte e Ofício", "Consertos Elétricos", "Usar Bibliotecas", "Consertos Mecânicos", "Operar Maquinário", "Ciência"],
+    "Fanático": ["História", "Psicologia", "Furtividade"],
+    "Fazendeiro": ["Arte e Ofício", "Dirigir Automóvel", "Consertos Mecânicos", "Mundo Natural", "Operar Maquinário", "Rastrear"],
+    "Hacker": ["Usar Computadores", "Consertos Elétricos", "Eletrônica", "Usar Bibliotecas", "Encontrar"],
+    "Investigador de Polícia": ["Arte e Ofício", "Disfarce", "Armas de Fogo (Pistolas)", "Direito", "Escutar", "Psicologia", "Encontrar"],
+    "Jornalista": ["Arte e Ofício", "História", "Usar Bibliotecas", "Psicologia"],
+    "Médico": ["Primeiros Socorros", "Medicina", "Psicologia", "Ciência"],
+    "Membro de Tribo": ["Escalar", "Lutar (Briga)", "Arremessar", "Mundo Natural", "Escutar", "Ocultismo", "Encontrar", "Natação", "Sobrevivência"],
+    "Missionário": ["Arte e Ofício", "Primeiros Socorros", "Consertos Mecânicos", "Medicina", "Mundo Natural"],
+    "Músico": ["Arte e Ofício", "Escutar", "Psicologia"],
+    "Oficial de Polícia": ["Lutar (Briga)", "Armas de Fogo (Pistolas)", "Primeiros Socorros", "Direito", "Psicologia", "Encontrar", "Dirigir Automóvel"],
+    "Oficial Militar": ["Contabilidade", "Armas de Fogo (Rifles/Espingardas)", "Navegação", "Psicologia", "Sobrevivência"],
+    "Parapsicólogo": ["Antropologia", "Arte e Ofício", "História", "Usar Bibliotecas", "Ocultismo", "Psicologia"],
+    "Piloto": ["Consertos Elétricos", "Consertos Mecânicos", "Navegação", "Operar Maquinário", "Pilotar", "Ciência"],
+    "Professor": ["Usar Bibliotecas", "Psicologia"],
+    "Profissional de Entretenimento": ["Arte e Ofício", "Disfarce", "Escutar", "Psicologia"],
+    "Soldado": ["Escalar", "Natação", "Esquivar", "Lutar (Briga)", "Armas de Fogo (Rifles/Espingardas)", "Furtividade", "Sobrevivência", "Primeiros Socorros", "Consertos Mecânicos"]
+};
+
+function marcarPericiasOcupacionais(ocupacao) {
+    const pericias = periciasOcupacionais[ocupacao];
+    if (!pericias) return;
+    
+    // Limpa todas as cores vermelhas antes
+    Object.keys(corPericiasSelecionadas).forEach(id => {
+        if (corPericiasSelecionadas[id] === 0) { // 0 = vermelho
+            delete corPericiasSelecionadas[id];
+        }
+    });
+    
+    // Marca as novas perícias em vermelho
+    pericias.forEach(nomePericia => {
+        const idSafe = nomePericia.replace(/\s+/g, '-').replace(/[()]/g, '');
+        const row = document.getElementById(`row-${idSafe}`);
+        if (row) {
+            corPericiasSelecionadas[idSafe] = 0; // Vermelho
+        }
+    });
+    
+    renderPericias();
+}
+
+// === SISTEMA DE ABAS ===
+function trocarAba(nomeAba) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
+    
+    document.getElementById(`tab-${nomeAba}`).classList.add('active');
+    event.target.classList.add('active');
+}
+
+// === INVENTÁRIO ===
+function adicionarItemInventario(nome = '', qtd = '', desc = '') {
+    const container = document.getElementById('inventarioContainer');
+    const div = document.createElement('div');
+    div.className = 'item-inventario';
+    div.innerHTML = `
+        <input type="text" placeholder="Nome do Item" value="${nome}">
+        <input type="text" placeholder="Quantidade" value="${qtd}">
+        <textarea placeholder="Descrição/Notas" style="min-height: 60px;">${desc}</textarea>
+        <button onclick="this.closest('.item-inventario').remove()" 
+                style="background: #300; padding: 5px; font-size: 9px;">REMOVER</button>
+    `;
+    container.appendChild(div);
+}
+
+// === STATUS CHECKS ===
+function toggleStatusCheck(element, tipo) {
+    const checkbox = element.querySelector('input[type="checkbox"]');
+    checkbox.checked = !checkbox.checked;
+    
+    if (checkbox.checked) {
+        element.classList.add('checked');
+    } else {
+        element.classList.remove('checked');
+    }
+}
+
+
+function removerCorPericia(idSafe) {
+    // 1. Remove do registro de cores
+    delete corPericiasSelecionadas[idSafe];
+
+    // 2. Reseta o visual do nome da perícia
+    const nomeEl = document.querySelector(`#row-${idSafe} .pericia-nome`);
+    if (nomeEl) {
+        // Verifica se é Nível de Crédito para voltar ao amarelo, senão volta ao cinza padrão
+        const isCredito = (idSafe === "Nível-de-Crédito");
+        nomeEl.style.color = isCredito ? '#ff0' : '#888';
+        nomeEl.style.textShadow = 'none';
+    }
+
+    // 3. Fecha o seletor de cores se estiver aberto e limpa os cubinhos selecionados
+    const coresDiv = document.getElementById(`cores-${idSafe}`);
+    if (coresDiv) {
+        coresDiv.classList.remove('visible');
+        coresDiv.innerHTML = renderizarSeletorCor(idSafe);
+    }
+    
+    // 4. Remove o estado 'active' do botão COR correspondente
+    const btnCor = document.querySelector(`#row-${idSafe} .btn-toggle-cor`);
+    if (btnCor) btnCor.classList.remove('active');
+}
+
+
+let ultimaIdadeAlertada = null;
+
+// Objeto para guardar os valores originais e não perder pontos ao trocar de idade
+let atributosBase = null;
+let logIdadeAtual = "Nenhuma alteração aplicada.";
+
+function salvarValoresBase() {
+    const lista = ['FOR', 'CON', 'DES', 'TAM', 'APA', 'EDU'];
+    atributosBase = {};
+    lista.forEach(attr => {
+        const el = document.getElementById(`input-${attr}`);
+        if(el) atributosBase[attr] = parseInt(el.value) || 0;
+    });
+}
+
+function aplicarRegrasIdade() {
+    // Removemos a parte de salvar atributosBase e resetar valores para não mexer nos inputs
+    const idade = parseInt(document.getElementById('idade').value);
+    if (!idade) return;
+
+    let modLog = "";
+
+    // REGRAS (Mantendo exatamente o seu texto)
+    if (idade >= 15 && idade <= 19) {
+        modLog = "<b style='color:#721717'>JOVEM:</b><br>• -5 pts distribuídos entre FOR e TAM<br>• -5 EDU<br>• Faça duas jogadas para o valor de SORTE e use o valor mais alto.";
+    } else if (idade >= 20 && idade <= 39) {
+        modLog = "<b style='color:#721717'>ADULTO:</b><br>• 1 Verificação de EDU (Role sua EDU, se o valor for maior, adicione 1d10 pontos ao atributo de EDU).";
+    } else if (idade >= 40 && idade <= 49) {
+        modLog = "<b style='color:#721717'>MATURIDADE:</b><br>• 2 Verif. EDU (Role sua EDU, se o valor for maior, adicione 1d10 pontos ao atributo de EDU).<br>• -5 pts distribuídos entre FOR, CON e DES<br>• -5 APA";
+    } else if (idade >= 50 && idade <= 59) {
+        modLog = "<b style='color:#721717'>MEIA IDADE:</b><br>• 3 Verif. EDU (Role sua EDU, se o valor for maior, adicione 1d10 pontos ao atributo de EDU).<br>• -10 pts distribuídos entre FOR, CON e DES<br>• -10 APA";
+    } else if (idade >= 60 && idade <= 69) {
+        modLog = "<b style='color:#721717'>SÊNIOR:</b><br>• 4 Verif. EDU (Role sua EDU, se o valor for maior, adicione 1d10 pontos ao atributo de EDU).<br>• -20 pts distribuídos entre FOR, CON e DES<br>• -15 APA";
+    } else if (idade >= 70 && idade <= 79) {
+        modLog = "<b style='color:#721717'>ANCIÃO:</b><br>• 4 Verif. EDU (Role sua EDU, se o valor for maior, adicione 1d10 pontos ao atributo de EDU).<br>• -40 pts distribuídos entre FOR, CON e DES<br>• -20 APA";
+    } else if (idade >= 80 && idade <= 89) {
+        modLog = "<b style='color:#721717'>VENERÁVEL:</b><br>• 4 Verif. EDU (Role sua EDU, se o valor for maior, adicione 1d10 pontos ao atributo de EDU).<br>• -80 pts distribuídos entre FOR, CON e DES<br>• -25 APA";
+    } else {
+        modLog = "Idade fora da faixa padrão (15-89). Consulte o Guardião.";
+    }
+    
+    // Atualiza o conteúdo do tooltip (balão)
+    const tooltipConteudo = document.getElementById('tooltip-idade-conteudo');
+    if (tooltipConteudo) {
+        tooltipConteudo.innerHTML = modLog;
+    }
+
+    // Mantemos o atualizarTudo apenas para o caso da idade influenciar o MOV (Movimento)
+    if (typeof atualizarTudo === "function") atualizarTudo();
+}
+
+// Funções de Controle do Tooltip
+function mostrarTooltipIdade() { document.getElementById('tooltip-idade').style.display = 'block'; }
+function esconderTooltipIdade() { document.getElementById('tooltip-idade').style.display = 'none'; }
+
+function subtrairAtributo(id, valor) {
+    const el = document.getElementById(`input-${id}`);
+    if (el) el.value = Math.max(0, parseInt(el.value) - valor);
+}
+
+function distribuirPenalidade(lista, total) {
+    while (total > 0) {
+        let alterou = false;
+        lista.forEach(attr => {
+            const el = document.getElementById(`input-${attr}`);
+            if (el && parseInt(el.value) > 1 && total > 0) {
+                el.value = parseInt(el.value) - 1;
+                total--;
+                alterou = true;
+            }
+        });
+        if (!alterou) break;
+    }
+}
+
+
+/* ============================================================
+   SISTEMA DE CUSTOMIZAÇÃO DE AMBIENTE (NOIR)
+   ============================================================ */
+
+/* --- CONTROLE DE AMBIENTE NOIR --- */
+
+/* --- SISTEMA DE AMBIENTE AVANÇADO --- */
+
+window.abrirPainelFundo = function() {
+    const painel = document.getElementById('painelFundo');
+    if(painel) {
+        // 1. Leva a página para o topo instantaneamente
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // 2. Mostra o painel
+        painel.style.setProperty('display', 'block', 'important');
+        
+        // 3. Trava o scroll para a página não mexer enquanto você ajusta
+        document.body.style.overflow = 'hidden'; 
+        console.log("Subindo ao topo e abrindo configurações...");
+    }
+};
+
+window.fecharPainelFundo = function() {
+    const painel = document.getElementById('painelFundo');
+    if(painel) {
+        painel.style.setProperty('display', 'none', 'important');
+        // 4. Libera o scroll novamente
+        document.body.style.overflow = 'auto';
+    }
+};
+
+// AJUSTE 1: Transparência da Ficha
+window.ajustarOpacidadeFicha = function(val) {
+    const seletores = ['.main-content', '.container', '.music-player-container', '#ficha-editor', '.user-account-bar'];
+    seletores.forEach(sel => {
+        document.querySelectorAll(sel).forEach(el => {
+            el.style.setProperty('background-color', `rgba(10, 10, 10, ${val})`, 'important');
+        });
+    });
+    localStorage.setItem('opacidade_ficha_noir', val);
+};
+
+// AJUSTE 2: Brilho/Opacidade do Fundo
+window.ajustarOpacidadeFundo = function(val) {
+    // Invertemos o valor para o overlay (se o brilho é 1, a opacidade do preto é 0)
+    const escurecimento = 1 - val;
+    const overlay = document.getElementById('overlay-escurecedor');
+    if(overlay) {
+        overlay.style.opacity = escurecimento;
+    }
+    localStorage.setItem('brilho_fundo_noir', val);
+};
+
+window.processarArquivoFundo = function(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const data = e.target.result;
+        const vCont = document.getElementById('video-bg-container');
+        const vEl = document.getElementById('video-bg-element');
+
+        if (file.type.includes('video')) {
+            document.body.style.backgroundImage = "none";
+            if(vCont) vCont.style.display = 'block';
+            if(vEl) { vEl.src = data; vEl.play(); }
+        } else {
+            if(vCont) vCont.style.display = 'none';
+            document.body.style.background = `url('${data}') no-repeat center center fixed`;
+            document.body.style.backgroundSize = "cover";
+        }
+        localStorage.setItem('noir_fundo_data', data);
+        localStorage.setItem('noir_fundo_tipo', file.type);
+    };
+    reader.readAsDataURL(file);
+};
+
+// Restaurar configurações ao carregar
+window.addEventListener('load', () => {
+    const bg = localStorage.getItem('noir_fundo_data');
+    const tp = localStorage.getItem('noir_fundo_tipo');
+    const opFicha = localStorage.getItem('opacidade_ficha_noir');
+    const opFundo = localStorage.getItem('brilho_fundo_noir');
+
+    if (bg) {
+        if (tp && tp.includes('video')) {
+            document.getElementById('video-bg-container').style.display = 'block';
+            document.getElementById('video-bg-element').src = bg;
+        } else {
+            document.body.style.background = `url('${bg}') no-repeat center center fixed`;
+            document.body.style.backgroundSize = "cover";
+        }
+    }
+
+    if (opFicha) {
+        window.ajustarOpacidadeFicha(opFicha);
+        document.getElementById('opacidadeFicha').value = opFicha;
+    }
+    
+    if (opFundo) {
+        window.ajustarOpacidadeFundo(opFundo);
+        document.getElementById('opacidadeFundoImg').value = opFundo;
+    }
+});
+
+// 1. Função para apenas remover a imagem/vídeo, mantendo as opacidades
+window.removerFundo = function() {
+    // Remove do CSS
+    document.body.style.background = "#000";
+    
+    // Esconde o container de vídeo se existir
+    const vCont = document.getElementById('video-bg-container');
+    const vEl = document.getElementById('video-bg-element');
+    if(vCont) vCont.style.display = 'none';
+    if(vEl) vEl.src = "";
+
+    // Limpa o armazenamento
+    localStorage.removeItem('noir_fundo_data');
+    localStorage.removeItem('noir_fundo_tipo');
+    
+    alert("Plano de fundo removido.");
+};
+
+// 2. Função para resetar TUDO (Fundo, Opacidade da Ficha e Brilho)
+window.redefinirTudo = function() {
+    if(confirm("Deseja resetar todas as configurações de ambiente?")) {
+        // Resetar Fundo
+        window.removerFundo();
+
+        // Resetar Opacidade da Ficha (Padrão 0.9)
+        const opFicha = "0.9";
+        window.ajustarOpacidadeFicha(opFicha);
+        document.getElementById('opacidadeFicha').value = opFicha;
+
+        // Resetar Brilho do Fundo (Padrão 1)
+        const brilhoFundo = "1";
+        window.ajustarOpacidadeFundo(brilhoFundo);
+        document.getElementById('opacidadeFundoImg').value = brilhoFundo;
+
+        // Limpar caches restantes
+        localStorage.removeItem('opacidade_ficha_noir');
+        localStorage.removeItem('brilho_fundo_noir');
+    }
+};
+
+
+function atualizarIdentidadeNoir() {
+    const usuarioAtual = localStorage.getItem('usuarioLogado') || "DESCONHECIDO";
+    const el = document.getElementById('display-username');
+    if (el) {
+        el.innerText = usuarioAtual.toUpperCase();
+    }
+}
+
+// Garante que rode ao carregar a ficha
+window.addEventListener('load', atualizarIdentidadeNoir);
+
+
+
+// Chama a renderização das perícias
+renderPericias();
+
+// Procura o valor inicial de Nível de Crédito para atualizar a caixinha assim que carregar
+const inputCredito = document.getElementById('p-val-Nível-de-Crédito');
+if (inputCredito) {
+    atualizarPadraoVida(inputCredito.value);
+}
+
+
 
 // Inicialização (Certifique-se que estas linhas existam e estejam fora de outras funções)
 renderPericias();
