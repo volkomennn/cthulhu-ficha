@@ -582,7 +582,7 @@ body.modal-open {
     gap: 30px; 
     flex-wrap: wrap; 
     align-items: flex-start; 
-    justify-content: center; /* ← ADICIONE ESTA LINHA */
+    justify-content: center; 
 }
         
         .foto-wrapper {
@@ -606,7 +606,7 @@ body.modal-open {
     display: grid; 
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* ← MUDEI DE 180px PARA 200px */
     gap: 20px; 
-    max-width: 650px; /* ← ADICIONE ESTA LINHA PARA LIMITAR A LARGURA */
+    max-width: 650px; 
 }
         .field { display: flex; flex-direction: column; }
         label { font-size: 0.7em; margin-bottom: 6px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
@@ -619,7 +619,7 @@ body.modal-open {
     border-radius: 0; 
     font-family: 'Courier New', monospace;
     transition: 0.3s;
-    font-size: 13px; /* ← ADICIONE ESTA LINHA */
+    font-size: 13px; 
 }
         input:focus { border-color: #555; outline: none; background: #050505; }
 
@@ -1387,6 +1387,12 @@ span.pericia-nome[title*="padrão de vida"] {
 </head>
 <body>
 
+
+<!-- SOM DE HOVER -->
+<audio id="hover-sound" preload="auto">
+    <source src="undertale-move-selection-sound-effect.mp3" type="audio/mpeg">
+</audio>
+
 <div id="login-overlay">
     <div class="login-card">
         <img src="https://i.pinimg.com/736x/71/8a/d9/718ad93c88c10dea945392bfa43ed220.jpg" style="width: 80px; border-radius: 50%; margin-bottom: 20px; filter: grayscale(1);">
@@ -1454,6 +1460,9 @@ span.pericia-nome[title*="padrão de vida"] {
         </footer>
     </div>
 </div>
+
+
+
 
 <div id="bg-particles"></div>
 
@@ -1560,6 +1569,34 @@ span.pericia-nome[title*="padrão de vida"] {
             <label style="color: #666; font-size: 10px; font-family: monospace;">BRILHO DO AMBIENTE</label>
             <input type="range" id="opacidadeFundoImg" min="0" max="1" step="0.05" value="1" oninput="window.ajustarOpacidadeFundo(this.value)" style="width: 100%; accent-color: #721717;">
         </div>
+
+<div style="margin-bottom: 30px; text-align: left;">
+    <label style="color: #666; font-size: 10px; font-family: monospace; display: block; margin-bottom: 10px;">POSIÇÃO DA IMAGEM</label>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+        <div>
+            <label style="color: #444; font-size: 9px;">HORIZONTAL (%)</label>
+            <input type="range" id="posicaoX" min="0" max="100" value="50" oninput="window.ajustarPosicaoFundo()" style="width: 100%; accent-color: #721717;">
+            <div id="valorX" style="color: #721717; font-size: 10px; text-align: center; margin-top: 2px;">50%</div>
+        </div>
+        <div>
+            <label style="color: #444; font-size: 9px;">VERTICAL (%)</label>
+            <input type="range" id="posicaoY" min="0" max="100" value="50" oninput="window.ajustarPosicaoFundo()" style="width: 100%; accent-color: #721717;">
+            <div id="valorY" style="color: #721717; font-size: 10px; text-align: center; margin-top: 2px;">50%</div>
+        </div>
+    </div>
+    
+    <button onclick="window.centralizarFundo()" style="width: 100%; padding: 8px; background: #0a0a0a; color: #666; border: 1px solid #333; cursor: pointer; font-family: monospace; font-size: 9px;">
+        CENTRALIZAR IMAGEM
+    </button>
+</div>
+
+<div style="margin-bottom: 20px; text-align: left;">
+    <label style="color: #666; font-size: 10px; font-family: monospace; display: block; margin-bottom: 5px;">TAMANHO DA IMAGEM (ZOOM)</label>
+    <input type="range" id="zoomFundo" min="50" max="300" value="100" oninput="window.ajustarZoomFundo(this.value)" style="width: 100%; accent-color: #721717;">
+    <div id="valorZoom" style="color: #721717; font-size: 10px; text-align: center; margin-top: 2px;">100%</div>
+</div>
+
 
         <div style="display: flex; gap: 10px; margin-bottom: 20px;">
     <button onclick="window.removerFundo()" style="flex: 1; padding: 10px; background: #0a0a0a; color: #666; border: 1px solid #333; cursor: pointer; font-family: monospace; font-size: 9px;">
@@ -1714,9 +1751,19 @@ span.pericia-nome[title*="padrão de vida"] {
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h2 style="margin:0; border:none;">Atributos Base</h2>
             <button onclick="gerarTodosAtributos()" style="font-size: 0.6em; padding: 5px 10px;">AUTO-GERAR</button>
+
+<!-- PAINEL DE RESULTADO DE ATRIBUTOS -->
+<div id="painel-resultado-atributos" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; padding: 0; margin-top: 0;">
+    <div style="background: #050505; border: 1px solid #721717; padding: 20px; text-align: center;">
+        <div style="color: #721717; font-size: 11px; margin-bottom: 10px; font-family: monospace;">RESULTADO DA ROLAGEM</div>
+        <div id="texto-resultado-atributo" style="color: #fff; font-size: 16px; font-family: 'Courier New', monospace;"></div>
+    </div>
+</div>
+
         </div>
         <div id="attrContainer" class="grid-atributos"></div>
     </div>
+
 
     <div class="section">
     <h3>Sinais Vitais e Psíquicos</h3>
@@ -1827,8 +1874,27 @@ span.pericia-nome[title*="padrão de vida"] {
     <div id="tab-pericias" class="tab-content active">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h3 style="margin:0; border:none;">Perícias & Competências</h3>
+
+<!-- PAINEL DE RESULTADO DE PERÍCIAS -->
+<div id="painel-resultado-pericias" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; padding: 0; margin-bottom: 0;">
+    <div style="background: #050505; border: 1px solid #721717; padding: 20px; text-align: center;">
+        <div style="color: #721717; font-size: 11px; margin-bottom: 10px; font-family: monospace;">RESULTADO DA PERÍCIA</div>
+        <div id="texto-resultado-pericias" style="color: #fff; font-size: 16px; font-family: 'Courier New', monospace;"></div>
+    </div>
+</div>
+
+
             <button onclick="adicionarPericiaCustom()" class="btn-add-pericia">+ ADICIONAR PERÍCIA</button>
         </div>
+
+<!-- PAINEL DE RESULTADO DE PERÍCIAS -->
+<div id="painel-resultado-pericias" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease, margin 0.4s ease; padding: 0; margin-bottom: 0;">
+    <div style="background: #050505; border: 1px solid #721717; padding: 20px; text-align: center;">
+        <div style="color: #721717; font-size: 11px; margin-bottom: 10px; font-family: monospace; letter-spacing: 2px;">║ RESULTADO DA PERÍCIA ║</div>
+        <div id="texto-resultado-pericias" style="color: #fff; font-size: 14px; font-family: 'Courier New', monospace; line-height: 1.6;"></div>
+    </div>
+</div>
+
         <div class="grid-pericias" id="periciasContainer"></div>
     </div>
 
@@ -1968,6 +2034,9 @@ span.pericia-nome[title*="padrão de vida"] {
     </div>
 </footer>
 
+
+
+
 <script>
     // --- LÓGICA DE LOGIN, SENHA E CONTAS (ADICIONADA) ---
     let agenteLogado = null;
@@ -1995,11 +2064,9 @@ span.pericia-nome[title*="padrão de vida"] {
     }
 
 function abrirAjuda() {
-    // **VAI PRO TOPO SUAVEMENTE:**
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    // Salva a posição antes de travar
-    scrollPosicaoOriginal = window.pageYOffset || document.documentElement.scrollTop;
+
     
     const modal = document.getElementById('ajuda-modal');
     if(modal) {
@@ -2443,12 +2510,12 @@ function colherDados() {
         coresPericias: corPericiasSelecionadas
     };
 
-    // Captura campos pessoais
-    document.querySelectorAll('#camposPessoais input').forEach(i => {
-        if (i.dataset.key) {
-            dados.pessoais[i.dataset.key] = i.value;
-        }
-    });
+// Captura campos pessoais
+document.querySelectorAll('[data-key]').forEach(i => {
+    if (i.dataset.key) {
+        dados.pessoais[i.dataset.key] = i.value;
+    }
+});
 
     // Reforço para ocupação
     if (!dados.pessoais['ocupacao']) {
@@ -2962,21 +3029,69 @@ function calcP(idSafe) {
 function testarHabilidade(nome, valorAlvo) {
     const alvo = parseInt(valorAlvo) || 0;
     const roll = Math.floor(Math.random() * 100) + 1;
-    const half = Math.floor(alvo / 2); const fifth = Math.floor(alvo / 5);
+    const half = Math.floor(alvo / 2); 
+    const fifth = Math.floor(alvo / 5);
     const overlay = document.getElementById('result-overlay');
+    
     let title = "FALHA", detail = `${roll} VS ${alvo}`, c="#666", b="#111";
-    if (roll === 1) { title="CRÍTICO"; c="#000"; b="#fff"; }
-    else if (roll <= fifth) { title="EXTREMO"; c="#fff"; b="#333"; }
-    else if (roll <= half) { title="SÓLIDO"; c="#fff"; b="#666"; }
-    else if (roll <= alvo) { title="REGULAR"; c="#000"; b="#999"; }
-    else if (roll >= 96 && alvo < 50) { title="DESASTRE"; c="#f00"; b="#300"; }
-    else if (roll === 100) { title="DESASTRE"; c="#f00"; b="#300"; }
-    document.getElementById('overlay-title').innerText = title;
-    document.getElementById('overlay-title').style.color = c;
-    document.getElementById('overlay-title').style.backgroundColor = b;
-    document.getElementById('overlay-detail').innerText = `${nome.toUpperCase()}: ${detail}`;
-    overlay.classList.add('active');
-    setTimeout(() => overlay.classList.remove('active'), 2700);
+    
+    if (roll === 1) { 
+        title="CRÍTICO"; c="#000"; b="#fff"; 
+    }
+    else if (roll <= fifth) { 
+        title="EXTREMO"; c="#fff"; b="#333"; 
+    }
+    else if (roll <= half) { 
+        title="SÓLIDO"; c="#fff"; b="#666"; 
+    }
+    else if (roll <= alvo) { 
+        title="REGULAR"; c="#000"; b="#999"; 
+    }
+    else if (roll >= 96 && alvo < 50) { 
+        title="DESASTRE"; c="#f00"; b="#300"; 
+    }
+    else if (roll === 100) { 
+        title="DESASTRE"; c="#f00"; b="#300"; 
+    }
+
+    
+    // === LÓGICA DOS PAINÉIS EXPANSÍVEIS ===
+    const painelAtributos = document.getElementById('painel-resultado-atributos');
+    const textoAtributo = document.getElementById('texto-resultado-atributo');
+    const painelPericias = document.getElementById('painel-resultado-pericias');
+    const textoPericias = document.getElementById('texto-resultado-pericias');
+    
+    // Detecta se é atributo (verificando se está na lista todosAtributos)
+    const ehAtributo = todosAtributos.includes(nome);
+    
+    if (ehAtributo && painelAtributos && textoAtributo) {
+        // É um atributo - mostra painel de atributos
+        textoAtributo.innerHTML = `<b style="color: #721717">${nome}:</b> <span style="color: ${c}">${title}</span><br><span style="color: #888">${detail}</span>`;
+        painelAtributos.style.maxHeight = "200px";
+        painelAtributos.style.padding = "15px 0";
+        painelAtributos.style.marginTop = "20px";
+        
+        // Fecha após 3.2s
+        setTimeout(() => {
+            painelAtributos.style.maxHeight = "0";
+            painelAtributos.style.padding = "0";
+            painelAtributos.style.marginTop = "0";
+        }, 3200);
+        
+    } else if (!ehAtributo && painelPericias && textoPericias) {
+        // É uma perícia - mostra painel de perícias
+        textoPericias.innerHTML = `<b style="color: #721717">${nome}:</b> <span style="color: ${c}">${title}</span><br><span style="color: #888">${detail}</span>`;
+        painelPericias.style.maxHeight = "200px";
+        painelPericias.style.padding = "15px 0";
+        painelPericias.style.marginBottom = "20px";
+        
+        // Fecha após 3.2s
+        setTimeout(() => {
+            painelPericias.style.maxHeight = "0";
+            painelPericias.style.padding = "0";
+            painelPericias.style.marginBottom = "0";
+        }, 3200);
+    }
 }
 
 function rollXDX(qtd, lados) {
@@ -3293,7 +3408,6 @@ window.addEventListener('load', () => {
         
         atualizarListaInvestigadores();
         
-        // --- ADICIONE ESTE BLOCO AQUI ---
         // Espera um pouco para os dados preencherem a tela e calcula
         setTimeout(() => {
             atualizarTudo();
@@ -3301,6 +3415,22 @@ window.addEventListener('load', () => {
             console.log("Cálculos automáticos aplicados para: " + usuarioSalvo);
         }, 500); 
         // --------------------------------
+
+// ... dentro do load ...
+const zoom = localStorage.getItem('noir_fundo_zoom') || '100';
+
+if (bg) {
+    if (!(tp && tp.includes('video'))) {
+        document.body.style.background = `url('${bg}') no-repeat ${posX}% ${posY}% fixed`;
+        document.body.style.backgroundSize = `${zoom}%`; // Aplica o zoom salvo
+    }
+}
+
+if (document.getElementById('zoomFundo')) {
+    document.getElementById('zoomFundo').value = zoom;
+    document.getElementById('valorZoom').innerText = zoom + '%';
+}
+
     }
 });
 
@@ -3559,11 +3689,8 @@ function calcularPontosOcupacao() {
 
 
 function abrirModalOcupacoes() {
-    // **ADICIONE ESTA LINHA AQUI:**
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    // Salva a posição atual
-    scrollPosicaoOriginal = window.pageYOffset || document.documentElement.scrollTop;
+
+window.scrollTo({ top: 0, behavior: 'smooth' });
     
     const modal = document.getElementById('modal-ocupacoes');
     const grid = document.getElementById('lista-ocupacoes-grid');
@@ -3885,12 +4012,12 @@ function distribuirPenalidade(lista, total) {
 
 
 /* ============================================================
-   SISTEMA DE CUSTOMIZAÇÃO DE AMBIENTE (NOIR)
+   SISTEMA DE CUSTOMIZAÇÃO
    ============================================================ */
 
-/* --- CONTROLE DE AMBIENTE NOIR --- */
 
-/* --- SISTEMA DE AMBIENTE AVANÇADO --- */
+
+/* --- SISTEMA DE AMBIENTE --- */
 
 window.abrirPainelFundo = function() {
     const painel = document.getElementById('painelFundo');
@@ -3929,7 +4056,7 @@ window.ajustarOpacidadeFicha = function(val) {
 
 // AJUSTE 2: Brilho/Opacidade do Fundo
 window.ajustarOpacidadeFundo = function(val) {
-    // Invertemos o valor para o overlay (se o brilho é 1, a opacidade do preto é 0)
+    // Inverter o valor para o overlay (se o brilho é 1, a opacidade do preto é 0)
     const escurecimento = 1 - val;
     const overlay = document.getElementById('overlay-escurecedor');
     if(overlay) {
@@ -3952,11 +4079,13 @@ window.processarArquivoFundo = function(input) {
             document.body.style.backgroundImage = "none";
             if(vCont) vCont.style.display = 'block';
             if(vEl) { vEl.src = data; vEl.play(); }
-        } else {
-            if(vCont) vCont.style.display = 'none';
-            document.body.style.background = `url('${data}') no-repeat center center fixed`;
-            document.body.style.backgroundSize = "cover";
-        }
+} else {
+    if(vCont) vCont.style.display = 'none';
+    const x = localStorage.getItem('noir_fundo_posX') || '50';
+    const y = localStorage.getItem('noir_fundo_posY') || '50';
+    document.body.style.background = `url('${data}') no-repeat ${x}% ${y}% fixed`;
+    document.body.style.backgroundSize = "cover";
+}
         localStorage.setItem('noir_fundo_data', data);
         localStorage.setItem('noir_fundo_tipo', file.type);
     };
@@ -3988,6 +4117,13 @@ window.addEventListener('load', () => {
     if (opFundo) {
         window.ajustarOpacidadeFundo(opFundo);
         document.getElementById('opacidadeFundoImg').value = opFundo;
+    }
+
+    if (document.getElementById('posicaoX')) {
+        document.getElementById('posicaoX').value = posX;
+        document.getElementById('posicaoY').value = posY;
+        document.getElementById('valorX').innerText = posX + '%';
+        document.getElementById('valorY').innerText = posY + '%';
     }
 });
 
@@ -4025,11 +4161,48 @@ window.redefinirTudo = function() {
         window.ajustarOpacidadeFundo(brilhoFundo);
         document.getElementById('opacidadeFundoImg').value = brilhoFundo;
 
+
+                document.getElementById('posicaoX').value = 50;
+        document.getElementById('posicaoY').value = 50;
+        window.ajustarPosicaoFundo();
+
+
         // Limpar caches restantes
         localStorage.removeItem('opacidade_ficha_noir');
         localStorage.removeItem('brilho_fundo_noir');
+
+
+                localStorage.removeItem('noir_fundo_posX');
+        localStorage.removeItem('noir_fundo_posY');
+
+// ... dentro do confirm do redefinirTudo ...
+const zoomPadrao = "100";
+document.getElementById('zoomFundo').value = zoomPadrao;
+document.getElementById('valorZoom').innerText = zoomPadrao + "%";
+document.body.style.backgroundSize = "cover"; // Volta ao padrão do navegador ou 100%
+localStorage.removeItem('noir_fundo_zoom');
+
     }
 };
+
+
+// === SISTEMA DE SOM DE CLIQUE ===
+document.addEventListener('DOMContentLoaded', function() {
+    const hoverSound = document.getElementById('hover-sound');
+    
+    // Configura volume
+    if(hoverSound) {
+        hoverSound.volume = 0.3;
+    }
+    
+    // Adiciona evento de CLIQUE a TODOS os botões
+    document.addEventListener('click', function(e) {
+        if(e.target.tagName === 'BUTTON' && hoverSound) {
+            hoverSound.currentTime = 0;
+            hoverSound.play().catch(() => {});
+        }
+    });
+});
 
 
 function atualizarIdentidadeNoir() {
@@ -4039,6 +4212,44 @@ function atualizarIdentidadeNoir() {
         el.innerText = usuarioAtual.toUpperCase();
     }
 }
+
+// === AJUSTAR POSIÇÃO DO FUNDO ===
+window.ajustarPosicaoFundo = function() {
+    const x = document.getElementById('posicaoX').value;
+    const y = document.getElementById('posicaoY').value;
+    const zoom = localStorage.getItem('noir_fundo_zoom') || '100'; // Pega o zoom salvo
+    
+    document.getElementById('valorX').innerText = x + '%';
+    document.getElementById('valorY').innerText = y + '%';
+    
+    document.body.style.backgroundPosition = `${x}% ${y}%`;
+    document.body.style.backgroundSize = `${zoom}%`; // Garante que o zoom permaneça
+    
+    localStorage.setItem('noir_fundo_posX', x);
+    localStorage.setItem('noir_fundo_posY', y);
+};
+
+// === CENTRALIZAR FUNDO ===
+window.centralizarFundo = function() {
+    document.getElementById('posicaoX').value = 50;
+    document.getElementById('posicaoY').value = 50;
+    // Opcional: document.getElementById('zoomFundo').value = 100; 
+    window.ajustarPosicaoFundo();
+    // window.ajustarZoomFundo(100); // Se quiser resetar o zoom ao centralizar
+};
+
+window.ajustarZoomFundo = function(valor) {
+    const v = valor || document.getElementById('zoomFundo').value;
+    document.getElementById('valorZoom').innerText = v + '%';
+    
+    // Aplica o tamanho. Usamos o valor em % para background-size
+    document.body.style.backgroundSize = `${v}%`;
+    
+    // Salva no localStorage
+    localStorage.setItem('noir_fundo_zoom', v);
+};
+
+
 
 // Garante que rode ao carregar a ficha
 window.addEventListener('load', atualizarIdentidadeNoir);
@@ -4069,4 +4280,3 @@ atualizarTudo();
 </script>
 </body>
 </html>
-
