@@ -1543,6 +1543,7 @@ span.pericia-nome[title*="padrão de vida"] {
     <button onclick="abrirAjuda()" style="width: 100%; padding: 10px; font-size: 16px; background: #1a1a1a; color: #fff; border: 1px solid #333; cursor: pointer; font-family: monospace;">
         Como usar?
     </button>
+    
 
 <div style="margin-top: 15px;">
     <button onclick="window.abrirPainelFundo()" style="width: 100%; padding: 12px; background: #0a0a0a; color: #888; border: 1px solid #721717; cursor: pointer; font-family: monospace; font-size: 11px; letter-spacing: 1px;">
@@ -4017,20 +4018,37 @@ function distribuirPenalidade(lista, total) {
 
 
 
-/* --- SISTEMA DE AMBIENTE --- */
+/* --- SISTEMA DE AMBIENTE CORRIGIDO --- */
+
+// Função mestre para aplicar o fundo com todas as variáveis simultaneamente
+window.aplicarConfiguracoesFundo = function() {
+    const bg = localStorage.getItem('noir_fundo_data');
+    const tp = localStorage.getItem('noir_fundo_tipo');
+    const posX = localStorage.getItem('noir_fundo_posX') || '50';
+    const posY = localStorage.getItem('noir_fundo_posY') || '50';
+    const zoom = localStorage.getItem('noir_fundo_zoom') || '100';
+
+    if (bg) {
+        if (tp && tp.includes('video')) {
+            const vCont = document.getElementById('video-bg-container');
+            const vEl = document.getElementById('video-bg-element');
+            if (vCont) vCont.style.display = 'block';
+            if (vEl && vEl.src !== bg) { vEl.src = bg; vEl.play(); }
+            document.body.style.background = "#000";
+        } else {
+            // AQUI ESTÁ O SEGREDO: Unificar posição e tamanho num comando só
+            document.body.style.background = `url('${bg}') no-repeat ${posX}% ${posY}% fixed`;
+            document.body.style.backgroundSize = `${zoom}%`;
+        }
+    }
+};
 
 window.abrirPainelFundo = function() {
     const painel = document.getElementById('painelFundo');
     if(painel) {
-        // 1. Leva a página para o topo instantaneamente
         window.scrollTo({ top: 0, behavior: 'smooth' });
-
-        // 2. Mostra o painel
         painel.style.setProperty('display', 'block', 'important');
-        
-        // 3. Trava o scroll para a página não mexer enquanto você ajusta
         document.body.style.overflow = 'hidden'; 
-        console.log("Subindo ao topo e abrindo configurações...");
     }
 };
 
@@ -4038,12 +4056,10 @@ window.fecharPainelFundo = function() {
     const painel = document.getElementById('painelFundo');
     if(painel) {
         painel.style.setProperty('display', 'none', 'important');
-        // 4. Libera o scroll novamente
         document.body.style.overflow = 'auto';
     }
 };
 
-// AJUSTE 1: Transparência da Ficha
 window.ajustarOpacidadeFicha = function(val) {
     const seletores = ['.main-content', '.container', '.music-player-container', '#ficha-editor', '.user-account-bar'];
     seletores.forEach(sel => {
@@ -4054,15 +4070,28 @@ window.ajustarOpacidadeFicha = function(val) {
     localStorage.setItem('opacidade_ficha_noir', val);
 };
 
-// AJUSTE 2: Brilho/Opacidade do Fundo
 window.ajustarOpacidadeFundo = function(val) {
-    // Inverter o valor para o overlay (se o brilho é 1, a opacidade do preto é 0)
     const escurecimento = 1 - val;
     const overlay = document.getElementById('overlay-escurecedor');
-    if(overlay) {
-        overlay.style.opacity = escurecimento;
-    }
+    if(overlay) overlay.style.opacity = escurecimento;
     localStorage.setItem('brilho_fundo_noir', val);
+};
+
+window.ajustarPosicaoFundo = function() {
+    const x = document.getElementById('posicaoX').value;
+    const y = document.getElementById('posicaoY').value;
+    document.getElementById('valorX').innerText = x + '%';
+    document.getElementById('valorY').innerText = y + '%';
+    
+    localStorage.setItem('noir_fundo_posX', x);
+    localStorage.setItem('noir_fundo_posY', y);
+    window.aplicarConfiguracoesFundo();
+};
+
+window.ajustarZoomFundo = function(val) {
+    document.getElementById('valorZoom').innerText = val + '%';
+    localStorage.setItem('noir_fundo_zoom', val);
+    window.aplicarConfiguracoesFundo();
 };
 
 window.processarArquivoFundo = function(input) {
@@ -4072,119 +4101,71 @@ window.processarArquivoFundo = function(input) {
     const reader = new FileReader();
     reader.onload = function(e) {
         const data = e.target.result;
-        const vCont = document.getElementById('video-bg-container');
-        const vEl = document.getElementById('video-bg-element');
-
-        if (file.type.includes('video')) {
-            document.body.style.backgroundImage = "none";
-            if(vCont) vCont.style.display = 'block';
-            if(vEl) { vEl.src = data; vEl.play(); }
-} else {
-    if(vCont) vCont.style.display = 'none';
-    const x = localStorage.getItem('noir_fundo_posX') || '50';
-    const y = localStorage.getItem('noir_fundo_posY') || '50';
-    document.body.style.background = `url('${data}') no-repeat ${x}% ${y}% fixed`;
-    document.body.style.backgroundSize = "cover";
-}
         localStorage.setItem('noir_fundo_data', data);
         localStorage.setItem('noir_fundo_tipo', file.type);
+        window.aplicarConfiguracoesFundo();
     };
     reader.readAsDataURL(file);
 };
 
-// Restaurar configurações ao carregar
+// Restaurar TUDO ao carregar a página (F5)
 window.addEventListener('load', () => {
-    const bg = localStorage.getItem('noir_fundo_data');
-    const tp = localStorage.getItem('noir_fundo_tipo');
+    const posX = localStorage.getItem('noir_fundo_posX') || '50';
+    const posY = localStorage.getItem('noir_fundo_posY') || '50';
+    const zoom = localStorage.getItem('noir_fundo_zoom') || '100';
     const opFicha = localStorage.getItem('opacidade_ficha_noir');
     const opFundo = localStorage.getItem('brilho_fundo_noir');
 
-    if (bg) {
-        if (tp && tp.includes('video')) {
-            document.getElementById('video-bg-container').style.display = 'block';
-            document.getElementById('video-bg-element').src = bg;
-        } else {
-            document.body.style.background = `url('${bg}') no-repeat center center fixed`;
-            document.body.style.backgroundSize = "cover";
-        }
-    }
-
-    if (opFicha) {
-        window.ajustarOpacidadeFicha(opFicha);
-        document.getElementById('opacidadeFicha').value = opFicha;
-    }
-    
-    if (opFundo) {
-        window.ajustarOpacidadeFundo(opFundo);
-        document.getElementById('opacidadeFundoImg').value = opFundo;
-    }
-
+    // Sincroniza os inputs da interface
     if (document.getElementById('posicaoX')) {
         document.getElementById('posicaoX').value = posX;
         document.getElementById('posicaoY').value = posY;
         document.getElementById('valorX').innerText = posX + '%';
         document.getElementById('valorY').innerText = posY + '%';
     }
+    if (document.getElementById('zoomFundo')) {
+        document.getElementById('zoomFundo').value = zoom;
+        document.getElementById('valorZoom').innerText = zoom + '%';
+    }
+
+    // Aplica o fundo com as coordenadas salvas
+    window.aplicarConfiguracoesFundo();
+
+    if (opFicha) window.ajustarOpacidadeFicha(opFicha);
+    if (opFundo) window.ajustarOpacidadeFundo(opFundo);
 });
 
-// 1. Função para apenas remover a imagem/vídeo, mantendo as opacidades
 window.removerFundo = function() {
-    // Remove do CSS
     document.body.style.background = "#000";
-    
-    // Esconde o container de vídeo se existir
     const vCont = document.getElementById('video-bg-container');
-    const vEl = document.getElementById('video-bg-element');
     if(vCont) vCont.style.display = 'none';
-    if(vEl) vEl.src = "";
-
-    // Limpa o armazenamento
     localStorage.removeItem('noir_fundo_data');
     localStorage.removeItem('noir_fundo_tipo');
-    
-    alert("Plano de fundo removido.");
 };
 
-// 2. Função para resetar TUDO (Fundo, Opacidade da Ficha e Brilho)
 window.redefinirTudo = function() {
     if(confirm("Deseja resetar todas as configurações de ambiente?")) {
-        // Resetar Fundo
         window.removerFundo();
-
-        // Resetar Opacidade da Ficha (Padrão 0.9)
-        const opFicha = "0.9";
-        window.ajustarOpacidadeFicha(opFicha);
-        document.getElementById('opacidadeFicha').value = opFicha;
-
-        // Resetar Brilho do Fundo (Padrão 1)
-        const brilhoFundo = "1";
-        window.ajustarOpacidadeFundo(brilhoFundo);
-        document.getElementById('opacidadeFundoImg').value = brilhoFundo;
-
-
-                document.getElementById('posicaoX').value = 50;
+        
+        // Resetar valores
+        localStorage.setItem('noir_fundo_posX', '50');
+        localStorage.setItem('noir_fundo_posY', '50');
+        localStorage.setItem('noir_fundo_zoom', '100');
+        
+        window.ajustarOpacidadeFicha("0.9");
+        window.ajustarOpacidadeFundo("1");
+        
+        // Atualizar interface
+        document.getElementById('opacidadeFicha').value = "0.9";
+        document.getElementById('opacidadeFundoImg').value = "1";
+        document.getElementById('posicaoX').value = 50;
         document.getElementById('posicaoY').value = 50;
-        window.ajustarPosicaoFundo();
-
-
-        // Limpar caches restantes
-        localStorage.removeItem('opacidade_ficha_noir');
-        localStorage.removeItem('brilho_fundo_noir');
-
-
-                localStorage.removeItem('noir_fundo_posX');
-        localStorage.removeItem('noir_fundo_posY');
-
-// ... dentro do confirm do redefinirTudo ...
-const zoomPadrao = "100";
-document.getElementById('zoomFundo').value = zoomPadrao;
-document.getElementById('valorZoom').innerText = zoomPadrao + "%";
-document.body.style.backgroundSize = "cover"; // Volta ao padrão do navegador ou 100%
-localStorage.removeItem('noir_fundo_zoom');
-
+        document.getElementById('zoomFundo').value = 100;
+        
+        window.aplicarConfiguracoesFundo();
+        alert("Configurações resetadas.");
     }
 };
-
 
 // === SISTEMA DE SOM DE CLIQUE ===
 document.addEventListener('DOMContentLoaded', function() {
@@ -4280,4 +4261,3 @@ atualizarTudo();
 </script>
 </body>
 </html>
-
