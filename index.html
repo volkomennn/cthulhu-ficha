@@ -1382,6 +1382,52 @@ span.pericia-nome[title*="padrão de vida"] {
     opacity: 1;
 }
 
+/* 1. Garante que o grid permita que o conteúdo "saia" para fora */
+.ocupacoes-grid {
+    overflow: visible !important; 
+    display: grid;
+    /* adicione suas colunas aqui, ex: grid-template-columns: 1fr 1fr; */
+    gap: 15px;
+    padding: 20px;
+}
+
+/* 2. Ajuste do Botão */
+.btn-ocupacao-item {
+    position: relative;
+    overflow: visible !important; /* Essencial para o tooltip aparecer */
+    z-index: 1;
+}
+
+.btn-ocupacao-item:hover {
+    z-index: 10; /* Faz o botão atual ficar na frente dos outros */
+}
+
+/* 3. O Tooltip ajustado */
+.custom-tooltip {
+    display: none;
+    position: absolute;
+    /* Mudamos de bottom para top para ele descer em vez de subir */
+    top: 100%; 
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #0a0a0a;
+    color: #fff;
+    padding: 10px;
+    border: 1px solid #721717;
+    border-radius: 4px;
+    font-size: 11px;
+    width: 220px;
+    z-index: 9999;
+    pointer-events: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.9);
+    margin-top: 5px; /* Espaço entre o botão e o texto */
+    line-height: 1.4;
+    text-align: center;
+}
+
+.btn-ocupacao-item:hover .custom-tooltip {
+    display: block;
+}
 
     </style>
 </head>
@@ -1869,6 +1915,7 @@ span.pericia-nome[title*="padrão de vida"] {
         <button class="tab-button active" onclick="trocarAba('pericias')">PERÍCIAS</button>
         <button class="tab-button" onclick="trocarAba('antecedentes')">ANTECEDENTES</button>
         <button class="tab-button" onclick="trocarAba('inventario')">INVENTÁRIO</button>
+        <button class="tab-button" onclick="trocarAba('notas')">BLOCO DE NOTAS</button>
     </div>
 
     <!-- ABA PERÍCIAS (conteúdo atual) -->
@@ -1906,6 +1953,35 @@ span.pericia-nome[title*="padrão de vida"] {
     </div>
 </div>
 
+<!-- ÉPOCA 1920s -->
+<div class="dinheiro-gastos-container" style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+    <div class="box-dinheiro" style="background: #050505; border: 1px solid #444; padding: 15px; text-align: center;">
+        <label style="color: #666; font-size: 10px; display: block; margin-bottom: 8px;">DINHEIRO DISPONÍVEL</label>
+        <div id="txt-dinheiro-1920" style="color: #00ff00; font-size: 18px; font-weight: bold; font-family: 'Courier New';">$0</div>
+        <div style="color: #721717; font-size: 8px; margin-top: 5px;">1920s</div>
+    </div>
+    
+    <div class="box-gastos" style="background: #050505; border: 1px solid #444; padding: 15px; text-align: center;">
+        <label style="color: #666; font-size: 10px; display: block; margin-bottom: 8px;">NÍVEL DE GASTOS</label>
+        <div id="txt-gastos-1920" style="color: #ff8800; font-size: 18px; font-weight: bold; font-family: 'Courier New';">$0</div>
+        <div style="color: #721717; font-size: 8px; margin-top: 5px;">1920s</div>
+    </div>
+</div>
+
+<!-- ÉPOCA MODERNA -->
+<div class="dinheiro-gastos-container" style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+    <div class="box-dinheiro" style="background: #050505; border: 1px solid #444; padding: 15px; text-align: center;">
+        <label style="color: #666; font-size: 10px; display: block; margin-bottom: 8px;">DINHEIRO DISPONÍVEL</label>
+        <div id="txt-dinheiro-moderna" style="color: #00ff00; font-size: 18px; font-weight: bold; font-family: 'Courier New';">$0</div>
+        <div style="color: #721717; font-size: 8px; margin-top: 5px;">MODERNA</div>
+    </div>
+    
+    <div class="box-gastos" style="background: #050505; border: 1px solid #444; padding: 15px; text-align: center;">
+        <label style="color: #666; font-size: 10px; display: block; margin-bottom: 8px;">NÍVEL DE GASTOS</label>
+        <div id="txt-gastos-moderna" style="color: #ff8800; font-size: 18px; font-weight: bold; font-family: 'Courier New';">$0</div>
+        <div style="color: #721717; font-size: 8px; margin-top: 5px;">MODERNA</div>
+    </div>
+</div>
 
     <!-- ABA ANTECEDENTES -->
     <div id="tab-antecedentes" class="tab-content">
@@ -1960,6 +2036,13 @@ span.pericia-nome[title*="padrão de vida"] {
         <div class="inventario-lista" id="inventarioContainer"></div>
         <button onclick="adicionarItemInventario()" style="margin-top: 20px; font-size: 0.7em;">+ ADICIONAR ITEM</button>
     </div>
+</div>
+
+<div id="tab-notas" class="tab-content">
+    <h3 style="margin:0 0 20px 0; border:none;">Anotações Pessoais</h3>
+    <textarea id="bloco-notas" 
+              style="width: 100%; min-height: 400px; background: #000; border: 1px solid #222; color: #ccc; padding: 15px; font-family: 'Courier New', monospace; font-size: 12px; resize: vertical;" 
+              placeholder="Escreva suas anotações aqui..."></textarea>
 </div>
 
 <!-- CHECKBOXES DE STATUS FÍSICO/MENTAL -->
@@ -2189,6 +2272,9 @@ function abrirFicha(id) {
         
         // 2. Mostra a ficha e o player de música
         document.querySelectorAll('.main-content').forEach(el => el.classList.add('visible'));
+
+const blocoNotas = document.getElementById('bloco-notas');
+if (blocoNotas) blocoNotas.value = '';
     }
 }
 
@@ -2355,7 +2441,6 @@ function limparFicha() {
     document.getElementById('diceDisplay').innerText = 'AGUARDANDO...';
     document.getElementById('diceInput').value = '';
     
-    // === ADICIONE ESTAS LINHAS ===
     // Limpar checkboxes de condições
     document.querySelectorAll('.status-check-item input[type="checkbox"]').forEach(cb => {
         cb.checked = false;
@@ -2385,6 +2470,9 @@ function resetarFicha() {
         } else {
             input.value = '';
         }
+
+const blocoNotas = document.getElementById('bloco-notas');
+if (blocoNotas) blocoNotas.value = '';
     });
 
     // Resetar ocupação visual
@@ -2508,7 +2596,8 @@ function colherDados() {
         antecedentes: {},
         inventario: [],
         statusChecks: {},
-        coresPericias: corPericiasSelecionadas
+        coresPericias: corPericiasSelecionadas,
+        blocoNotas: document.getElementById('bloco-notas')?.value || '' 
     };
 
 // Captura campos pessoais
@@ -2676,6 +2765,17 @@ function aplicarDados(dados) {
     if (dados.coresPericias) {
         corPericiasSelecionadas = dados.coresPericias;
     }
+
+// 13. Bloco de Notas
+setTimeout(() => {
+    if (dados.blocoNotas !== undefined) {
+        const blocoNotas = document.getElementById('bloco-notas');
+        if (blocoNotas) {
+            blocoNotas.value = dados.blocoNotas;
+            console.log('Bloco de notas restaurado:', dados.blocoNotas);
+        }
+    }
+}, 100);
 
     // Atualiza o visual sem resetar os inputs
     atualizarTudo();
@@ -3008,6 +3108,71 @@ function atualizarPadraoVida(valor) {
     box.className = "box-vida " + info.classe;
 }
 
+// Tabela de dinheiro baseada na imagem fornecida
+// Tabelas com fórmulas por faixa de NC
+const calculoDinheiro1920s = {
+    range: [
+        { min: -Infinity, max: 0, nome: "Pobretão", dinheiro: () => 0.50, gastos: () => 0.50 },
+        { min: 1, max: 9, nome: "Pobre", dinheiro: (nc) => nc * 1, gastos: () => 2 },
+        { min: 10, max: 49, nome: "Médio", dinheiro: (nc) => nc * 2, gastos: () => 10 },
+        { min: 50, max: 89, nome: "Abastado", dinheiro: (nc) => nc * 5, gastos: () => 50 },
+        { min: 90, max: 98, nome: "Rico", dinheiro: (nc) => nc * 20, gastos: () => 250 },
+        { min: 99, max: Infinity, nome: "Ricaço", dinheiro: () => 50000, gastos: () => 5000 }
+    ]
+};
+
+const calculoDinheiroModerna = {
+    range: [
+        { min: -Infinity, max: 0, nome: "Pobretão", dinheiro: () => 10, gastos: () => 10 },
+        { min: 1, max: 9, nome: "Pobre", dinheiro: (nc) => nc * 20, gastos: () => 40 },
+        { min: 10, max: 49, nome: "Médio", dinheiro: (nc) => nc * 40, gastos: () => 200 },
+        { min: 50, max: 89, nome: "Abastado", dinheiro: (nc) => nc * 100, gastos: () => 1000 },
+        { min: 90, max: 98, nome: "Rico", dinheiro: (nc) => nc * 400, gastos: () => 5000 },
+        { min: 99, max: Infinity, nome: "Ricaço", dinheiro: () => 1000000, gastos: () => 100000 }
+    ]
+};
+
+function atualizarDinheiroGastos(valorNC) {
+    const nc = parseInt(valorNC) || 0;
+    
+    // Função auxiliar para encontrar a faixa e calcular
+    function calcularParaEpoca(tabela, nc) {
+        const faixa = tabela.range.find(r => nc >= r.min && nc <= r.max);
+        if (!faixa) return { dinheiro: "$0", gastos: "$0" };
+        
+        const valorDinheiro = faixa.dinheiro(nc);
+        const valorGastos = faixa.gastos(nc);
+        
+        // Formata valores
+        const formatarMoeda = (valor) => {
+            if (valor >= 1000000) return `$${(valor / 1000000).toFixed(1)}M`;
+            if (valor >= 1000) return `$${valor.toLocaleString('en-US')}`;
+            return `$${valor.toFixed(2)}`;
+        };
+        
+        return {
+            dinheiro: formatarMoeda(valorDinheiro),
+            gastos: formatarMoeda(valorGastos)
+        };
+    }
+    
+    // Calcula para ambas as épocas
+    const resultado1920 = calcularParaEpoca(calculoDinheiro1920s, nc);
+    const resultadoModerna = calcularParaEpoca(calculoDinheiroModerna, nc);
+    
+    // Atualiza os elementos 1920s
+    const el1920Din = document.getElementById('txt-dinheiro-1920');
+    const el1920Gas = document.getElementById('txt-gastos-1920');
+    if (el1920Din) el1920Din.innerText = resultado1920.dinheiro;
+    if (el1920Gas) el1920Gas.innerText = resultado1920.gastos;
+    
+    // Atualiza os elementos Moderna
+    const elModDin = document.getElementById('txt-dinheiro-moderna');
+    const elModGas = document.getElementById('txt-gastos-moderna');
+    if (elModDin) elModDin.innerText = resultadoModerna.dinheiro;
+    if (elModGas) elModGas.innerText = resultadoModerna.gastos;
+}
+
 // 2. DEPOIS COLOQUE A CALCP
 function calcP(idSafe) {
     const valInput = document.getElementById(`p-val-${idSafe}`);
@@ -3019,9 +3184,9 @@ function calcP(idSafe) {
         if (halfInput) halfInput.value = Math.floor(v / 2);
         if (fifthInput) fifthInput.value = Math.floor(v / 5);
 
-        // Verifica se a função existe antes de chamar para evitar o erro de 'not defined'
         if (idSafe === "Nível-de-Crédito" && typeof atualizarPadraoVida === "function") {
             atualizarPadraoVida(v);
+            atualizarDinheiroGastos(v);
         }
     }
 }
@@ -3456,70 +3621,70 @@ const dadosOcupacoes = {
         interpessoais: 1,
         texto: "EDU × 4",
         formula: (a) => a.EDU * 4,
-        lista: "Avaliação, Arte/Ofício, História, Usar Bibliotecas, Outra Língua, uma perícia interpessoal, Encontrar, uma outra perícia."
+        lista: "Avaliação, Arte/Ofício (qualquer um), História, Usar Bibliotecas, Outro Língua, uma perícia interpessoal, Encontrar, uma outra perícia qualquer."
     },
     "Artista": {
         credito: "9–50",
         interpessoais: 1,
         texto: "EDU × 2 + (POD ou DES) × 2",
         formula: (a) => (a.EDU * 2) + (Math.max(a.POD, a.DES) * 2),
-        lista: "Arte/Ofício, História ou Mundo Natural, uma perícia interpessoal, Outra Língua, Psicologia, Encontrar, outras duas perícias."
+        lista: "Arte/Ofício (qualquer um), História ou Mundo Natural, uma perícia interpessoal, Outra Língua, Psicologia, Encontrar, outras duas perícias."
     },
     "Atleta": {
         credito: "9–70",
         interpessoais: 1,
         texto: "EDU × 2 + (DES ou FOR) × 2",
         formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.FOR) * 2),
-        lista: "Escalar, Saltar, Lutar (Briga), Cavalgar, uma perícia interpessoal, Natação, Arremessar, uma outra perícia."
+        lista: "Escalar, Saltar, Lutar (Briga), Cavalgar, uma perícia interpessoal, Natação, Arremessar, uma outra perícia qualquer."
     },
     "Autor": {
         credito: "9–30",
         interpessoais: 0,
         texto: "EDU × 4",
         formula: (a) => a.EDU * 4,
-        lista: "Arte (Literatura), História, Usar Bibliotecas, Mundo Natural ou Ocultismo, Outra Língua, Língua Nativa, Psicologia, uma outra perícia."
+        lista: "Arte (Literatura), História, Usar Bibliotecas, Mundo Natural ou Ocultismo, Outra Língua, Língua Nativa, Psicologia, uma outra perícia qualquer."
     },
     "Bibliotecário": {
         credito: "9–35",
         interpessoais: 0,
         texto: "EDU × 4",
         formula: (a) => a.EDU * 4,
-        lista: "Contabilidade, Usar Bibliotecas, Outra Língua, Língua Nativa, outras quatro perícias como especialidades."
+        lista: "Contabilidade, Usar Bibliotecas, Outra Língua, Língua Nativa, outras quatro perícias quaisquer como especialidades pessoais ou tópicos de leitura especializados."
     },
     "Clero, Membro do": {
         credito: "9–60",
         interpessoais: 1,
         texto: "EDU × 4",
         formula: (a) => a.EDU * 4,
-        lista: "Contabilidade, História, Usar Bibliotecas, Escutar, Outra Língua, uma perícia interpessoal, Psicologia, uma outra perícia."
+        lista: "Contabilidade, História, Usar Bibliotecas, Escutar, Outra Língua, uma perícia interpessoal, Psicologia, uma outra perícia qualquer."
     },
     "Criminoso": {
         credito: "5–65",
         interpessoais: 1,
         texto: "EDU × 2 + (DES ou FOR) × 2",
         formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.FOR) * 2),
-        lista: "Uma perícia interpessoal, Psicologia, Encontrar, Furtividade, mais quatro entre: Avaliação, Disfarce, Lutar, Armas de Fogo, Chaveiro, Consertos Mecânicos e Prestidigitação."
+        lista: "uma perícia interpessoal, Psicologia, Encontrar, Furtividade, mais quatro especialidades entre as seguintes: Avaliação, Disfarce, Lutar, Armas de Fogo, Chaveiro, Consertos Mecânicos e Prestidigitação."
     },
     "Detetive Particular": {
         credito: "9–30",
         interpessoais: 1,
         texto: "EDU × 2 + (DES ou FOR) × 2",
         formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.FOR) * 2),
-        lista: "Arte/Ofício (Fotografia), Disfarce, Direito, Usar Bibliotecas, uma perícia interpessoal, Psicologia, Encontrar, uma outra perícia."
+        lista: "Arte/Ofício (Fotografia), Disfarce, Direito, Usar Bibliotecas, uma perícia interpessoal, Psicologia, Encontrar, uma outra perícia qualquer (ex. Usar Computadores, Chaveiro, Armas de Fogo)."
     },
     "Diletante": {
         credito: "50–99",
         interpessoais: 1,
         texto: "EDU × 2 + APA × 2",
         formula: (a) => (a.EDU * 2) + (a.APA * 2),
-        lista: "Arte/Ofício, Armas de Fogo, Outra Língua, Cavalgar, uma perícia interpessoal, outras três perícias."
+        lista: "Arte/Ofício (qualquer um), Armas de Fogo, Outra Língua, Cavalgar, uma perícia interpessoal, outras três perícias."
     },
     "Engenheiro": {
         credito: "30–60",
         interpessoais: 0,
         texto: "EDU × 4",
         formula: (a) => a.EDU * 4,
-        lista: "Arte/Ofício (Desenho Técnico), Consertos Elétricos, Usar Bibliotecas, Consertos Mecânicos, Operar Maquinário Pesado, Ciências (Engenharia e Física), uma outra perícia."
+        lista: "Arte/Ofício (Desenho Técnico), Consertos Elétricos, Usar Bibliotecas, Consertos Mecânicos, Operar Maquinário Pesado, Ciências (Engenharia), Ciências (Física), uma outra perícia qualquer."
     },
     "Fanático": {
         credito: "0–30",
@@ -3533,7 +3698,7 @@ const dadosOcupacoes = {
         interpessoais: 1,
         texto: "EDU × 2 + (DES ou FOR) × 2",
         formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.FOR) * 2),
-        lista: "Arte/Ofício (Trabalhos de Fazenda), Dirigir Automóveis (ou Carroça), uma perícia interpessoal, Consertos Mecânicos, Mundo Natural, Operar Maquinário Pesado, Rastrear, uma outra perícia."
+        lista: "Arte/Ofício (Trabalhos de Fazenda), Dirigir Automóveis (ou Carroça), uma perícia interpessoal, Consertos Mecânicos, Mundo Natural, Operar Maquinário Pesado, Rastrear, uma outra perícia qualquer."
     },
     "Hacker": {
         credito: "10–70",
@@ -3547,7 +3712,7 @@ const dadosOcupacoes = {
         interpessoais: 1,
         texto: "EDU × 2 + (DES ou FOR) × 2",
         formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.FOR) * 2),
-        lista: "Arte/Ofício (Atuar) ou Disfarce, Armas de Fogo, Direito, Escutar, uma perícia interpessoal, Psicologia, Encontrar, uma outra perícia."
+        lista: "Arte/Ofício (Atuar) ou Disfarce, Armas de Fogo, Direito, Escutar, uma perícia interpessoal, Psicologia, Encontrar, uma outra perícia qualquer."
     },
     "Jornalista": {
         credito: "9–30",
@@ -3561,21 +3726,21 @@ const dadosOcupacoes = {
         interpessoais: 0,
         texto: "EDU × 4",
         formula: (a) => a.EDU * 4,
-        lista: "Primeiros Socorros, Outra Língua (Latim), Medicina, Psicologia, Ciências (Biologia e Farmácia), duas outras perícias."
+        lista: "Primeiros Socorros, Outra Língua (Latim), Medicina, Psicologia, Ciências (Biologia), Ciências (Farmácia), quaisquer duas outras perícias como especialidades acadêmicas ou pessoais (ex. um psiquiatra pode escolher Psicanálise)."
     },
     "Membro de Tribo": {
         credito: "0–15",
         interpessoais: 0,
         texto: "EDU × 2 + (DES ou FOR) × 2",
         formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.FOR) * 2),
-        lista: "Escalar, Lutar ou Arremessar, Mundo Natural, Escutar, Ocultismo, Encontrar, Natação, Sobrevivência."
+        lista: "Escalar, Lutar ou Arremessar, Mundo Natural, Escutar, Ocultismo, Encontrar, Natação, Sobrevivência (qualquer uma)."
     },
     "Missionário": {
         credito: "0–30",
         interpessoais: 1,
         texto: "EDU × 4",
         formula: (a) => a.EDU * 4,
-        lista: "Arte/Ofício, Primeiros Socorros, Consertos Mecânicos, Medicina, Mundo Natural, uma perícia interpessoal, duas outras perícias."
+        lista: "Arte/Ofício (qualquer um), Primeiros Socorros, Consertos Mecânicos, Medicina, Mundo Natural, uma perícia interpessoal, duas outras perícias."
     },
     "Músico": {
         credito: "9–30",
@@ -3589,21 +3754,21 @@ const dadosOcupacoes = {
         interpessoais: 1,
         texto: "EDU × 2 + (DES ou FOR) × 2",
         formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.FOR) * 2),
-        lista: "Lutar (Briga), Armas de Fogo, Primeiros Socorros, uma perícia interpessoal, Direito, Psicologia, Encontrar e (Dirigir ou Cavalgar)."
+        lista: "Lutar (Briga), Armas de Fogo, Primeiros Socorros, uma perícia interpessoal, Direito, Psicologia, Encontrar e uma das seguintes perícias como uma especialidade pessoal: Dirigir Automóveis ou Cavalgar."
     },
     "Oficial Militar": {
         credito: "20–70",
         interpessoais: 2,
         texto: "EDU × 2 + (DES ou FOR) × 2",
         formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.FOR) * 2),
-        lista: "Contabilidade, Armas de Fogo, Navegação, duas perícias interpessoais, Psicologia, Sobrevivência, uma outra perícia."
+        lista: "Contabilidade, Armas de Fogo, Navegação, duas perícias interpessoais, Psicologia, Sobrevivência, uma outra perícia qualquer."
     },
     "Parapsicólogo": {
         credito: "9–30",
         interpessoais: 0,
         texto: "EDU × 4",
         formula: (a) => a.EDU * 4,
-        lista: "Antropologia, Arte/Ofício (Fotografia), História, Usar Bibliotecas, Ocultismo, Outra Língua, Psicologia, uma outra perícia."
+        lista: "Antropologia, Arte/Ofício (Fotografia), História, Usar Bibliotecas, Ocultismo, Outra Língua, Psicologia, uma outra perícia qualquer."
     },
     "Piloto": {
         credito: "20–70",
@@ -3617,7 +3782,7 @@ const dadosOcupacoes = {
         interpessoais: 0,
         texto: "EDU × 4",
         formula: (a) => a.EDU * 4,
-        lista: "Usar Bibliotecas, Outra Língua, Língua Nativa, Psicologia, outras quatro perícias acadêmicas."
+        lista: "Usar Bibliotecas, Outra Língua, Língua Nativa, Psicologia, outras quatro perícias quaisquer como especialidades acadêmicas ou pessoais."
     },
     "Profissional de Entretenimento": {
         credito: "9-70",
@@ -3631,9 +3796,43 @@ const dadosOcupacoes = {
         interpessoais: 0,
         texto: "EDU × 2 + (DES ou FOR) × 2",
         formula: (a) => (a.EDU * 2) + (Math.max(a.DES, a.FOR) * 2),
-        lista: "Escalar ou Natação, Esquivar, Lutar, Armas de Fogo, Furtividade, Sobrevivência e duas entre: Primeiros Socorros, Consertos Mecânicos ou Outra Língua."
+        lista: "Escalar ou Natação, Esquivar, Lutar, Armas de Fogo, Furtividade, Sobrevivência e duas entre as seguintes: Primeiros Socorros, Consertos Mecânicos ou Outra Língua."
     }
 };
+
+const sugestoesOcupacoes = {
+    "Advogado": "Profissional que representa clientes em questões legais. (Sugestão: INT: alto, EDU: alto, APA: média, POD: média)",
+    "Andarilho": "Pessoa sem residência fixa que vive nas ruas. (Sugestão: CON: alta, DES: média, FOR: média, EDU: baixa)",
+    "Antiquário": "Comerciante especializado em objetos antigos e raros. (Sugestão: INT: alto, EDU: alta, APA: média)",
+    "Artista": "Criador de obras visuais, musicais ou performáticas. (Sugestão: DES: alta, POD: alto, APA: média, INT: média)",
+    "Atleta": "Profissional de esportes com condicionamento físico excepcional. (Sugestão: FOR: alta, DES: alta, CON: alta, EDU: média)",
+    "Autor": "Escritor de livros, artigos ou outras obras literárias. (Sugestão: INT: alto, EDU: alta, POD: médio)",
+    "Bibliotecário": "Guardião e organizador de conhecimento em bibliotecas. (Sugestão: INT: alto, EDU: alta, POD: baixo)",
+    "Clero, Membro do": "Líder religioso ou membro do clero. (Sugestão: EDU: alta, POD: alto, APA: média)",
+    "Criminoso": "Indivíduo envolvido em atividades ilegais. (Sugestão: DES: alta, INT: média, FOR: média, APA: baixa)",
+    "Detetive Particular": "Investigador privado contratado para casos específicos. (Sugestão: INT: alto, DES: média, POD: médio, FOR: média)",
+    "Diletante": "Pessoa rica que persegue interesses diversos sem necessidade de trabalhar. (Sugestão: APA: alta, EDU: alta, qualquer outro atributo)",
+    "Engenheiro": "Profissional técnico especializado em construção e máquinas. (Sugestão: INT: alto, EDU: alta, DES: média)",
+    "Fanático": "Pessoa obcecada por uma causa ou crença. (Sugestão: POD: alto, APA: média ou alta, INT: média)",
+    "Fazendeiro": "Trabalhador rural que cultiva a terra. (Sugestão: FOR: alta, CON: alta, DES: média, EDU: baixa)",
+    "Hacker": "Especialista em computação e invasão de sistemas. (Sugestão: INT: alto, EDU: alta, DES: média)",
+    "Investigador de Polícia": "Detetive oficial das forças policiais. (Sugestão: INT: alto, DES: média, FOR: média, POD: médio)",
+    "Jornalista": "Profissional que investiga e relata notícias. (Sugestão: INT: alto, EDU: alta, APA: média, POD: médio)",
+    "Médico": "Profissional de saúde especializado em diagnóstico e tratamento. (Sugestão: INT: alto, EDU: alta, DES: média, POD: médio)",
+    "Membro de Tribo": "Indivíduo de cultura tribal, conectado à natureza. (Sugestão: CON: alta, DES: alta, FOR: alta, EDU: baixa)",
+    "Missionário": "Evangelizador que espalha sua fé em terras distantes. (Sugestão: POD: alto, EDU: média, CON: média)",
+    "Músico": "Artista especializado em performance musical. (Sugestão: DES: alta, POD: alto, APA: média)",
+    "Oficial de Polícia": "Policial uniformizado que patrulha as ruas. (Sugestão: FOR: alta, CON: alta, DES: média, EDU: média)",
+    "Oficial Militar": "Líder nas forças armadas. (Sugestão: INT: alto, EDU: alta, POD: alto, FOR: média)",
+    "Parapsicólogo": "Pesquisador de fenômenos paranormais. (Sugestão: INT: alto, EDU: alta, POD: alto)",
+    "Piloto": "Profissional que opera aeronaves. (Sugestão: DES: alta, INT: média, EDU: média, POD: médio)",
+    "Professor": "Educador acadêmico. (Sugestão: INT: alto, EDU: alta, POD: médio, APA: média)",
+    "Profissional de Entretenimento": "Performer que entretém o público. (Sugestão: APA: alta, POD: alto, DES: média)",
+    "Soldado": "Combatente das forças armadas. (Sugestão: FOR: alta, CON: alta, DES: média, EDU: baixa)"
+};
+
+
+
 
 // Função para calcular os pontos baseada na ocupação atual
 function calcularPontosOcupacao() {
@@ -3690,13 +3889,11 @@ function calcularPontosOcupacao() {
 
 
 function abrirModalOcupacoes() {
-
-window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     
     const modal = document.getElementById('modal-ocupacoes');
     const grid = document.getElementById('lista-ocupacoes-grid');
 
-    // Preenche o grid (Garante que dadosOcupacoes existe)
     if (typeof dadosOcupacoes !== 'undefined') {
         grid.innerHTML = "";
         Object.keys(dadosOcupacoes).forEach(ocupa => {
@@ -3704,13 +3901,21 @@ window.scrollTo({ top: 0, behavior: 'smooth' });
             btn.className = 'btn-ocupacao-item';
             btn.innerText = ocupa;
             btn.onclick = () => selecionarOcupacao(ocupa);
+            
+
+if (sugestoesOcupacoes[ocupa]) {
+    // Criamos um elemento de texto interno para o seu próprio tooltip
+    const tooltip = document.createElement('span');
+    tooltip.className = 'custom-tooltip';
+    tooltip.innerText = sugestoesOcupacoes[ocupa];
+    btn.appendChild(tooltip);
+}
+            
             grid.appendChild(btn);
         });
     }
 
     modal.style.display = 'flex';
-
-    // Trava o scroll
     document.body.style.overflow = 'hidden';
     document.body.style.position = 'fixed';
     document.body.style.top = `-${scrollPosicaoOriginal}px`;
@@ -4182,6 +4387,20 @@ document.addEventListener('DOMContentLoaded', function() {
             hoverSound.currentTime = 0;
             hoverSound.play().catch(() => {});
         }
+
+// === ENTER PARA LOGIN/CADASTRO ===
+document.getElementById('loginPass')?.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        realizarLogin();
+    }
+});
+
+document.getElementById('signupPass')?.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        realizarCadastro();
+    }
+});
+
     });
 });
 
