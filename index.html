@@ -167,8 +167,8 @@ body.modal-open {
     top: 8px;
     left: 8px;
     background: transparent;
-    border: 1px solid #333;
-    color: #444;
+    border: 1px solid #ffffff;
+    color: #ffffff;
     font-size: 10px;
     cursor: pointer;
     z-index: 30;
@@ -216,8 +216,8 @@ body.modal-open {
 }
 
 .btn-janelinha:hover {
-    color: #00ff00;
-    border-color: #00ff00;
+    color: #000000;
+    border-color: #ffffff;
 }
 
 /* Classe de minimização */
@@ -1429,6 +1429,156 @@ span.pericia-nome[title*="padrão de vida"] {
     display: block;
 }
 
+
+/* === SISTEMA DE JANELAS SPLIT === */
+.split-mode-active {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    z-index: 20000;
+    overflow: hidden;
+}
+
+.split-window {
+    position: absolute;
+    background: rgba(13, 13, 13, 0.95);
+    border: 2px solid #721717;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(114, 23, 23, 0.5);
+    cursor: move;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+}
+
+.split-window.minimized {
+    height: 50px !important;
+    overflow: hidden;
+}
+
+.split-window.expanded {
+    width: 90vw !important;
+    height: 90vh !important;
+    top: 5vh !important;
+    left: 5vw !important;
+    z-index: 30000;
+    overflow-y: auto;
+}
+
+.split-window-header {
+    background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+    padding: 10px 15px;
+    border-bottom: 1px solid #721717;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: move;
+    user-select: none;
+}
+
+.split-window-title {
+    color: #721717;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: monospace;
+}
+
+.split-window-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.split-window-btn {
+    background: transparent;
+    border: 1px solid #444;
+    color: #888;
+    font-size: 10px;
+    padding: 3px 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.split-window-btn:hover {
+    background: #1a1a1a;
+    color: #721717;
+    border-color: #721717;
+}
+
+.split-window-content {
+    padding: 20px;
+    overflow-y: auto;
+    max-height: calc(100% - 50px);
+}
+
+.split-window-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.split-window-content::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+.split-window-content::-webkit-scrollbar-thumb {
+    background: #721717;
+    border-radius: 4px;
+}
+
+.resize-handle {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    cursor: se-resize;
+    background: linear-gradient(135deg, transparent 50%, #721717 50%);
+    opacity: 0.5;
+    transition: 0.2s;
+}
+
+.resize-handle:hover {
+    opacity: 1;
+}
+
+/* Animação de divisão */
+@keyframes splitAnimation {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(0.8) rotate(2deg);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.5) rotate(0deg);
+    }
+}
+
+.splitting {
+    animation: splitAnimation 0.6s ease-out forwards;
+}
+
+@keyframes windowAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.3) translateY(-50px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.split-window {
+    animation: windowAppear 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+
     </style>
 </head>
 <body>
@@ -1519,7 +1669,7 @@ span.pericia-nome[title*="padrão de vida"] {
         <div style="text-align: center; margin-bottom: 30px;">
             <img src="https://i.pinimg.com/736x/71/8a/d9/718ad93c88c10dea945392bfa43ed220.jpg" style="width: 60px; border-radius: 50%; filter: grayscale(1); margin-bottom: 10px; border: 1px solid #333;">
             <h3 style="font-size: 1em; letter-spacing: 4px; border: none; margin: 0;">ARQUIVOS CONFIDENCIAIS</h3>
-            <p style="font-size: 9px; color: #555; letter-spacing: 2px;">SELECIONE UM INVESTIGADOR ATIVO</p>
+            <p style="font-size: 9px; color: #000000; letter-spacing: 2px;">SELECIONE UM INVESTIGADOR ATIVO</p>
         </div>
 
         <div id="investigadores-list" style="flex-grow: 1; overflow-y: auto; padding-right: 5px;">
@@ -1550,10 +1700,10 @@ span.pericia-nome[title*="padrão de vida"] {
     <button class="btn-janelinha" onclick="minimizarPlayer()">🗗</button>
     <div class="player-content">
         <img src="https://c.tenor.com/2qFbEpeTPkMAAAAC/tenor.gif" class="gif-musica" alt="Musica">
-        <div style="font-size: 0.9em; color: #fff; margin-bottom: 15px; font-family: monospace; letter-spacing: 1px;">HIP SHOP</div>
+        <div style="font-size: 0.9em; color: #000000; margin-bottom: 15px; font-family: monospace; letter-spacing: 1px;">HIP SHOP</div>
         
         <audio id="bgMusic" loop>
-            <source src="musicaficha.mp3">
+            <source src="undertale-move-selection-sound-effect.mp3">
         </audio>
 
         <div class="bar-controls">
@@ -1576,6 +1726,7 @@ span.pericia-nome[title*="padrão de vida"] {
     </div>
 </div>
 
+
 <div id="result-overlay">
     <p id="overlay-title" class="res-title"></p>
     <p id="overlay-detail" class="res-detail"></p>
@@ -1589,6 +1740,8 @@ span.pericia-nome[title*="padrão de vida"] {
     <button onclick="abrirAjuda()" style="width: 100%; padding: 10px; font-size: 16px; background: #1a1a1a; color: #fff; border: 1px solid #333; cursor: pointer; font-family: monospace;">
         Como usar?
     </button>
+    
+    
     
 
 <div style="margin-top: 15px;">
@@ -1956,30 +2109,30 @@ span.pericia-nome[title*="padrão de vida"] {
 <!-- ÉPOCA 1920s -->
 <div class="dinheiro-gastos-container" style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
     <div class="box-dinheiro" style="background: #050505; border: 1px solid #444; padding: 15px; text-align: center;">
-        <label style="color: #666; font-size: 10px; display: block; margin-bottom: 8px;">DINHEIRO DISPONÍVEL</label>
+        <label style="color: #666; font-size: 17px; display: block; margin-bottom: 8px;">DINHEIRO DISPONÍVEL</label>
         <div id="txt-dinheiro-1920" style="color: #00ff00; font-size: 18px; font-weight: bold; font-family: 'Courier New';">$0</div>
-        <div style="color: #721717; font-size: 8px; margin-top: 5px;">1920s</div>
+        <div style="color: #721717; font-size: 15px; margin-top: 5px;">Era 1920s</div>
     </div>
     
     <div class="box-gastos" style="background: #050505; border: 1px solid #444; padding: 15px; text-align: center;">
-        <label style="color: #666; font-size: 10px; display: block; margin-bottom: 8px;">NÍVEL DE GASTOS</label>
+        <label style="color: #666; font-size: 17px; display: block; margin-bottom: 8px;">NÍVEL DE GASTOS</label>
         <div id="txt-gastos-1920" style="color: #ff8800; font-size: 18px; font-weight: bold; font-family: 'Courier New';">$0</div>
-        <div style="color: #721717; font-size: 8px; margin-top: 5px;">1920s</div>
+        <div style="color: #721717; font-size: 15px; margin-top: 5px;">Era 1920s</div>
     </div>
 </div>
 
 <!-- ÉPOCA MODERNA -->
 <div class="dinheiro-gastos-container" style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
     <div class="box-dinheiro" style="background: #050505; border: 1px solid #444; padding: 15px; text-align: center;">
-        <label style="color: #666; font-size: 10px; display: block; margin-bottom: 8px;">DINHEIRO DISPONÍVEL</label>
+        <label style="color: #666; font-size: 17px; display: block; margin-bottom: 8px;">DINHEIRO DISPONÍVEL</label>
         <div id="txt-dinheiro-moderna" style="color: #00ff00; font-size: 18px; font-weight: bold; font-family: 'Courier New';">$0</div>
-        <div style="color: #721717; font-size: 8px; margin-top: 5px;">MODERNA</div>
+        <div style="color: #721717; font-size: 15px; margin-top: 5px;">Era Moderna</div>
     </div>
     
     <div class="box-gastos" style="background: #050505; border: 1px solid #444; padding: 15px; text-align: center;">
-        <label style="color: #666; font-size: 10px; display: block; margin-bottom: 8px;">NÍVEL DE GASTOS</label>
+        <label style="color: #666; font-size: 17px; display: block; margin-bottom: 8px;">NÍVEL DE GASTOS</label>
         <div id="txt-gastos-moderna" style="color: #ff8800; font-size: 18px; font-weight: bold; font-family: 'Courier New';">$0</div>
-        <div style="color: #721717; font-size: 8px; margin-top: 5px;">MODERNA</div>
+        <div style="color: #721717; font-size: 15px; margin-top: 5px;">Era Moderna</div>
     </div>
 </div>
 
@@ -3211,7 +3364,7 @@ function testarHabilidade(nome, valorAlvo) {
         title="SÓLIDO"; c="#fff"; b="#666"; 
     }
     else if (roll <= alvo) { 
-        title="REGULAR"; c="#000"; b="#999"; 
+        title="REGULAR"; c="#fff"; b="#333"; 
     }
     else if (roll >= 96 && alvo < 50) { 
         title="DESASTRE"; c="#f00"; b="#300"; 
