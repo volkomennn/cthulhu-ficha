@@ -647,6 +647,7 @@ body.modal-open {
 
         .dice-roller { background: #0a0a0a; border: 1px solid #222; padding: 25px; margin-bottom: 30px; text-align: center; }
         .dice-display { margin-top: 15px; font-family: 'Courier New', monospace; font-size: 1.3em; color: #fff; background: #000; padding: 15px; border: 1px solid #1a1a1a; }
+        
 
         .grid-atributos { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
         .attr-card { background: #0f0f0f; padding: 20px; border: 1px solid #222; text-align: center; position: relative; }
@@ -1578,6 +1579,16 @@ span.pericia-nome[title*="padrão de vida"] {
     animation: windowAppear 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
+#editor-notas:empty:before {
+    content: attr(placeholder);
+    color: #444;
+    font-style: italic;
+}
+
+#editor-notas:focus:before {
+    content: '';
+}
+
 
     </style>
 </head>
@@ -1718,6 +1729,7 @@ span.pericia-nome[title*="padrão de vida"] {
     </div>
 </div>
 
+
 <div id="user-float-panel" class="user-account-bar">
     <div class="user-account-content">
         <div class="user-status-light"></div>
@@ -1740,7 +1752,187 @@ span.pericia-nome[title*="padrão de vida"] {
     <button onclick="abrirAjuda()" style="width: 100%; padding: 10px; font-size: 16px; background: #1a1a1a; color: #fff; border: 1px solid #333; cursor: pointer; font-family: monospace;">
         Como usar?
     </button>
+
+<button onclick="abrirTutorial()" style="width: 100%; padding: 10px; font-size: 16px; background: #1a1a1a; color: #fff; border: 1px solid #333; cursor: pointer; font-family: monospace; margin-top: 8px;">
+    Tutorial Call of Cthulhu 7ª Edição
+</button>
     
+
+
+<!-- MODAL TUTORIAL CoC -->
+<div id="tutorial-modal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 800px !important; max-height: 85vh; overflow-y: auto;">
+        <h3 style="color:#721717; text-align:center; margin-top:0; border-bottom: 2px solid #721717; padding-bottom: 15px;">
+            TUTORIAL COMPLETO - CALL OF CTHULHU 7ª EDIÇÃO
+        </h3>
+        <div class="modal-text" style="text-align: left; line-height: 1.8;">
+            
+            <!-- INTRODUÇÃO -->
+            <h4 style="color:#721717; margin-top: 25px;">O QUE É CALL OF CTHULHU?</h4>
+            <p>Call of Cthulhu é um RPG de horror cósmico baseado nas obras de H.P. Lovecraft. Você interpreta investigadores comuns que descobrem horrores além da compreensão humana. Diferente de outros RPGs, aqui você não é um herói invencível — é vulnerável, mortal e pode perder a sanidade.</p>
+
+            <!-- CRIAÇÃO DE PERSONAGEM -->
+            <h4 style="color:#721717; margin-top: 25px;">CRIAÇÃO DE INVESTIGADOR</h4>
+            
+            <p><b style="color:#888">1. ATRIBUTOS BASE (Role 3d6 × 5 ou use o botão AUTO-GERAR)</b></p>
+            <ul style="margin-left: 20px; color: #aaa;">
+                <li><b>FOR (Força):</b> Poder físico bruto</li>
+                <li><b>CON (Constituição):</b> Saúde e resistência</li>
+                <li><b>TAM (Tamanho):</b> Massa corporal (Role 2d6+6 × 5)</li>
+                <li><b>DES (Destreza):</b> Agilidade e coordenação</li>
+                <li><b>APA (Aparência):</b> Beleza e presença</li>
+                <li><b>INT (Inteligência):</b> Capacidade de raciocínio (Role 2d6+6 × 5)</li>
+                <li><b>POD (Poder):</b> Força de vontade e potencial mágico</li>
+                <li><b>EDU (Educação):</b> Conhecimento acadêmico (Role 2d6+6 × 5)</li>
+            </ul>
+
+            <p><b style="color:#888">2. EFEITOS DA IDADE</b></p>
+            <ul style="margin-left: 20px; color: #aaa;">
+                <li><b>15-19 anos (Jovem):</b> -5 FOR/TAM, -5 EDU, role SORTE 2× e fique com o maior</li>
+                <li><b>20-39 anos:</b> 1 verificação de melhoria de EDU</li>
+                <li><b>40-49 anos:</b> 2 verif. EDU, -5 FOR/CON/DES, -5 APA</li>
+                <li><b>50-59 anos:</b> 3 verif. EDU, -10 FOR/CON/DES, -10 APA</li>
+                <li><b>60-69 anos:</b> 4 verif. EDU, -20 FOR/CON/DES, -15 APA</li>
+                <li><b>70-79 anos:</b> 4 verif. EDU, -40 FOR/CON/DES, -20 APA</li>
+                <li><b>80-89 anos:</b> 4 verif. EDU, -80 FOR/CON/DES, -25 APA</li>
+            </ul>
+
+            <p><b style="color:#888">3. VALORES DERIVADOS</b></p>
+            <ul style="margin-left: 20px; color: #aaa;">
+                <li><b>PV (Pontos de Vida):</b> (CON + TAM) ÷ 10 (arredondado para baixo)</li>
+                <li><b>SAN (Sanidade):</b> Começa igual ao POD (máximo 99)</li>
+                <li><b>PM (Pontos de Magia):</b> POD ÷ 5</li>
+                <li><b>SORTE:</b> Role 3d6 × 5</li>
+                <li><b>MOV (Movimento):</b> 8 padrão (7 se FOR e DES < TAM; 9 se ambos > TAM)</li>
+                <li><b>DX (Dano Extra):</b> Baseado em FOR + TAM (veja tabela na ficha)</li>
+                <li><b>CORPO:</b> Mesmo cálculo do DX, usado para empurrões</li>
+                <li><b>ESQUIVA:</b> DES ÷ 2</li>
+            </ul>
+
+            <!-- OCUPAÇÕES -->
+            <h4 style="color:#721717; margin-top: 25px;">OCUPAÇÕES E PERÍCIAS</h4>
+            
+            <p><b style="color:#888">PONTOS OCUPACIONAIS</b></p>
+            <p>Cada ocupação tem uma fórmula (ex: EDU × 4 para Médico). Esses pontos são distribuídos nas perícias da sua profissão.</p>
+            
+            <p><b style="color:#888">PERÍCIAS INTERPESSOAIS</b></p>
+            <p>Algumas ocupações exigem perícias interpessoais (Charme, Lábia, Intimidação, Persuasão). Distribua EDU × 2 entre elas.</p>
+            
+            <p><b style="color:#888">NÍVEL DE CRÉDITO</b></p>
+            <p>Define sua riqueza. Cada ocupação tem uma faixa permitida (ex: Médico 30-80). Afeta seu padrão de vida e dinheiro disponível.</p>
+
+            <!-- SISTEMA DE JOGO -->
+            <h4 style="color:#721717; margin-top: 25px;">COMO FUNCIONA O SISTEMA</h4>
+            
+            <p><b style="color:#888">TESTES DE PERÍCIA</b></p>
+            <p>Role 1d100 (dados percentuais). Compare com o valor da perícia:</p>
+            <ul style="margin-left: 20px; color: #aaa;">
+                <li><b>CRÍTICO:</b> 01 (sempre sucesso)</li>
+                <li><b>EXTREMO:</b> ≤ 1/5 do valor (20% da perícia)</li>
+                <li><b>SÓLIDO:</b> ≤ 1/2 do valor (50% da perícia)</li>
+                <li><b>REGULAR:</b> ≤ valor total da perícia</li>
+                <li><b>FALHA:</b> Acima do valor</li>
+                <li><b>DESASTRE:</b> 100 ou 96-99 (se perícia < 50)</li>
+            </ul>
+
+            <p><b style="color:#888">TESTES RESISTIDOS</b></p>
+            <p>Ambos rolam. Quem obtiver o melhor nível de sucesso vence (Extremo > Sólido > Regular).</p>
+
+            <p><b style="color:#888">MODIFICADORES DE DIFICULDADE</b></p>
+            <ul style="margin-left: 20px; color: #aaa;">
+                <li><b>+1 Bônus:</b> Teste com metade da dificuldade (ex: Encontrar 50 vira 25)</li>
+                <li><b>+2 Bônus:</b> Um quinto da dificuldade</li>
+                <li><b>-1 Penalidade:</b> Dobro da dificuldade</li>
+                <li><b>-2 Penalidade:</b> Cinco vezes mais difícil</li>
+            </ul>
+
+            <!-- COMBATE -->
+            <h4 style="color:#721717; margin-top: 25px;">COMBATE</h4>
+            
+            <p><b style="color:#888">RODADAS DE COMBATE</b></p>
+            <p>1 rodada = ~12 segundos. Ordem de iniciativa: maior DES age primeiro.</p>
+
+            <p><b style="color:#888">AÇÕES POSSÍVEIS</b></p>
+            <ul style="margin-left: 20px; color: #aaa;">
+                <li>Atacar (Lutar, Armas de Fogo, Arremessar)</li>
+                <li>Esquivar (use sua perícia Esquivar)</li>
+                <li>Movimentar-se (até MOV metros)</li>
+                <li>Usar item / Recarregar arma</li>
+            </ul>
+
+            <p><b style="color:#888">DANO E FERIMENTOS</b></p>
+            <ul style="margin-left: 20px; color: #aaa;">
+                <li><b>0 PV:</b> Inconsciente</li>
+                <li><b>-1 ou menos:</b> Morrendo (role CON a cada rodada ou morre)</li>
+                <li><b>Lesão Grave:</b> Perder metade dos PV de uma vez (teste CON ou cai inconsciente)</li>
+            </ul>
+
+            <p><b style="color:#888">EMPURRÃO (MANOBRA DE COMBATE)</b></p>
+            <p>Role Corpo vs Corpo ou Esquiva do alvo. Se vencer, derruba ou empurra o oponente.</p>
+
+            <!-- SANIDADE -->
+            <h4 style="color:#721717; margin-top: 25px;">SANIDADE E LOUCURA</h4>
+            
+            <p><b style="color:#888">PERDA DE SANIDADE</b></p>
+            <p>Ao testemunhar horrores, role SAN. Se falhar, perde pontos (ex: 0/1d6 significa 0 se passar no teste, 1d6 se falhar).</p>
+
+            <p><b style="color:#888">NÍVEIS DE INSANIDADE</b></p>
+            <ul style="margin-left: 20px; color: #aaa;">
+                <li><b>Temporária:</b> Perde 5+ SAN de uma vez (dura 1d6 rodadas/horas)</li>
+                <li><b>Indefinida:</b> SAN cai abaixo de 20% do valor inicial (dura semanas/meses)</li>
+                <li><b>Permanente:</b> SAN chega a 0 (personagem enlouquece para sempre)</li>
+            </ul>
+
+            <p><b style="color:#888">RECUPERAÇÃO DE SANIDADE</b></p>
+            <ul style="margin-left: 20px; color: #aaa;">
+                <li>1d3 SAN por semana de descanso</li>
+                <li>Psicanálise (sessões prolongadas)</li>
+                <li>Resolver o mistério (+1d10 SAN)</li>
+            </ul>
+
+            <!-- MYTHOS -->
+            <h4 style="color:#721717; margin-top: 25px;">MYTHOS DE CTHULHU</h4>
+            <p>Perícia que representa conhecimento proibido. A cada ponto ganho em Mythos, você perde 1 ponto de SAN MÁXIMA permanentemente. Quanto mais você sabe, menos humano você é.</p>
+
+            <!-- MAGIA -->
+            <h4 style="color:#721717; margin-top: 25px;">MAGIA</h4>
+            <p>Feitiços custam Pontos de Magia (PM) e geralmente exigem teste de POD. Magia é perigosa e pode custar SAN.</p>
+
+            <!-- EVOLUÇÃO -->
+            <h4 style="color:#721717; margin-top: 25px;">EVOLUÇÃO DE PERSONAGEM</h4>
+            <p><b style="color:#888">VERIFICAÇÃO DE MELHORIA</b></p>
+            <p>Ao usar uma perícia com sucesso durante a sessão, marque-a com um ✓. No fim da aventura, role 1d100:</p>
+            <ul style="margin-left: 20px; color: #aaa;">
+                <li>Se o resultado for <b>MAIOR</b> que o valor atual da perícia, ela aumenta 1d10 pontos</li>
+                <li>Máximo de valor determinado pelo Guardião em qualquer perícia (exceto Mythos que pode passar de 100)</li>
+            </ul>
+
+            <!-- USO DO SITE -->
+            <h4 style="color:#721717; margin-top: 25px;">COMO USAR ESTE SITE</h4>
+            <ul style="margin-left: 20px; color: #aaa;">
+                <li><b>Foto:</b> Clique no quadrado para adicionar uma imagem do seu investigador</li>
+                <li><b>Auto-Gerar:</b> Gera atributos aleatórios automaticamente</li>
+                <li><b>Perícias:</b> Clique no 🎲 para rolar testes. Valores em vermelho são ocupacionais</li>
+                <li><b>+/- nos Status:</b> Ajusta PV, SAN e PM durante o jogo</li>
+                <li><b>Salvar:</b> Sempre salve antes de sair (botão no canto inferior direito)</li>
+                <li><b>Export/Import:</b> Transfira sua ficha entre dispositivos</li>
+                <li><b>Bloco de Notas:</b> Anote pistas e eventos importantes</li>
+                                <li><b>OBS:</b> Pode haver informações minúsculas erradas ou com partes faltando, caso haja alguma dúvida 
+                                tire-a com o Guardião. Em caso de partes do site não estiver funcionando também retire sua dúvida com o criador do site.</li>
+            </ul>
+
+            <h4 style="color:#721717; margin-top: 25px;">RECURSOS ADICIONAIS</h4>
+            <ul style="margin-left: 20px; color: #aaa;">
+                <li>Livro Básico 7ª Edição (PDF oficial)</li>
+                <li>Keeper's Screen (tabelas rápidas)</li>
+                <li>Subreddit r/callofcthulhu</li>
+                <li>Chaosium.com (site oficial)</li>
+            </ul>
+
+        </div>
+        <button class="btn-close-modal" onclick="fecharTutorial()" style="margin-top: 20px;">FECHAR TUTORIAL</button>
+    </div>
+</div>
     
     
 
@@ -1946,6 +2138,12 @@ span.pericia-nome[title*="padrão de vida"] {
         <button onclick="rollCustomDice()">EXECUTAR ROLAGEM</button>
         <div id="diceDisplay" class="dice-display">AGUARDANDO...</div>
     </div>
+
+    <!-- HISTÓRICO DE ROLAGENS -->
+<div id="historico-rolagens" style="margin-top: 15px; padding: 10px; background: #000; border: 1px solid #222; max-height: 150px; overflow-y: auto;">
+    <div style="color: #666; font-size: 10px; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 1px;">HISTÓRICO (ÚLTIMAS 5 ROLAGENS)</div>
+    <div id="lista-historico" style="font-size: 11px; color: #888; font-family: 'Courier New', monospace;"></div>
+</div>
 
     <div class="section">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -2192,10 +2390,75 @@ span.pericia-nome[title*="padrão de vida"] {
 </div>
 
 <div id="tab-notas" class="tab-content">
-    <h3 style="margin:0 0 20px 0; border:none;">Anotações Pessoais</h3>
-    <textarea id="bloco-notas" 
-              style="width: 100%; min-height: 400px; background: #000; border: 1px solid #222; color: #ccc; padding: 15px; font-family: 'Courier New', monospace; font-size: 12px; resize: vertical;" 
-              placeholder="Escreva suas anotações aqui..."></textarea>
+    <h3 style="margin:0 0 20px 0; border:none;">Anotações do Investigador</h3>
+    
+    <!-- CONTROLES DE PÁGINAS -->
+    <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; align-items: center;">
+        <button onclick="adicionarPaginaNota()" style="padding: 8px 15px; font-size: 11px; background: #1a1a1a; color: #00ff00; border: 1px solid #00ff00;">
+            + NOVA PÁGINA
+        </button>
+        <select id="selector-paginas-notas" onchange="trocarPaginaNota()" style="padding: 8px; background: #000; color: #ccc; border: 1px solid #333; font-family: monospace; flex: 1; min-width: 200px;">
+            <option value="0">Página 1</option>
+        </select>
+        <button onclick="renomearPaginaNota()" style="padding: 8px 12px; font-size: 11px;">
+            ✏️ RENOMEAR
+        </button>
+        <button onclick="excluirPaginaNota()" style="padding: 8px 12px; font-size: 11px; background: #330000; color: #ff4444;">
+            🗑️ EXCLUIR
+        </button>
+    </div>
+    
+    <!-- BARRA DE FERRAMENTAS -->
+    <div style="display: flex; gap: 5px; padding: 10px; background: #0a0a0a; border: 1px solid #222; flex-wrap: wrap; margin-bottom: 10px;">
+        <button onclick="aplicarFormatacao('bold')" title="Negrito" style="padding: 5px 10px; font-weight: bold;">B</button>
+        <button onclick="aplicarFormatacao('italic')" title="Itálico" style="padding: 5px 10px; font-style: italic;">I</button>
+        <button onclick="aplicarFormatacao('underline')" title="Sublinhado" style="padding: 5px 10px; text-decoration: underline;">U</button>
+        
+        <div style="width: 1px; background: #333; margin: 0 5px;"></div>
+        
+        <select id="select-fonte" onchange="aplicarFonte()" style="padding: 5px; background: #000; color: #ccc; border: 1px solid #333;">
+            <option value="'Courier New', monospace">Courier New</option>
+            <option value="Arial, sans-serif">Arial</option>
+            <option value="'Times New Roman', serif">Times New Roman</option>
+            <option value="Georgia, serif">Georgia</option>
+            <option value="Verdana, sans-serif">Verdana</option>
+        </select>
+        
+        <select id="select-tamanho" onchange="aplicarTamanho()" style="padding: 5px; background: #000; color: #ccc; border: 1px solid #333;">
+            <option value="12px">12px</option>
+            <option value="14px">14px</option>
+            <option value="16px">16px</option>
+            <option value="18px">18px</option>
+            <option value="20px">20px</option>
+            <option value="24px">24px</option>
+        </select>
+        
+        <div style="width: 1px; background: #333; margin: 0 5px;"></div>
+        
+        <input type="color" id="cor-marcador" value="#ffff00" style="width: 40px; height: 30px; border: 1px solid #333; cursor: pointer;">
+        <button onclick="aplicarMarcaTexto()" title="Marca-texto" style="padding: 5px 10px; background: #ffff00; color: #000;">
+            🖍️ MARCA-TEXTO
+        </button>
+
+        <button onclick="removerMarcaTexto()" title="Remover marca-texto da seleção" style="padding: 5px 10px; background: #222; color: #888;">
+    LIMPAR MARCA-TEXTO
+</button>
+        
+        <div style="width: 1px; background: #333; margin: 0 5px;"></div>
+        
+        <button onclick="transformarTitulo()" title="Transformar em título" style="padding: 5px 10px;">
+            H1 TÍTULO
+        </button>
+        
+        <button onclick="limparFormatacao()" title="Limpar formatação" style="padding: 5px 10px; background: #330000; color: #ff8888;">
+            🗑️ LIMPAR
+        </button>
+    </div>
+    
+    <!-- ÁREA DE TEXTO -->
+    <div id="editor-notas" contenteditable="true" 
+         style="width: 100%; min-height: 400px; background: #000; border: 1px solid #222; color: #ccc; padding: 15px; font-family: 'Courier New', monospace; font-size: 12px; overflow-y: auto; outline: none;" 
+         placeholder="Escreva suas anotações aqui..."></div>
 </div>
 
 <!-- CHECKBOXES DE STATUS FÍSICO/MENTAL -->
@@ -2236,12 +2499,17 @@ span.pericia-nome[title*="padrão de vida"] {
     <div class="section">
         <h3>Arsenal</h3>
         <table class="weapon-table">
-            <thead>
-                <tr>
-                    <th style="width: 25%;">Arma</th>
-                    <th>Reg.</th><th>Sól.</th><th>Ext.</th><th>Dano</th><th>Alc.</th><th>Atqs</th><th>Mun.</th><th>Def.</th><th></th>
-                </tr>
-            </thead>
+        <thead>
+            <tr>
+                <th style="width: 25%;">Arma</th>
+                <th style="width: 25%;">Perícia</th>
+                <th>Reg.</th><th>Sól.</th><th>Ext.</th>
+                <th style="width: 25%;">Dano</th>
+                <th>Alc.</th>
+                <th style="width: 25%;">Usos</th>
+                <th>Mun.</th><th>Def.</th><th></th>
+            </tr>
+        </thead>
             <tbody id="weaponBody"></tbody>
         </table>
         <button onclick="addWeaponRow()" style="margin-top: 15px; font-size: 0.6em;">+ Adicionar Arma</button>
@@ -2732,8 +3000,19 @@ if (blocoNotas) blocoNotas.value = '';
     const padraoVida = document.getElementById('txt-padrao-vida');
     if(padraoVida) padraoVida.innerText = 'NÃO DEFINIDO';
 
+
+    // Limpar histórico de rolagens
+historicoRolagens = [];
+atualizarHistoricoRolagens();
+
     atualizarTudo();
     alert("Ficha resetada com sucesso!");
+
+    // 13. Resetar Bloco de Notas
+paginasNotas = [{ titulo: "Página 1", conteudo: "" }];
+paginaAtualNotas = 0;
+document.getElementById('editor-notas').innerHTML = '';
+atualizarSeletorPaginas();
 }
 
 function colherDados() {
@@ -2750,7 +3029,12 @@ function colherDados() {
         inventario: [],
         statusChecks: {},
         coresPericias: corPericiasSelecionadas,
-        blocoNotas: document.getElementById('bloco-notas')?.value || '' 
+blocoNotas: {
+    paginas: paginasNotas,
+    paginaAtual: paginaAtualNotas,
+historicoRolagens: historicoRolagens
+    
+}
     };
 
 // Captura campos pessoais
@@ -2919,16 +3203,36 @@ function aplicarDados(dados) {
         corPericiasSelecionadas = dados.coresPericias;
     }
 
-// 13. Bloco de Notas
-setTimeout(() => {
-    if (dados.blocoNotas !== undefined) {
-        const blocoNotas = document.getElementById('bloco-notas');
-        if (blocoNotas) {
-            blocoNotas.value = dados.blocoNotas;
-            console.log('Bloco de notas restaurado:', dados.blocoNotas);
-        }
+// 13. Bloco de Notas Avançado
+if (dados.blocoNotas) {
+    if (dados.blocoNotas.paginas) {
+        // Novo formato (com páginas)
+        paginasNotas = dados.blocoNotas.paginas;
+        paginaAtualNotas = dados.blocoNotas.paginaAtual || 0;
+        atualizarSeletorPaginas();
+        document.getElementById('editor-notas').innerHTML = paginasNotas[paginaAtualNotas].conteudo;
+    } else if (typeof dados.blocoNotas === 'string') {
+        // Formato antigo (compatibilidade)
+        paginasNotas = [{ titulo: "Página 1", conteudo: dados.blocoNotas }];
+        paginaAtualNotas = 0;
+        atualizarSeletorPaginas();
+        document.getElementById('editor-notas').innerHTML = dados.blocoNotas;
+
+
+        // 14. Histórico de Rolagens
+if (dados.historicoRolagens) {
+    historicoRolagens = dados.historicoRolagens;
+    atualizarHistoricoRolagens();
+}
+
+if (dados.blocoNotas && dados.blocoNotas.paginas) {
+    paginasNotas = dados.blocoNotas.paginas;
+    paginaAtualNotas = dados.blocoNotas.paginaAtual || 0;
+    atualizarSeletorPaginas();
+    document.getElementById('editor-notas').innerHTML = paginasNotas[paginaAtualNotas].conteudo;
+}
     }
-}, 100);
+}
 
     // Atualiza o visual sem resetar os inputs
     atualizarTudo();
@@ -3046,13 +3350,14 @@ function addWeaponRow() {
     const body = document.getElementById('weaponBody');
     const tr = document.createElement('tr');
     tr.innerHTML = `
-        <td><input type="text" placeholder="Arma"></td>
+        <td style="width: 20%;"><input type="text" placeholder="Arma" style="width: 100%;"></td>
+        <td style="width: 15%;"><input type="text" placeholder="Perícia" style="width: 100%;"></td>
         <td><input type="number" oninput="calcWeapon(this)" placeholder="Reg."></td>
         <td><input type="text" class="val-auto" readonly value="0"></td>
         <td><input type="text" class="val-auto" readonly value="0"></td>
-        <td><input type="text" placeholder="1D10"></td>
+        <td style="width: 12%;"><input type="text" placeholder="1D10" style="width: 100%;"></td>
         <td><input type="text" placeholder="15m"></td>
-        <td><input type="text" placeholder="1"></td>
+        <td style="width: 10%;"><input type="text" placeholder="1" style="width: 100%;"></td>
         <td><input type="text" placeholder="6"></td>
         <td><input type="text" placeholder="98"></td>
         <td><button class="btn-remove-weapon" onclick="this.closest('tr').remove()">X</button></td>
@@ -3411,6 +3716,50 @@ function testarHabilidade(nome, valorAlvo) {
             painelPericias.style.marginBottom = "0";
         }, 3200);
     }
+
+const dataHora = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+historicoRolagens.unshift({
+    nome: nome,
+    resultado: title,
+    rolagem: roll,
+    alvo: alvo,
+    hora: dataHora
+});
+
+// Limitar a 5 entradas
+if (historicoRolagens.length > 5) {
+    historicoRolagens.pop();
+}
+
+atualizarHistoricoRolagens();
+
+function atualizarHistoricoRolagens() {
+    const lista = document.getElementById('lista-historico');
+    if (!lista) return;
+    
+    if (historicoRolagens.length === 0) {
+        lista.innerHTML = '<div style="color: #444; font-style: italic;">Nenhuma rolagem ainda</div>';
+        return;
+    }
+    
+    lista.innerHTML = historicoRolagens.map((r, i) => {
+        let corResultado = '#666';
+        if (r.resultado === 'CRÍTICO') corResultado = '#0f0';
+        else if (r.resultado === 'EXTREMO') corResultado = '#0af';
+        else if (r.resultado === 'SÓLIDO') corResultado = '#ff0';
+        else if (r.resultado === 'REGULAR') corResultado = '#fff';
+        else if (r.resultado === 'DESASTRE') corResultado = '#f00';
+        
+        return `
+            <div style="padding: 5px; border-bottom: 1px solid #111; display: flex; justify-content: space-between;">
+                <span style="color: #aaa;">${r.hora} - ${r.nome}</span>
+                <span style="color: ${corResultado}; font-weight: bold;">${r.resultado} (${r.rolagem}/${r.alvo})</span>
+            </div>
+        `;
+    }).join('');
+}
+
+
 }
 
 function rollXDX(qtd, lados) {
@@ -3637,6 +3986,10 @@ function exportarFichaJSON() {
     const nomeArquivo = dados.pessoais.nome || agenteLogado || "Investigador";
     a.download = `FICHA_${nomeArquivo}.json`;
     a.click();
+    dados.blocoNotas = {
+    paginas: paginasNotas,
+    paginaAtual: paginaAtualNotas
+};
 }
 
 // FUNÇÃO PARA IMPORTAR
@@ -4603,6 +4956,179 @@ window.ajustarZoomFundo = function(valor) {
 };
 
 
+function abrirTutorial() {
+    scrollPosicaoOriginal = window.pageYOffset;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    const modal = document.getElementById('tutorial-modal');
+    if(modal) {
+        modal.style.setProperty('display', 'flex', 'important');
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollPosicaoOriginal}px`;
+        document.body.style.width = '100%';
+    }
+}
+
+function fecharTutorial() {
+    const modal = document.getElementById('tutorial-modal');
+    if(modal) {
+        modal.style.setProperty('display', 'none', 'important');
+        document.body.style.removeProperty('overflow');
+        document.body.style.removeProperty('position');
+        document.body.style.removeProperty('top');
+        document.body.style.removeProperty('width');
+        window.scrollTo(0, scrollPosicaoOriginal);
+    }
+}
+
+// === SISTEMA DE BLOCO DE NOTAS AVANÇADO ===
+let paginasNotas = [{ titulo: "Página 1", conteudo: "" }];
+let paginaAtualNotas = 0;
+
+function adicionarPaginaNota() {
+    salvarConteudoPaginaAtual();
+    const novaPagina = {
+        titulo: `Página ${paginasNotas.length + 1}`,
+        conteudo: ""
+    };
+    paginasNotas.push(novaPagina);
+    atualizarSeletorPaginas();
+    paginaAtualNotas = paginasNotas.length - 1;
+    document.getElementById('selector-paginas-notas').value = paginaAtualNotas;
+    trocarPaginaNota();
+}
+
+function trocarPaginaNota() {
+    salvarConteudoPaginaAtual();
+    paginaAtualNotas = parseInt(document.getElementById('selector-paginas-notas').value);
+    document.getElementById('editor-notas').innerHTML = paginasNotas[paginaAtualNotas].conteudo;
+}
+
+function salvarConteudoPaginaAtual() {
+    if (paginasNotas[paginaAtualNotas]) {
+        paginasNotas[paginaAtualNotas].conteudo = document.getElementById('editor-notas').innerHTML;
+    }
+}
+
+function renomearPaginaNota() {
+    const novoNome = prompt("Novo título para esta página:", paginasNotas[paginaAtualNotas].titulo);
+    if (novoNome && novoNome.trim()) {
+        paginasNotas[paginaAtualNotas].titulo = novoNome.trim();
+        atualizarSeletorPaginas();
+    }
+}
+
+function excluirPaginaNota() {
+    if (paginasNotas.length === 1) {
+        alert("Você precisa ter pelo menos uma página!");
+        return;
+    }
+    
+    // CORREÇÃO: Salvar ANTES de perguntar
+    salvarConteudoPaginaAtual();
+    
+    if (confirm(`Deseja realmente excluir "${paginasNotas[paginaAtualNotas].titulo}"?`)) {
+        paginasNotas.splice(paginaAtualNotas, 1);
+        paginaAtualNotas = Math.max(0, paginaAtualNotas - 1);
+        atualizarSeletorPaginas();
+        
+        // CORREÇÃO: Carregar o conteúdo da página correta
+        document.getElementById('editor-notas').innerHTML = paginasNotas[paginaAtualNotas].conteudo;
+        document.getElementById('selector-paginas-notas').value = paginaAtualNotas;
+    }
+}
+
+function atualizarSeletorPaginas() {
+    const selector = document.getElementById('selector-paginas-notas');
+    selector.innerHTML = '';
+    paginasNotas.forEach((pagina, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = pagina.titulo;
+        selector.appendChild(option);
+    });
+    selector.value = paginaAtualNotas;
+}
+
+// === FORMATAÇÃO DE TEXTO ===
+function aplicarFormatacao(comando) {
+    document.execCommand(comando, false, null);
+    document.getElementById('editor-notas').focus();
+}
+
+function aplicarFonte() {
+    const fonte = document.getElementById('select-fonte').value;
+    document.execCommand('fontName', false, fonte);
+    document.getElementById('editor-notas').focus();
+}
+
+function aplicarTamanho() {
+    const tamanho = document.getElementById('select-tamanho').value;
+    document.execCommand('fontSize', false, '7');
+    const fontElements = document.getElementById('editor-notas').getElementsByTagName('font');
+    for (let i = 0; i < fontElements.length; i++) {
+        if (fontElements[i].size === '7') {
+            fontElements[i].removeAttribute('size');
+            fontElements[i].style.fontSize = tamanho;
+        }
+    }
+    document.getElementById('editor-notas').focus();
+}
+
+function aplicarMarcaTexto() {
+    const cor = document.getElementById('cor-marcador').value;
+    document.execCommand('backColor', false, cor);
+    document.getElementById('editor-notas').focus();
+}
+
+function transformarTitulo() {
+    const selection = window.getSelection();
+    if (selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        const selectedText = range.toString();
+        if (selectedText) {
+            const h1 = document.createElement('h3');
+            h1.style.color = '#721717';
+            h1.style.borderBottom = '1px solid #333';
+            h1.style.paddingBottom = '10px';
+            h1.style.marginTop = '20px';
+            h1.textContent = selectedText;
+            range.deleteContents();
+            range.insertNode(h1);
+        }
+    }
+    document.getElementById('editor-notas').focus();
+}
+
+function limparFormatacao() {
+    if (confirm("Deseja realmente limpar toda a formatação desta página?")) {
+        const editor = document.getElementById('editor-notas');
+        const textoLimpo = editor.innerText;
+        editor.innerHTML = textoLimpo;
+    }
+}
+
+// Auto-salvar o bloco de notas ao trocar de aba
+document.querySelectorAll('.tab-button').forEach(btn => {
+    btn.addEventListener('click', () => {
+        salvarConteudoPaginaAtual();
+    });
+});
+
+// Salvar ao fechar a janela
+window.addEventListener('beforeunload', () => {
+
+    salvarConteudoPaginaAtual();
+});
+
+function removerMarcaTexto() {
+    document.execCommand('removeFormat', false, null);
+    document.execCommand('backColor', false, 'transparent');
+    document.getElementById('editor-notas').focus();
+}
+
+let historicoRolagens = []; // Armazena as últimas 5 rolagens
 
 // Garante que rode ao carregar a ficha
 window.addEventListener('load', atualizarIdentidadeNoir);
@@ -4618,6 +5144,209 @@ if (inputCredito) {
     atualizarPadraoVida(inputCredito.value);
 }
 
+const bancoDadosArmas = {
+    // ARMAS COMUNS
+    "Arco e Flecha": { pericia: "Armas de Fogo (Arcos)", dano: "1D6+meio DX", alcance: "30m", usos: "1", mun: "1", defeito: "97" },
+    "Soqueira": { pericia: "Lutar (Briga)", dano: "1D3+1+DX", alcance: "Toque", usos: "1", mun: "-", defeito: "-" },
+    "Chicote": { pericia: "Lutar (Chicotes)", dano: "1D3+meio DX", alcance: "3m", usos: "1", mun: "-", defeito: "-" },
+    "Tocha Acesa": { pericia: "Lutar (Briga)", dano: "1D6+queimar", alcance: "Toque", usos: "1", mun: "-", defeito: "-" },
+    "Serra Elétrica": { pericia: "Lutar (Serras Elétricas)", dano: "2D8", alcance: "Toque", usos: "1", mun: "-", defeito: "95" },
+    "Porrete Médio": { pericia: "Lutar (Briga)", dano: "1D8+DX", alcance: "Toque", usos: "1", mun: "-", defeito: "-" },
+    "Porrete Grande": { pericia: "Lutar (Briga)", dano: "1D8+DX", alcance: "Toque", usos: "1", mun: "-", defeito: "-" },
+    "Porrete Pequeno": { pericia: "Lutar (Briga)", dano: "1D6+DX", alcance: "Toque", usos: "1", mun: "-", defeito: "-" },
+    "Besta": { pericia: "Armas de Fogo (Arcos)", dano: "1D8+2", alcance: "50m", usos: "1/2", mun: "1", defeito: "96" },
+    "Garrote": { pericia: "Lutar (Garrotes)", dano: "1D6+DX", alcance: "Toque", usos: "1", mun: "-", defeito: "-" },
+    "Machadinha": { pericia: "Lutar (Machados)", dano: "1D6+1+DX", alcance: "Toque", usos: "1", mun: "-", defeito: "-" },
+    "Faca Grande": { pericia: "Lutar (Briga)", dano: "1D8+DX", alcance: "Toque", usos: "1", mun: "-", defeito: "-" },
+    "Faca Média": { pericia: "Lutar (Briga)", dano: "1D4+2+DX", alcance: "Toque", usos: "1", mun: "-", defeito: "-" },
+    "Faca Pequena": { pericia: "Lutar (Briga)", dano: "1D4+DX", alcance: "Toque", usos: "1", mun: "-", defeito: "-" },
+    "Cabo Eletrizado 220V": { pericia: "Lutar (Briga)", dano: "2D8+atordoar", alcance: "Toque", usos: "1", mun: "-", defeito: "95" },
+    "Spray de Pimenta": { pericia: "Lutar (Briga)", dano: "atordoar", alcance: "2m", usos: "1", mun: "25", defeito: "-" },
+    "Nunchaku": { pericia: "Lutar (Manguais)", dano: "1D8+DX", alcance: "Toque", usos: "1", mun: "-", defeito: "-" },
+    "Pedra Arremessada": { pericia: "Arremessar", dano: "1D4+meio DX", alcance: "FOR/5m", usos: "1", mun: "-", defeito: "-" },
+    "Shuriken": { pericia: "Arremessar", dano: "1D3+meio DX", alcance: "FOR/5m", usos: "2", mun: "Único", defeito: "100" },
+    "Lança (Cavalaria)": { pericia: "Lutar (Lanças)", dano: "1D8+1", alcance: "Toque", usos: "1", mun: "-", defeito: "-" },
+    "Lança Arremessada": { pericia: "Arremessar", dano: "1D8+meio DX", alcance: "FOR/5m", usos: "1", mun: "-", defeito: "-" },
+    "Espada Pesada": { pericia: "Lutar (Espadas)", dano: "1D8+1+DX", alcance: "Toque", usos: "1", mun: "-", defeito: "-" },
+    "Espada Média": { pericia: "Lutar (Espadas)", dano: "1D6+1+DX", alcance: "Toque", usos: "1", mun: "-", defeito: "-" },
+    "Espada Leve": { pericia: "Lutar (Espadas)", dano: "1D6+DX", alcance: "Toque", usos: "1", mun: "-", defeito: "-" },
+    "Taser (Contato)": { pericia: "Lutar (Briga)", dano: "1D3+atordoar", alcance: "Toque", usos: "1", mun: "Varia", defeito: "97" },
+    "Taser (Dardo)": { pericia: "Armas de Fogo (Pistolas)", dano: "1D3+atordoar", alcance: "5m", usos: "1", mun: "3", defeito: "95" },
+    "Bumerangue de Guerra": { pericia: "Arremessar", dano: "1D8+meio DX", alcance: "FOR/5m", usos: "1", mun: "-", defeito: "-" },
+    "Machado de Lenhador": { pericia: "Lutar (Machados)", dano: "1D8+2+DX", alcance: "Toque", usos: "1", mun: "-", defeito: "-" },
+    
+    // PISTOLAS
+    "Pederneira": { pericia: "Armas de Fogo (Pistolas)", dano: "1D6+1", alcance: "10m", usos: "1/4", mun: "1", defeito: "95" },
+    ".22 Curta Auto": { pericia: "Armas de Fogo (Pistolas)", dano: "1D6", alcance: "10m", usos: "1(3)", mun: "6", defeito: "100" },
+    ".25 Derringer": { pericia: "Armas de Fogo (Pistolas)", dano: "1D6", alcance: "3m", usos: "1", mun: "1", defeito: "100" },
+    "Revólver .32": { pericia: "Armas de Fogo (Pistolas)", dano: "1D8", alcance: "15m", usos: "1(3)", mun: "6", defeito: "100" },
+    ".32 Automática": { pericia: "Armas de Fogo (Pistolas)", dano: "1D8", alcance: "15m", usos: "1(3)", mun: "8", defeito: "99" },
+    "Revólver .357 Magnum": { pericia: "Armas de Fogo (Pistolas)", dano: "1D8+1D4", alcance: "15m", usos: "1(3)", mun: "6", defeito: "100" },
+    "Revólver .38": { pericia: "Armas de Fogo (Pistolas)", dano: "1D10", alcance: "15m", usos: "1(3)", mun: "6", defeito: "100" },
+    ".38 Automática": { pericia: "Armas de Fogo (Pistolas)", dano: "1D10", alcance: "15m", usos: "1(3)", mun: "8", defeito: "99" },
+    "Beretta M9": { pericia: "Armas de Fogo (Pistolas)", dano: "1D10", alcance: "15m", usos: "1(3)", mun: "15", defeito: "98" },
+    "Glock 17": { pericia: "Armas de Fogo (Pistolas)", dano: "1D10", alcance: "15m", usos: "1(3)", mun: "17", defeito: "98" },
+    "Luger P08": { pericia: "Armas de Fogo (Pistolas)", dano: "1D10", alcance: "15m", usos: "1(3)", mun: "8", defeito: "99" },
+    "Revólver .41": { pericia: "Armas de Fogo (Pistolas)", dano: "1D10", alcance: "15m", usos: "1(3)", mun: "8", defeito: "100" },
+    "Revólver .44 Magnum": { pericia: "Armas de Fogo (Pistolas)", dano: "1D10+1D4+2", alcance: "15m", usos: "1(3)", mun: "6", defeito: "100" },
+    "Revólver .45": { pericia: "Armas de Fogo (Pistolas)", dano: "1D10+2", alcance: "15m", usos: "1(3)", mun: "6", defeito: "100" },
+    ".45 Automática": { pericia: "Armas de Fogo (Pistolas)", dano: "1D10+2", alcance: "15m", usos: "1(3)", mun: "7", defeito: "100" },
+    "Desert Eagle": { pericia: "Armas de Fogo (Pistolas)", dano: "1D10+1D6+3", alcance: "15m", usos: "1(3)", mun: "7", defeito: "94" },
+    
+    // RIFLES
+    "Rifle Mosquete .58": { pericia: "Armas de Fogo (Rifles)", dano: "1D10+4", alcance: "60m", usos: "1/4", mun: "1", defeito: "95" },
+    "Rifle Ferrolho .22": { pericia: "Armas de Fogo (Rifles)", dano: "1D6+1", alcance: "30m", usos: "1", mun: "6", defeito: "99" },
+    "Carabina Alavanca .30": { pericia: "Armas de Fogo (Rifles)", dano: "2D6", alcance: "50m", usos: "1", mun: "6", defeito: "98" },
+    "Martini-Henry .45": { pericia: "Armas de Fogo (Rifles)", dano: "1D8+1D6+3", alcance: "80m", usos: "1/3", mun: "1", defeito: "100" },
+    "Rifle de Ar Coronel Moran": { pericia: "Armas de Fogo (Rifles)", dano: "2D6+1", alcance: "20m", usos: "1/3", mun: "1", defeito: "88" },
+    "Garand M1/M2": { pericia: "Armas de Fogo (Rifles)", dano: "2D6+4", alcance: "110m", usos: "1", mun: "8", defeito: "100" },
+    "Carabina SKS": { pericia: "Armas de Fogo (Rifles)", dano: "2D6+1", alcance: "90m", usos: "1(2)", mun: "10", defeito: "97" },
+    "Lee-Enfield .303": { pericia: "Armas de Fogo (Rifles)", dano: "2D6+4", alcance: "110m", usos: "1", mun: "10", defeito: "100" },
+    "Rifle Ferrolho .30-06": { pericia: "Armas de Fogo (Rifles)", dano: "2D6+4", alcance: "110m", usos: "1", mun: "5", defeito: "100" },
+    "Rifle Semi-Auto .30-06": { pericia: "Armas de Fogo (Rifles)", dano: "2D6+4", alcance: "110m", usos: "1", mun: "5", defeito: "100" },
+    "Marlin .444": { pericia: "Armas de Fogo (Rifles)", dano: "2D8+4", alcance: "110m", usos: "1", mun: "5", defeito: "98" },
+    "Rifle de Elefantes": { pericia: "Armas de Fogo (Rifles)", dano: "3D6+4", alcance: "100m", usos: "1 ou 2", mun: "2", defeito: "100" },
+    
+    // ESPINGARDAS
+    "Espingarda Cal. 20": { pericia: "Armas de Fogo (Espingardas)", dano: "2D6/1D6/1D3", alcance: "10/20/50m", usos: "1 ou 2", mun: "2", defeito: "100" },
+    "Espingarda Cal. 16": { pericia: "Armas de Fogo (Espingardas)", dano: "2D6+2/1D6+1/1D4", alcance: "10/20/50m", usos: "1 ou 2", mun: "2", defeito: "100" },
+    "Espingarda Cal. 12": { pericia: "Armas de Fogo (Espingardas)", dano: "4D6/2D6/1D6", alcance: "10/20/50m", usos: "1 ou 2", mun: "2", defeito: "100" },
+    "Escopeta Cal. 12 (Deslizante)": { pericia: "Armas de Fogo (Espingardas)", dano: "4D6/2D6/1D6", alcance: "10/20/50m", usos: "1", mun: "5", defeito: "100" },
+    "Escopeta Cal. 12 (Semi-Auto)": { pericia: "Armas de Fogo (Espingardas)", dano: "4D6/2D6/1D6", alcance: "10/20/50m", usos: "1(2)", mun: "5", defeito: "100" },
+    "Escopeta Cal. 12 (Serrada)": { pericia: "Armas de Fogo (Espingardas)", dano: "4D6/1D6", alcance: "5/10m", usos: "1 ou 2", mun: "2", defeito: "100" },
+    "Espingarda Cal. 10": { pericia: "Armas de Fogo (Espingardas)", dano: "4D6+2/2D6+1/1D4", alcance: "10/20/50m", usos: "1 ou 2", mun: "2", defeito: "100" },
+    "Benelli M3 Cal. 12": { pericia: "Armas de Fogo (Espingardas)", dano: "4D6/2D6/1D6", alcance: "10/20/50m", usos: "1(2)", mun: "7", defeito: "100" },
+    "SPAS Cal. 12": { pericia: "Armas de Fogo (Espingardas)", dano: "4D6/2D6/1D6", alcance: "10/20/50m", usos: "1", mun: "8", defeito: "98" },
+    
+    // FUZIS DE ASSALTO
+    "AK-47": { pericia: "Armas de Fogo (Rifles)", dano: "2D6+1", alcance: "100m", usos: "1(2) ou auto", mun: "30", defeito: "100" },
+    "AK-74": { pericia: "Armas de Fogo (Rifles)", dano: "2D6", alcance: "110m", usos: "1(2) ou auto", mun: "30", defeito: "97" },
+    "Barrett Model 82": { pericia: "Armas de Fogo (Rifles)", dano: "2D10+1D8+6", alcance: "250m", usos: "1", mun: "11", defeito: "96" },
+    "FN FAL": { pericia: "Armas de Fogo (Rifles)", dano: "2D6+4", alcance: "110m", usos: "1(2) ou rajada 3", mun: "20", defeito: "97" },
+    "Galil": { pericia: "Armas de Fogo (Rifles)", dano: "2D6", alcance: "110m", usos: "1 ou auto", mun: "20", defeito: "98" },
+    "M16A2": { pericia: "Armas de Fogo (Rifles)", dano: "2D6", alcance: "110m", usos: "1(2) ou rajada 3", mun: "30", defeito: "97" },
+    "M4": { pericia: "Armas de Fogo (Rifles)", dano: "2D6", alcance: "90m", usos: "1 ou rajada 3", mun: "30", defeito: "97" },
+    "Steyr AUG": { pericia: "Armas de Fogo (Rifles)", dano: "2D6", alcance: "110m", usos: "1(2) ou auto", mun: "30", defeito: "99" },
+    "Beretta M70/90": { pericia: "Armas de Fogo (Rifles)", dano: "2D6", alcance: "110m", usos: "1 ou auto", mun: "30", defeito: "99" },
+    
+    // SUBMETRALHADORAS
+    "Bergmann MP18/28": { pericia: "Armas de Fogo (SMT)", dano: "1D10", alcance: "20m", usos: "1(2) ou auto", mun: "20/30/32", defeito: "96" },
+    "H&K MP5": { pericia: "Armas de Fogo (SMT)", dano: "1D10", alcance: "20m", usos: "1(2) ou auto", mun: "15/30", defeito: "97" },
+    "Ingram MAC-11": { pericia: "Armas de Fogo (SMT)", dano: "1D10", alcance: "15m", usos: "1(3) ou auto", mun: "32", defeito: "96" },
+    "Skorpion": { pericia: "Armas de Fogo (SMT)", dano: "1D8", alcance: "15m", usos: "1(3) ou auto", mun: "20", defeito: "96" },
+    "Thompson": { pericia: "Armas de Fogo (SMT)", dano: "1D10+2", alcance: "20m", usos: "1 ou auto", mun: "20/30/50", defeito: "96" },
+    "Uzi": { pericia: "Armas de Fogo (SMT)", dano: "1D10", alcance: "20m", usos: "1(2) ou auto", mun: "32", defeito: "98" },
+    
+    // METRALHADORAS
+    "Gatling Gun": { pericia: "Armas de Fogo (MT)", dano: "2D6+4", alcance: "100m", usos: "Auto", mun: "200", defeito: "96" },
+    "Browning BAR M1918": { pericia: "Armas de Fogo (MT)", dano: "2D6+4", alcance: "90m", usos: "1(2) ou auto", mun: "20", defeito: "100" },
+    "Browning M1917A1": { pericia: "Armas de Fogo (MT)", dano: "2D6+4", alcance: "150m", usos: "Auto", mun: "250", defeito: "96" },
+    "Bren Gun": { pericia: "Armas de Fogo (MT)", dano: "2D6+4", alcance: "110m", usos: "1 ou auto", mun: "30/100", defeito: "96" },
+    "Lewis Gun": { pericia: "Armas de Fogo (MT)", dano: "2D6+4", alcance: "110m", usos: "Auto", mun: "47/97", defeito: "96" },
+    "Minigun": { pericia: "Armas de Fogo (MT)", dano: "2D6+4", alcance: "200m", usos: "Auto", mun: "4000", defeito: "98" },
+    "FN Minimi": { pericia: "Armas de Fogo (MT)", dano: "2D6", alcance: "110m", usos: "Auto", mun: "30/200", defeito: "99" },
+    "Vickers .303": { pericia: "Armas de Fogo (MT)", dano: "2D6+4", alcance: "110m", usos: "Auto", mun: "250", defeito: "99" },
+    
+    // EXPLOSIVOS E ARMAS PESADAS
+    "Coquetel Molotov": { pericia: "Arremessar", dano: "2D6+queimar", alcance: "FOR/5m", usos: "1/2", mun: "Único", defeito: "95" },
+    "Pistola Sinalizadora": { pericia: "Armas de Fogo (PST)", dano: "1D10+1D3 queimar", alcance: "10m", usos: "1/2", mun: "1", defeito: "100" },
+    "Lança Granadas M79": { pericia: "Armas de Fogo (Pesadas)", dano: "3D10/2m", alcance: "20m", usos: "1/3", mun: "1", defeito: "99" },
+    "Banana de Dinamite": { pericia: "Arremessar", dano: "4D10/3m", alcance: "FOR/5m", usos: "1/2", mun: "Único", defeito: "99" },
+    "Detonador": { pericia: "Consertos Elétricos", dano: "2D10/1m", alcance: "N/D", usos: "N/D", mun: "Único", defeito: "100" },
+    "Bomba Tubo": { pericia: "Demolições", dano: "1D10/3m", alcance: "Local", usos: "Único", mun: "Único", defeito: "95" },
+    "C-4 (100g)": { pericia: "Demolições", dano: "6D10/3m", alcance: "Local", usos: "Único", mun: "Único", defeito: "99" },
+    "Granada de Mão": { pericia: "Arremessar", dano: "4D10/3m", alcance: "FOR/5m", usos: "1/2", mun: "Único", defeito: "99" },
+    "Morteiro 81mm": { pericia: "Artilharia", dano: "6D10/6m", alcance: "500m", usos: "1", mun: "Separado", defeito: "100" },
+    "Canhão 75mm": { pericia: "Artilharia", dano: "10D10/2m", alcance: "500m", usos: "1/4", mun: "Separado", defeito: "99" },
+    "Canhão Tanque 120mm": { pericia: "Artilharia", dano: "15D10/4m", alcance: "2000m", usos: "1", mun: "Separado", defeito: "100" },
+    "Artilharia Naval 5pol": { pericia: "Artilharia", dano: "12D10/4m", alcance: "3000m", usos: "1", mun: "Auto", defeito: "98" },
+        "Mina Antipessoal": { 
+        pericia: "Demolições", 
+        dano: "4D10/5m", 
+        alcance: "No local", 
+        usos: "No local", 
+        mun: "Uso Único", 
+        defeito: "99" 
+    },
+    "Mina Claymore": { 
+        pericia: "Demolições", 
+        dano: "6D6/20m", 
+        alcance: "No local", 
+        usos: "No local", 
+        mun: "Uso Único", 
+        defeito: "99" 
+    },
+    "Lança-Chamas": { 
+        pericia: "Armas de Fogo (Lança-chamas)", 
+        dano: "2D6+queimar", 
+        alcance: "25m", 
+        usos: "1", 
+        mun: "Pelo menos 10", 
+        defeito: "93" 
+    },
+    "Lança-Foguetes (LAW)": { 
+        pericia: "Armas de Fogo (Pesadas)", 
+        dano: "8D10/1m", 
+        alcance: "150m", 
+        usos: "1", 
+        mun: "1", 
+        defeito: "98" 
+    }
+};
+
+function addWeaponRow() {
+    const body = document.getElementById('weaponBody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td>
+            <select onchange="preencherDadosArma(this)" style="width: 100%; background: #000; color: #ccc; border: 1px solid #333;">
+                <option value="">-- Selecione ou digite --</option>
+                ${Object.keys(bancoDadosArmas).map(arma => 
+                    `<option value="${arma}">${arma}</option>`
+                ).join('')}
+                <option value="custom">✏️ Arma Customizada</option>
+            </select>
+            <input type="text" placeholder="Ou digite o nome" style="display:none; margin-top:5px;">
+        </td>
+        <td><input type="text" placeholder="Perícia" readonly style="background: #0a0a0a;"></td>
+        <td><input type="number" oninput="calcWeapon(this)" placeholder="Reg."></td>
+        <td><input type="text" class="val-auto" readonly value="0"></td>
+        <td><input type="text" class="val-auto" readonly value="0"></td>
+        <td><input type="text" placeholder="Dano"></td>
+        <td><input type="text" placeholder="Alcance"></td>
+        <td><input type="text" placeholder="Usos"></td>
+        <td><input type="text" placeholder="Mun."></td>
+        <td><input type="text" placeholder="Def."></td>
+        <td><button class="btn-remove-weapon" onclick="this.closest('tr').remove()">X</button></td>
+    `;
+    body.appendChild(tr);
+}
+
+function preencherDadosArma(selectElement) {
+    const row = selectElement.closest('tr');
+    const inputs = row.querySelectorAll('input');
+    const nomeArma = selectElement.value;
+    
+    if (nomeArma === 'custom') {
+        // Mostra campo de texto customizado
+        inputs[0].style.display = 'block';
+        inputs[0].focus();
+        // Limpa os campos
+        for(let i = 1; i < inputs.length - 3; i++) {
+            inputs[i].value = '';
+            inputs[i].readOnly = false;
+        }
+    } else if (nomeArma && bancoDadosArmas[nomeArma]) {
+        const arma = bancoDadosArmas[nomeArma];
+        inputs[0].style.display = 'none';
+        inputs[1].value = arma.pericia; // Perícia
+        inputs[5].value = arma.dano;    // Dano
+        inputs[6].value = arma.alcance; // Alcance
+        inputs[7].value = arma.usos;    // Usos
+        inputs[8].value = arma.mun;     // Munição
+        inputs[9].value = arma.defeito; // Defeito
+    }
+}
 
 
 // Inicialização (Certifique-se que estas linhas existam e estejam fora de outras funções)
@@ -4633,4 +5362,3 @@ atualizarTudo();
 </script>
 </body>
 </html>
-
