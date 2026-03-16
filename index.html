@@ -2623,41 +2623,6 @@ function fecharAjuda() {
     }
 }
 
-    function realizarCadastro() {
-        const user = document.getElementById('signupUser').value.trim();
-        const pass = document.getElementById('signupPass').value.trim();
-        const msg = document.getElementById('login-msg');
-
-       // Validação de senha forte
-const senhaForte =
-    pass.length >= 6 &&               // +5 caracteres
-    /[A-Z]/.test(pass) &&             // 1 letra maiúscula
-    /[a-z]/.test(pass) &&             // 1 letra minúscula
-    /[\W_]/.test(pass) &&             // 1 caractere especial
-    /\d/.test(pass);                  // 1 número
-
-if(!senhaForte) {
-    msg.innerText =
-        "A SENHA DEVE TER:\n" +
-        "- 1 LETRA MAIÚSCULA\n" +
-        "- 1 LETRA MINÚSCULA\n" +
-        "- 1 NÚMERO\n" +
-        "- 1 CARACTERE ESPECIAL\n" +
-        "- MÍNIMO 6 CARACTERES";
-    return;
-
-    
-}
-
-
-
-if(localStorage.getItem("CoC_User_" + user)) return msg.innerText = "ESTE INVESTIGADOR JÁ ESTÁ REGISTRADO";
-    const userData = { password: pass, investigadores: [] };
-    localStorage.setItem("CoC_User_" + user, JSON.stringify(userData));
-    msg.style.color = "#00ff00";
-    msg.innerText = "INVESTIGADOR REGISTRADO! AGORA FAÇA LOGIN.";
-    setTimeout(() => switchTab('login'), 1500);
-}
 
 async function realizarLogin() {
     const user = document.getElementById('loginUser').value.trim().toLowerCase();
@@ -2687,20 +2652,6 @@ async function realizarLogin() {
         console.error("Erro ao fazer login:", erro);
         msg.style.color = "#ff4444"; msg.innerText = "ERRO DE CONEXÃO. VERIFIQUE SUA INTERNET.";
     }
-
-
-    // --- PROCEDIMENTO PARA ABRIR O PAINEL ---
-    document.getElementById('login-overlay').style.display = "none";
-    
-    // Mostrar os elementos que estavam escondidos
-    document.getElementById('ficha-editor').style.display = "block";
-    document.getElementById('playerMusica').style.display = "flex";
-    document.getElementById('user-float-panel').style.display = "block";
-    
-    // Abrir menu de fichas
-    document.getElementById('menu-fichas').classList.add('active'); 
-    
-    atualizarListaInvestigadores();
 }
 
 async function abrirFicha(id) {
@@ -2729,24 +2680,21 @@ function voltarAoMenu() {
     atualizarListaInvestigadores();
 }
 
-function criarNovoInvestigador() {
+async function criarNovoInvestigador() {
     const nome = prompt("Nome do novo investigador:");
-    if(!nome || !nome.trim()) return;
-
-    const savedData = JSON.parse(localStorage.getItem("CoC_User_" + agenteLogado));
-    const novoId = Date.now();
-    
-    const novoInv = {
-        id: novoId,
-        nome: nome.trim(),
-        ficha: null 
-    };
-    
-    savedData.investigadores.push(novoInv);
-    localStorage.setItem("CoC_User_" + agenteLogado, JSON.stringify(savedData));
-    
-    // Já abre direto para edição
-    abrirFicha(novoId);
+    if (!nome || !nome.trim()) return;
+    try {
+        const docRef = window.firebaseDoc(window.db, "usuarios", agenteLogado);
+        const docSnap = await window.firebaseGetDoc(docRef);
+        const userData = docSnap.data();
+        const novoId = Date.now();
+        userData.investigadores.push({ id: novoId, nome: nome.trim(), ficha: null });
+        await window.firebaseSetDoc(docRef, userData);
+        abrirFicha(novoId);
+    } catch (erro) {
+        console.error("Erro ao criar:", erro);
+        alert("Erro ao criar investigador. Verifique sua conexão.");
+    }
 }
 
 async function atualizarListaInvestigadores() {
@@ -2838,12 +2786,25 @@ async function salvarLocal() {
         const inv = userData.investigadores.find(i => i.id === investigadorAtual);
         if (inv) {
             const dadosFicha = colherDados();
-            if (dadosFicha.foto && dadosFicha.foto.length > 400000) {
+
+            // Remove foto grande
+            if (dadosFicha.foto && dadosFicha.foto.length > 200000) {
                 dadosFicha.foto = "";
-                alert("⚠️ Foto muito grande para salvar na nuvem. Use Exportar/Importar JSON para fichas com foto.");
             }
+
+            // CORREÇÃO: Converte arrays aninhados das armas em objetos
+            if (dadosFicha.armas) {
+                dadosFicha.armas = dadosFicha.armas.map(arma => {
+                    if (Array.isArray(arma)) {
+                        return { dados: arma.join('||') };
+                    }
+                    return arma;
+                });
+            }
+
             inv.ficha = dadosFicha;
             await window.firebaseSetDoc(docRef, userData);
+
             const btn = document.querySelector('button[onclick="salvarLocal()"]');
             if (btn) {
                 const textoOriginal = btn.innerText;
@@ -2853,7 +2814,7 @@ async function salvarLocal() {
         }
     } catch (erro) {
         console.error("Erro ao salvar:", erro);
-        alert("Erro ao salvar. Verifique sua conexão com a internet.");
+        alert("Erro ao salvar: " + erro.message);
     }
 }
 
@@ -3197,7 +3158,7 @@ function aplicarDados(dados) {
     stats = dados.stats || { PV: { atual: 0, max: 0 }, SAN: { atual: 0, max: 99 }, MAG: { atual: 0, max: 0 } };
     document.getElementById('valSORTE').innerText = dados.sorte || "-";
     
-    // 8. Armas
+// 8. Armas
     const body = document.getElementById('weaponBody');
     body.innerHTML = "";
     if(dados.armas && dados.armas.length > 0) {
@@ -3205,7 +3166,9 @@ function aplicarDados(dados) {
             addWeaponRow();
             const lastRow = body.lastElementChild;
             const inputs = lastRow.querySelectorAll('input');
-            a.forEach((val, i) => { if(inputs[i]) inputs[i].value = val; });
+            // Suporte ao formato novo (objeto com 'dados') e formato antigo (array)
+            const valores = Array.isArray(a) ? a : (a.dados ? a.dados.split('||') : []);
+            valores.forEach((val, i) => { if(inputs[i]) inputs[i].value = val; });
         });
     } else {
         addWeaponRow();
