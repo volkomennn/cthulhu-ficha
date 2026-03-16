@@ -1,6 +1,28 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCeSS6I2Fqd-zuGidZKGScXwFlyVylZdsE",
+    authDomain: "call-of-cthulhu-fichas-3f885.firebaseapp.com",
+    projectId: "call-of-cthulhu-fichas-3f885",
+    storageBucket: "call-of-cthulhu-fichas-3f885.firebasestorage.app",
+    messagingSenderId: "808034478034",
+    appId: "1:808034478034:web:39c5c6980bfe2a0f800a0b"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  window.db = db;
+  window.firebaseDoc = doc;
+  window.firebaseSetDoc = setDoc;
+  window.firebaseGetDoc = getDoc;
+</script>
+
 <title>Call of Cthulhu</title>
 
     <link rel="icon" type="image/png" href="https://i.pinimg.com/736x/fb/5c/86/fb5c86a810c4c761a4f041a30c5d967c.jpg">
@@ -1714,7 +1736,7 @@ span.pericia-nome[title*="padrão de vida"] {
         <div style="font-size: 0.9em; color: #000000; margin-bottom: 15px; font-family: monospace; letter-spacing: 1px;">HIP SHOP</div>
         
         <audio id="bgMusic" loop>
-            <source src="musicaficha.mp3">
+            <source src="DELTARUNE OST   Rouxls Kaard Shop Hip Shop EXTENDED - František D (youtube).mp3">
         </audio>
 
         <div class="bar-controls">
@@ -2637,33 +2659,35 @@ if(localStorage.getItem("CoC_User_" + user)) return msg.innerText = "ESTE INVEST
     setTimeout(() => switchTab('login'), 1500);
 }
 
-function realizarLogin() {
-    const user = document.getElementById('loginUser').value.trim();
+async function realizarLogin() {
+    const user = document.getElementById('loginUser').value.trim().toLowerCase();
     const pass = document.getElementById('loginPass').value.trim();
     const msg = document.getElementById('login-msg');
-
-    const savedData = localStorage.getItem("CoC_User_" + user);
-    if(!savedData) return msg.innerText = "AGENTE NÃO ENCONTRADO";
-    
-    const userData = JSON.parse(savedData);
-    if(userData.password !== pass) return msg.innerText = "SENHA INCORRETA";
-
-    // Define o agente logado
-    agenteLogado = user;
-    localStorage.setItem("Agente_Sessao_Ativa", user); 
-    localStorage.setItem("usuarioLogado", user); 
-
-    const displayBar = document.getElementById('display-username');
-    if(displayBar) displayBar.innerText = user.toUpperCase();
-    
-    // --- GATILHO DA MÚSICA ---
-    const musica = document.getElementById('bgMusic');
-    if (musica) {
-        musica.volume = 0.1; // Define o volume inicial baixo
-        musica.play().catch(error => {
-            console.log("Erro ao tocar música: ", error);
-        });
+    if (!user || !pass) { msg.innerText = "PREENCHA TODOS OS CAMPOS"; return; }
+    try {
+        msg.style.color = "#888"; msg.innerText = "VERIFICANDO CREDENCIAIS...";
+        const docRef = window.firebaseDoc(window.db, "usuarios", user);
+        const docSnap = await window.firebaseGetDoc(docRef);
+        if (!docSnap.exists()) { msg.style.color = "#ff4444"; msg.innerText = "AGENTE NÃO ENCONTRADO"; return; }
+        const userData = docSnap.data();
+        if (userData.password !== pass) { msg.style.color = "#ff4444"; msg.innerText = "SENHA INCORRETA"; return; }
+        agenteLogado = user;
+        localStorage.setItem("Agente_Sessao_Ativa", user);
+        localStorage.setItem("usuarioLogado", user);
+        document.getElementById('display-username').innerText = user.toUpperCase();
+        const musica = document.getElementById('bgMusic');
+        if (musica) { musica.volume = 0.1; musica.play().catch(() => {}); }
+        document.getElementById('login-overlay').style.display = "none";
+        document.getElementById('ficha-editor').style.display = "block";
+        document.getElementById('playerMusica').style.display = "flex";
+        document.getElementById('user-float-panel').style.display = "block";
+        document.getElementById('menu-fichas').classList.add('active');
+        await atualizarListaInvestigadores();
+    } catch (erro) {
+        console.error("Erro ao fazer login:", erro);
+        msg.style.color = "#ff4444"; msg.innerText = "ERRO DE CONEXÃO. VERIFIQUE SUA INTERNET.";
     }
+
 
     // --- PROCEDIMENTO PARA ABRIR O PAINEL ---
     document.getElementById('login-overlay').style.display = "none";
@@ -2679,23 +2703,22 @@ function realizarLogin() {
     atualizarListaInvestigadores();
 }
 
-function abrirFicha(id) {
-    const savedData = JSON.parse(localStorage.getItem("CoC_User_" + agenteLogado));
-    const inv = savedData.investigadores.find(i => i.id === id);
-    
-    if(inv) {
-        investigadorAtual = id;
-        limparFicha(); 
-        if(inv.ficha) aplicarDados(inv.ficha);
-        
-        // 1. Esconde o Menu de Seleção
-        document.getElementById('menu-fichas').classList.remove('active');
-        
-        // 2. Mostra a ficha e o player de música
-        document.querySelectorAll('.main-content').forEach(el => el.classList.add('visible'));
-
-const blocoNotas = document.getElementById('bloco-notas');
-if (blocoNotas) blocoNotas.value = '';
+async function abrirFicha(id) {
+    try {
+        const docRef = window.firebaseDoc(window.db, "usuarios", agenteLogado);
+        const docSnap = await window.firebaseGetDoc(docRef);
+        const userData = docSnap.data();
+        const inv = userData.investigadores.find(i => i.id === id);
+        if (inv) {
+            investigadorAtual = id;
+            limparFicha();
+            if (inv.ficha) aplicarDados(inv.ficha);
+            document.getElementById('menu-fichas').classList.remove('active');
+            document.querySelectorAll('.main-content').forEach(el => el.classList.add('visible'));
+        }
+    } catch (erro) {
+        console.error("Erro ao abrir ficha:", erro);
+        alert("Erro ao carregar ficha.");
     }
 }
 
@@ -2726,49 +2749,56 @@ function criarNovoInvestigador() {
     abrirFicha(novoId);
 }
 
-function atualizarListaInvestigadores() {
-    if(!agenteLogado) return;
-    const savedData = JSON.parse(localStorage.getItem("CoC_User_" + agenteLogado));
+async function atualizarListaInvestigadores() {
+    if (!agenteLogado) return;
     const lista = document.getElementById('investigadores-list');
-    lista.innerHTML = "";
-
-    // Mensagem caso não existam fichas
-    if(!savedData.investigadores || savedData.investigadores.length === 0) {
-        lista.innerHTML = `
-            <div style="text-align:center; padding:40px 10px; color:#444; border:1px dashed #222; border-radius:8px;">
-                <p style="font-size:11px; text-transform:uppercase;">Nenhum registro encontrado no banco de dados.</p>
-            </div>`;
-        return;
+    lista.innerHTML = '<div style="color:#444; text-align:center; padding:20px; font-family:monospace; font-size:11px;">CARREGANDO...</div>';
+    try {
+        const docRef = window.firebaseDoc(window.db, "usuarios", agenteLogado);
+        const docSnap = await window.firebaseGetDoc(docRef);
+        if (!docSnap.exists()) return;
+        const userData = docSnap.data();
+        lista.innerHTML = "";
+        if (!userData.investigadores || userData.investigadores.length === 0) {
+            lista.innerHTML = '<div style="text-align:center; padding:40px 10px; color:#444; border:1px dashed #222;"><p style="font-size:11px; text-transform:uppercase;">Nenhum registro encontrado.</p></div>';
+            return;
+        }
+        userData.investigadores.forEach(inv => {
+            const div = document.createElement('div');
+            div.style.cssText = "background:#111; border:1px solid #222; padding:12px; margin-bottom:10px;";
+            div.innerHTML = `
+                <div style="color:#721717; font-size:12px; margin-bottom:10px; font-family:monospace; font-weight:bold;">
+                    INVESTIGADOR: ${inv.nome.toUpperCase()}
+                </div>
+                <div style="display:flex; gap:5px;">
+                    <button onclick="abrirFicha(${inv.id})" style="flex:2; background:#888; color:#333; font-size:10px;">CARREGAR</button>
+                    <button onclick="renomearInvestigador(${inv.id})" style="background:#222; color:#aaa; font-size:10px; padding:0 8px;">✎</button>
+                    <button onclick="removerInvestigador(${inv.id})" style="background:#330000; color:#ff4444; font-size:10px;">X</button>
+                </div>`;
+            lista.appendChild(div);
+        });
+    } catch (erro) {
+        console.error("Erro ao carregar:", erro);
+        lista.innerHTML = '<div style="color:#ff4444; text-align:center; padding:20px; font-size:11px;">ERRO AO CARREGAR. VERIFIQUE SUA CONEXÃO.</div>';
     }
-
-    savedData.investigadores.forEach(inv => {
-        const div = document.createElement('div');
-        div.style.cssText = "background:#111; border:1px solid #222; padding:12px; margin-bottom:10px; border-radius:4px;";
-        div.innerHTML = `
-            <div style="color:#721717; font-size:12px; margin-bottom:10px; font-family:monospace; font-weight:bold;">
-                INVESTIGADOR: ${inv.nome.toUpperCase()}
-            </div>
-            <div style="display:flex; gap:5px;">
-                <button onclick="abrirFicha(${inv.id})" style="flex:2; background:#888; color:#333; font-size:10px;">CARREGAR</button>
-                <button onclick="renomearInvestigador(${inv.id})" style="background:#222; color:#aaa; font-size:10px; padding:0 8px;">✎</button>
-                <button onclick="removerInvestigador(${inv.id})" style="background:#330000; color:#ff4444; font-size:10px;">X</button>
-            </div>
-        `;
-        lista.appendChild(div);
-    });
 }
 
 
-function renomearInvestigador(id) {
-    const novoNome = prompt("Digite o novo codinome do Investigador:");
-    if(!novoNome || !novoNome.trim()) return;
-
-    const savedData = JSON.parse(localStorage.getItem("CoC_User_" + agenteLogado));
-    const inv = savedData.investigadores.find(i => i.id === id);
-    if(inv) {
-        inv.nome = novoNome.trim();
-        localStorage.setItem("CoC_User_" + agenteLogado, JSON.stringify(savedData));
-        atualizarListaInvestigadores();
+async function renomearInvestigador(id) {
+    const novoNome = prompt("Novo nome do investigador:");
+    if (!novoNome || !novoNome.trim()) return;
+    try {
+        const docRef = window.firebaseDoc(window.db, "usuarios", agenteLogado);
+        const docSnap = await window.firebaseGetDoc(docRef);
+        const userData = docSnap.data();
+        const inv = userData.investigadores.find(i => i.id === id);
+        if (inv) {
+            inv.nome = novoNome.trim();
+            await window.firebaseSetDoc(docRef, userData);
+            await atualizarListaInvestigadores();
+        }
+    } catch (erro) {
+        console.error("Erro ao renomear:", erro);
     }
 }
 
@@ -2782,35 +2812,48 @@ function carregarInvestigador(id) {
     }
 }
 
-function removerInvestigador(id) {
-    if(!confirm("Tem certeza que deseja remover este investigador?")) return;
-    
-    const savedData = JSON.parse(localStorage.getItem("CoC_User_" + agenteLogado));
-    savedData.investigadores = savedData.investigadores.filter(i => i.id !== id);
-    localStorage.setItem("CoC_User_" + agenteLogado, JSON.stringify(savedData));
-    
-    if(investigadorAtual === id) {
-        investigadorAtual = null;
-        limparFicha();
+async function removerInvestigador(id) {
+    if (!confirm("Tem certeza que deseja remover este investigador?")) return;
+    try {
+        const docRef = window.firebaseDoc(window.db, "usuarios", agenteLogado);
+        const docSnap = await window.firebaseGetDoc(docRef);
+        const userData = docSnap.data();
+        userData.investigadores = userData.investigadores.filter(i => i.id !== id);
+        await window.firebaseSetDoc(docRef, userData);
+        if (investigadorAtual === id) { investigadorAtual = null; limparFicha(); }
+        await atualizarListaInvestigadores();
+    } catch (erro) {
+        console.error("Erro ao remover:", erro);
     }
-    
-    atualizarListaInvestigadores();
 }
 
-function salvarLocal() {
-    if(!agenteLogado) return alert("Faça login primeiro!");
-    
-    const savedData = JSON.parse(localStorage.getItem("CoC_User_" + agenteLogado));
-    
-    if(investigadorAtual) {
-        const inv = savedData.investigadores.find(i => i.id === investigadorAtual);
-        if(inv) {
-            inv.ficha = colherDados();
-            localStorage.setItem("CoC_User_" + agenteLogado, JSON.stringify(savedData));
-            alert("Investigador '" + inv.nome + "' salvo!");
+async function salvarLocal() {
+    if (!agenteLogado) return alert("Faça login primeiro!");
+    if (!investigadorAtual) return alert("Selecione ou crie um investigador primeiro!");
+    try {
+        salvarConteudoPaginaAtual();
+        const docRef = window.firebaseDoc(window.db, "usuarios", agenteLogado);
+        const docSnap = await window.firebaseGetDoc(docRef);
+        const userData = docSnap.data();
+        const inv = userData.investigadores.find(i => i.id === investigadorAtual);
+        if (inv) {
+            const dadosFicha = colherDados();
+            if (dadosFicha.foto && dadosFicha.foto.length > 400000) {
+                dadosFicha.foto = "";
+                alert("⚠️ Foto muito grande para salvar na nuvem. Use Exportar/Importar JSON para fichas com foto.");
+            }
+            inv.ficha = dadosFicha;
+            await window.firebaseSetDoc(docRef, userData);
+            const btn = document.querySelector('button[onclick="salvarLocal()"]');
+            if (btn) {
+                const textoOriginal = btn.innerText;
+                btn.innerText = "✅ SALVO!";
+                setTimeout(() => btn.innerText = textoOriginal, 2000);
+            }
         }
-    } else {
-        alert("Selecione ou crie um investigador primeiro!");
+    } catch (erro) {
+        console.error("Erro ao salvar:", erro);
+        alert("Erro ao salvar. Verifique sua conexão com a internet.");
     }
 }
 
@@ -3944,27 +3987,25 @@ document.getElementById('signupPass').addEventListener('input', function() {
 });
 
 // Ajuste na sua função de cadastro original:
-function realizarCadastro() {
-    const user = document.getElementById('signupUser').value.trim();
+async function realizarCadastro() {
+    const user = document.getElementById('signupUser').value.trim().toLowerCase();
     const pass = document.getElementById('signupPass').value.trim();
     const msg = document.getElementById('login-msg');
-
-    // Verifica se todos os elementos têm a classe 'valid'
     const todosValidos = document.querySelectorAll('.req-item.valid').length === 5;
-
-    if(!todosValidos) {
-        msg.style.color = "#ff4444";
-        msg.innerText = "PREENCHA TODOS OS REQUISITOS DA SENHA";
-        return;
+    if (!todosValidos) { msg.style.color = "#ff4444"; msg.innerText = "PREENCHA TODOS OS REQUISITOS DA SENHA"; return; }
+    if (!user) { msg.innerText = "DIGITE UM NOME DE INVESTIGADOR"; return; }
+    try {
+        msg.style.color = "#888"; msg.innerText = "VERIFICANDO REGISTROS...";
+        const docRef = window.firebaseDoc(window.db, "usuarios", user);
+        const docSnap = await window.firebaseGetDoc(docRef);
+        if (docSnap.exists()) { msg.style.color = "#ff4444"; msg.innerText = "ESTE INVESTIGADOR JÁ ESTÁ REGISTRADO"; return; }
+        await window.firebaseSetDoc(docRef, { password: pass, investigadores: [], criadoEm: new Date().toISOString() });
+        msg.style.color = "#00ff00"; msg.innerText = "INVESTIGADOR REGISTRADO COM SUCESSO!";
+        setTimeout(() => switchTab('login'), 1500);
+    } catch (erro) {
+        console.error("Erro ao cadastrar:", erro);
+        msg.style.color = "#ff4444"; msg.innerText = "ERRO AO REGISTRAR. VERIFIQUE SUA CONEXÃO.";
     }
-
-    if(localStorage.getItem("CoC_User_" + user)) return msg.innerText = "ESTE INVESTIGADOR JÁ ESTÁ REGISTRADO";
-    
-    const userData = { password: pass, investigadores: [] };
-    localStorage.setItem("CoC_User_" + user, JSON.stringify(userData));
-    msg.style.color = "#00ff00";
-    msg.innerText = "INVESTIGADOR REGISTRADO COM SUCESSO!";
-    setTimeout(() => switchTab('login'), 1500);
 }
 
 
@@ -4070,40 +4111,27 @@ function fazerLogout() {
 
 
 // Esta função roda automaticamente quando a página abre
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
     const usuarioSalvo = localStorage.getItem("Agente_Sessao_Ativa");
-
-    if (usuarioSalvo && localStorage.getItem("CoC_User_" + usuarioSalvo)) {
-        agenteLogado = usuarioSalvo;
-        document.getElementById('login-overlay').style.display = "none";
-        document.getElementById('menu-fichas').classList.add('active');
-        
-        atualizarListaInvestigadores();
-        
-        // Espera um pouco para os dados preencherem a tela e calcula
-        setTimeout(() => {
-            atualizarTudo();
-            calcularPontosOcupacao();
-            console.log("Cálculos automáticos aplicados para: " + usuarioSalvo);
-        }, 500); 
-        // --------------------------------
-
-// ... dentro do load ...
-const zoom = localStorage.getItem('noir_fundo_zoom') || '100';
-
-if (bg) {
-    if (!(tp && tp.includes('video'))) {
-        document.body.style.background = `url('${bg}') no-repeat ${posX}% ${posY}% fixed`;
-        document.body.style.backgroundSize = `${zoom}%`; // Aplica o zoom salvo
+    if (usuarioSalvo) {
+        try {
+            const docRef = window.firebaseDoc(window.db, "usuarios", usuarioSalvo);
+            const docSnap = await window.firebaseGetDoc(docRef);
+            if (docSnap.exists()) {
+                agenteLogado = usuarioSalvo;
+                document.getElementById('login-overlay').style.display = "none";
+                document.getElementById('menu-fichas').classList.add('active');
+                document.getElementById('display-username').innerText = usuarioSalvo.toUpperCase();
+                await atualizarListaInvestigadores();
+                setTimeout(() => { atualizarTudo(); calcularPontosOcupacao(); }, 500);
+            }
+        } catch(e) { console.log("Sem conexão ou sessão expirada."); }
     }
-}
-
-if (document.getElementById('zoomFundo')) {
-    document.getElementById('zoomFundo').value = zoom;
-    document.getElementById('valorZoom').innerText = zoom + '%';
-}
-
-    }
+    window.aplicarConfiguracoesFundo();
+    const opFicha = localStorage.getItem('opacidade_ficha_noir');
+    const opFundo = localStorage.getItem('brilho_fundo_noir');
+    if (opFicha) window.ajustarOpacidadeFicha(opFicha);
+    if (opFundo) window.ajustarOpacidadeFundo(opFundo);
 });
 
 
