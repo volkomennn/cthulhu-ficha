@@ -4241,8 +4241,17 @@ function rollCustomDice() {
             input.replace(/(\d+)d(\d+)/gi, '')
         );
 
-        let textoFinal = linhas.join('\n');
-        if (detalhes.length > 1 ||
+let textoFinal = linhas.join('\n');
+        if (detalhes.length > 1 || temOperacao) {
+            textoFinal += `\nRESULTADO FINAL: ${resultadoFinal}`;
+        }
+
+        document.getElementById('diceDisplay').innerText = textoFinal;
+
+    } catch (e) {
+        document.getElementById('diceDisplay').innerText = "Expressão inválida.";
+    }
+}
 
 function atualizarTudo() {
     let v = {};
