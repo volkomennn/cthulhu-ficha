@@ -3785,15 +3785,22 @@ function rollXDX(qtd, lados) {
 }
 
 function rollCustomDice() {
-
- const diceSound = document.getElementById('dice-sound');
+    const diceSound = document.getElementById('dice-sound');
     if (diceSound) { diceSound.currentTime = 0; diceSound.play().catch(() => {}); }
-  
-    const input = document.getElementById('diceInput').value;
-    const m = input.match(/(\d+)d(\d+)/i);
-    if (m) {
-        const res = rollXDX(m[1], m[2]);
-        document.getElementById('diceDisplay').innerText = res.formula;
+
+    const input = document.getElementById('diceInput').value.trim();
+
+    // Substitui cada XdY pela soma dos dados rolados
+    const expressao = input.replace(/(\d+)d(\d+)/gi, (match, qtd, lados) => {
+        const res = rollXDX(parseInt(qtd), parseInt(lados));
+        return res.total;
+    });
+
+    try {
+        const resultado = Function('"use strict"; return (' + expressao + ')')();
+        document.getElementById('diceDisplay').innerText = `${input} = ${Math.round(resultado)}`;
+    } catch (e) {
+        document.getElementById('diceDisplay').innerText = "Expressão inválida.";
     }
 }
 
