@@ -1622,6 +1622,10 @@ span.pericia-nome[title*="padrão de vida"] {
     <source src="undertale-move-selection-sound-effect.mp3" type="audio/mpeg">
 </audio>
 
+  <audio id="dice-sound" preload="auto">
+    <source src="dadosrolando.mp3" type="audio/mpeg">
+</audio>
+
 <div id="login-overlay">
     <div class="login-card">
         <img src="https://i.pinimg.com/736x/71/8a/d9/718ad93c88c10dea945392bfa43ed220.jpg" style="width: 80px; border-radius: 50%; margin-bottom: 20px; filter: grayscale(1);">
@@ -3657,6 +3661,9 @@ function calcP(idSafe) {
 
 
 function testarHabilidade(nome, valorAlvo) {
+const diceSound = document.getElementById('dice-sound');
+    if (diceSound) { diceSound.currentTime = 0; diceSound.play().catch(() => {}); }
+  
     const alvo = parseInt(valorAlvo) || 0;
     const roll = Math.floor(Math.random() * 100) + 1;
     const half = Math.floor(alvo / 2); 
@@ -3778,6 +3785,10 @@ function rollXDX(qtd, lados) {
 }
 
 function rollCustomDice() {
+
+ const diceSound = document.getElementById('dice-sound');
+    if (diceSound) { diceSound.currentTime = 0; diceSound.play().catch(() => {}); }
+  
     const input = document.getElementById('diceInput').value;
     const m = input.match(/(\d+)d(\d+)/i);
     if (m) {
