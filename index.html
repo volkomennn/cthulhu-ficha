@@ -1612,6 +1612,397 @@ span.pericia-nome[title*="padrão de vida"] {
 }
 
 
+/* ============================================================
+   RESPONSIVO MOBILE - MEDIA QUERIES
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    /* BODY */
+    body {
+        padding: 5px !important;
+    }
+
+    /* CONTAINER PRINCIPAL */
+    .container {
+        padding: 15px !important;
+        margin: 10px auto !important;
+    }
+
+    /* LOGO */
+    .logo-projeto {
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    /* H1, H2, H3 */
+    h1 { font-size: 1em !important; letter-spacing: 2px !important; }
+    h2 { font-size: 0.9em !important; letter-spacing: 2px !important; }
+    h3 { font-size: 0.85em !important; letter-spacing: 1px !important; }
+
+    /* ===== PLAYER DE MÚSICA ===== */
+    .music-player-container {
+        position: fixed !important;
+        top: auto !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        padding: 8px 15px !important;
+        border-top: 2px solid #333 !important;
+        border-left: none !important;
+        border-right: none !important;
+        z-index: 9000 !important;
+        box-sizing: border-box !important;
+    }
+
+    .music-player-container .player-content {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 10px !important;
+    }
+
+    .gif-musica {
+        width: 40px !important;
+        height: 40px !important;
+        margin: 0 !important;
+        object-fit: cover !important;
+    }
+
+    /* Esconde o nome da música e o slider no mobile */
+    .music-player-container .player-content > div:nth-child(2) {
+        display: none !important;
+    }
+
+    .music-player-container .bar-controls {
+        margin-top: 0 !important;
+    }
+
+    #volSlider {
+        width: 70px !important;
+    }
+
+    /* ===== PAINEL DE CONTA ===== */
+    .user-account-bar {
+        position: fixed !important;
+        top: auto !important;
+        bottom: 65px !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        border-left: none !important;
+        border-top: 1px solid #333 !important;
+        z-index: 8999 !important;
+        animation: none !important;
+        padding: 5px 12px !important;
+    }
+
+    /* ===== MENU DE FICHAS ===== */
+    .investigadores-panel {
+        width: 90vw !important;
+        max-height: 85vh !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) scale(0.95) !important;
+        padding: 20px 15px !important;
+    }
+
+    .investigadores-panel.active {
+        transform: translate(-50%, -50%) scale(1) !important;
+    }
+
+    /* ===== BOTÕES DE SAVE ===== */
+    .save-controls {
+        position: fixed !important;
+        bottom: 110px !important;
+        right: 5px !important;
+        gap: 5px !important;
+        z-index: 7000 !important;
+    }
+
+    .save-controls button {
+        font-size: 0.55em !important;
+        padding: 8px 10px !important;
+        letter-spacing: 1px !important;
+    }
+
+    .save-controls > div {
+        flex-direction: column !important;
+        gap: 5px !important;
+    }
+
+    /* ===== HEADER DA FICHA ===== */
+    .header-ficha-compacta {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .foto-wrapper {
+        align-items: center !important;
+    }
+
+    /* ===== INFO PESSOAIS ===== */
+    .info-pessoais {
+        grid-template-columns: 1fr 1fr !important;
+        max-width: 100% !important;
+    }
+
+    .info-pessoais .field[style*="grid-column: span 2"],
+    .info-pessoais .field[style*="grid-column:span 2"] {
+        grid-column: span 2 !important;
+    }
+
+    /* ===== BLOCO DE OCUPAÇÃO ===== */
+    .bloco-ocupacao {
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* ===== DADOS ===== */
+    .dice-roller {
+        padding: 15px !important;
+    }
+
+    .dice-roller input {
+        width: 120px !important;
+    }
+
+    /* ===== ATRIBUTOS ===== */
+    .grid-atributos {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+    }
+
+    .attr-card {
+        padding: 10px !important;
+    }
+
+    .attr-card button {
+        padding: 6px !important;
+        font-size: 8px !important;
+    }
+
+    /* Tooltip de atributo: aparece abaixo no mobile */
+    .attr-tooltip {
+        bottom: auto !important;
+        top: 110% !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 220px !important;
+        z-index: 9999 !important;
+    }
+
+    /* ===== BARRAS DE STATUS (PV / SAN / MAG) ===== */
+    .bar-wrapper {
+        padding: 10px !important;
+    }
+
+    .bar-wrapper > div[style*="display: flex"] {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    /* ===== STATUS DERIVADOS (SORTE, MOV, etc.) ===== */
+    .status-derivados {
+        gap: 8px !important;
+    }
+
+    .status-box {
+        min-width: 75px !important;
+        padding: 10px 8px !important;
+        font-size: 0.75em !important;
+    }
+
+    /* ===== ABAS ===== */
+    .tabs-container {
+        flex-wrap: wrap !important;
+        gap: 5px !important;
+    }
+
+    .tab-button {
+        padding: 8px 12px !important;
+        font-size: 9px !important;
+        letter-spacing: 1px !important;
+        flex: 1 !important;
+        min-width: 80px !important;
+    }
+
+    /* ===== PERÍCIAS ===== */
+    #periciasContainer {
+        flex-direction: column !important;
+    }
+
+    .pericias-table {
+        min-width: unset !important;
+        width: 100% !important;
+        font-size: 0.7em !important;
+    }
+
+    .pericias-table th,
+    .pericias-table td {
+        padding: 4px 3px !important;
+    }
+
+    .pericias-table input {
+        width: 95% !important;
+        font-size: 11px !important;
+    }
+
+    .pericia-nome {
+        font-size: 12px !important;
+    }
+
+    .btn-toggle-cor,
+    .btn-reset-cor {
+        font-size: 8px !important;
+        padding: 2px 4px !important;
+    }
+
+    /* ===== ANTECEDENTES ===== */
+    .antecedentes-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* ===== INVENTÁRIO ===== */
+    .inventario-lista {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* ===== BLOCO DE NOTAS ===== */
+    #editor-notas {
+        min-height: 250px !important;
+        font-size: 13px !important;
+    }
+
+    /* Barra de ferramentas do editor */
+    #tab-notas > div:nth-child(2) {
+        gap: 3px !important;
+        padding: 5px !important;
+    }
+
+    #tab-notas button {
+        padding: 4px 7px !important;
+        font-size: 9px !important;
+    }
+
+    #select-fonte,
+    #select-tamanho {
+        font-size: 9px !important;
+        padding: 3px !important;
+    }
+
+    /* ===== ARSENAL / ARMAS ===== */
+    .weapon-table {
+        font-size: 0.65em !important;
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+    }
+
+    .weapon-table th,
+    .weapon-table td {
+        padding: 4px 3px !important;
+        min-width: 50px !important;
+    }
+
+    .weapon-table select {
+        font-size: 10px !important;
+        min-width: 100px !important;
+    }
+
+    /* ===== CONDIÇÕES ESPECIAIS ===== */
+    .status-checks {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+        padding: 10px !important;
+    }
+
+    /* ===== DINHEIRO ===== */
+    .dinheiro-gastos-container {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* ===== MODAL DE OCUPAÇÕES ===== */
+    .modal-box {
+        width: 95% !important;
+        max-height: 90vh !important;
+    }
+
+    .ocupacoes-grid {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+        padding: 10px !important;
+    }
+
+    /* ===== MODAL DE TUTORIAL E AJUDA ===== */
+    .modal-content {
+        width: 95% !important;
+        padding: 15px !important;
+        max-height: 88vh !important;
+        overflow-y: auto !important;
+    }
+
+    /* ===== PAINEL DE FUNDO ===== */
+    #painelFundo > div {
+        width: 92% !important;
+        padding: 15px !important;
+    }
+
+    /* ===== FOOTER ===== */
+    .main-footer {
+        flex-direction: column !important;
+        gap: 20px !important;
+        text-align: center !important;
+    }
+
+    .footer-right {
+        align-items: center !important;
+    }
+
+    /* ===== SEÇÃO GERAL ===== */
+    .section {
+        padding: 12px !important;
+    }
+
+    /* ===== PAINEL DE RESULTADO DE ATRIBUTOS/PERÍCIAS ===== */
+    #painel-resultado-atributos,
+    #painel-resultado-pericias {
+        font-size: 0.85em !important;
+    }
+
+    /* Espaço no fundo para não sobrepor player e barra de conta */
+    .main-content {
+        padding-bottom: 130px !important;
+    }
+}
+
+/* TELAS MUITO PEQUENAS (abaixo de 400px) */
+@media (max-width: 400px) {
+
+    .info-pessoais {
+        grid-template-columns: 1fr !important;
+    }
+
+    .info-pessoais .field[style*="grid-column: span 2"] {
+        grid-column: span 1 !important;
+    }
+
+    .grid-atributos {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .status-box {
+        min-width: 60px !important;
+        font-size: 0.65em !important;
+    }
+
+    h1 { font-size: 0.8em !important; }
+}
+
+      
+
     </style>
 </head>
 <body>
